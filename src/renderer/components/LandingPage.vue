@@ -4,7 +4,7 @@
     <main>
       <div class="left-side">
         <span class="title">
-          Welcome to your new project!
+          Chan
         </span>
         <system-information></system-information>
       </div>
@@ -13,7 +13,7 @@
         <div class="doc">
           <div class="title">Welcome to the People You May Know Inspector</div>
           <p v-if="hasCredentials">
-              You've already saved your credentials. You're good to go.<button class="alt" @click="run()">Run Nightmare😱</button>
+              You've already saved your credentials. You're good to go.<button class="alt" @click="open()">Run Nightmare😱</button>
               <button @click="() => {this.$router.push({path: 'credentials'})}">Settings</button><br><br>
           </p>
           <p v-else>
@@ -34,6 +34,8 @@
   import SystemInformation from './LandingPage/SystemInformation'
   import Nightmare from 'nightmare'
   import keytar from 'keytar'
+  import { run } from './scrape'
+  import vo from 'vo'
 
   export default {
     name: 'landing-page',
@@ -41,8 +43,9 @@
     data () {
       return {
         serviceName: 'pymkinspector',
-        nightmare: Nightmare({ electronPath: require('../../../node_modules/electron'),
-          show: true}),
+        nightmare: Nightmare({ electronPath: require('electron-nightmare'),
+          show: true,
+          height: 2000}),
         hasCredentials: false,
         username: '',
         password: ''
@@ -63,24 +66,11 @@
         })
     },
     methods: {
-      run () {
-        this.nightmare
-          .goto('https://www.facebook.com/friends/requests/?fcref=jwl')
-          .type('#email', this.username)
-          .type('#pass', this.password)
-          .click('#loginbutton')
-          .wait(15000)
-          .end()
-          .then(function (result) {
-            console.log('HERE')
-            console.log(result)
-          })
-          .catch(function (error) {
-            console.error('Search failed:', error)
-          })
-      },
-      open (link) {
-        this.$electron.shell.openExternal(link)
+      open () {
+        vo(run)({username: this.username, password: this.password}, function (err, result) {
+          console.log(err)
+          console.log(result)
+        })
       }
     }
   }

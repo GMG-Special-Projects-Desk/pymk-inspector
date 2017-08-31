@@ -27,6 +27,19 @@
   export default {
     name: 'landing-page',
     components: { SystemInformation },
+    created () {
+      this.$storage.isPathExists(`${this.serviceName}.json`)
+        .then(itDoes => {
+          if (itDoes) {
+            this.hasCredentials = true
+            this.$storage
+              .get(`${this.serviceName}.json`)
+              .then((d) => { this.username = d.username; return d })
+          } else {
+            this.hasCredentials = false
+          }
+        })
+    },
     data () {
       return {
         serviceName: 'pymkinspector',
@@ -53,8 +66,6 @@
       },
       del () {
         this.keytar.findPassword(this.serviceName).then((x) => { console.log(x) })
-        // console.log()
-        // this.deletePassword(this.serviceName)
       },
       goBack () {
         this.$route.push('landing-page')

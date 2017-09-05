@@ -3,9 +3,10 @@
     <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
     <main>
       <div class="left-side">
-        <span class="title">
-          Chan
-        </span>
+        <div class="doc">
+          <button @click="test()">Find</button><br><br>
+          <button @click="testSave(dummy)">Save </button><br><br>
+        </div>
         <system-information></system-information>
       </div>
 
@@ -18,13 +19,12 @@
           </p>
           <p v-else>
               Looks like this is your first time using the app or there are no credentials stored. <button ><router-link :to="{ path: '/credentials' }">Save Credentials</router-link></button><br><br>
+              <button @click="() => {this.$router.push({path: 'credentials'})}">Settings</button><br><br>
 
           </p>
 
         </div>
-        <div class="doc">
 
-        </div>
       </div>
     </main>
   </div>
@@ -32,9 +32,11 @@
 
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
-  import Nightmare from 'nightmare'
   import keytar from 'keytar'
-  import { run } from './scrape'
+  import { run } from '@/scripts/scrape'
+  import { parsePymk } from '@/scripts/parse'
+  import { Doc } from '@/db'
+  import { Dummy } from '../../../test-db.js'
   import vo from 'vo'
 
   export default {
@@ -43,12 +45,10 @@
     data () {
       return {
         serviceName: 'pymkinspector',
-        nightmare: Nightmare({ electronPath: require('electron-nightmare'),
-          show: true,
-          height: 2000}),
         hasCredentials: false,
         username: '',
-        password: ''
+        password: '',
+        db: Doc
       }
     },
     created () {
@@ -69,7 +69,24 @@
       open () {
         vo(run)({username: this.username, password: this.password}, function (err, result) {
           console.log(err)
-          console.log(result)
+          console.log(parsePymk(result))
+        })
+      },
+      test () {
+        this.db.find({}, (err, docs) => {
+          if (err) {
+            console.log(err)
+          }
+          console.log(docs)
+        })
+      },
+      testSave () {
+        console.log(Dummy)
+        this.db.save(Dummy.data, (err, docs) => {
+          if (err) {
+            console.log(err)
+          }
+          console.log(docs)
         })
       }
     }

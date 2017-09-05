@@ -1,4 +1,5 @@
 test/unit/coverage/**
 test/unit/*.js
 test/e2e/*.js
-src/renderer/components/scrape.js
+src/renderer/scripts/scrape.js
+test-db.js

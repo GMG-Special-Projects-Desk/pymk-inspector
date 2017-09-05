@@ -1,7 +1,7 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
-
+// import { Doc } from '../renderer/db'
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html

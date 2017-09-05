@@ -1,6 +1,7 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app } from 'electron'
+import menubar from 'menubar'
 // import { Doc } from '../renderer/db'
 /**
  * Set `__static` path to static files in production
@@ -9,30 +10,43 @@ import { app, BrowserWindow } from 'electron'
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
-
-let mainWindow
+let mb
+// let mainWindow, mb
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-function createWindow () {
-  /**
-   * Initial window options
-   */
-  mainWindow = new BrowserWindow({
-    height: 563,
-    useContentSize: true,
-    width: 1000
+// function createWindow () {
+//   /**
+//    * Initial window options
+//    */
+//   mainWindow = new BrowserWindow({
+//     height: 563,
+//     useContentSize: true,
+//     width: 1000
+//   })
+
+//   mainWindow.loadURL(winURL)
+
+//   mainWindow.on('closed', () => {
+//     mainWindow = null
+//   })
+// }
+
+function createMenuBar () {
+  console.log()
+  mb = menubar({icon: `static/facebook-inspector.png`,
+    index: winURL,
+    alwaysOnTop: true
   })
-
-  mainWindow.loadURL(winURL)
-
-  mainWindow.on('closed', () => {
-    mainWindow = null
+  mb.on('ready', function () {
+    console.log('app is ready')
+  })
+  mb.on('after-create-window', function () {
   })
 }
 
-app.on('ready', createWindow)
+app.on('ready', createMenuBar)
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -41,7 +55,8 @@ app.on('window-all-closed', () => {
 })
 
 app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow()
+  if (mb === null) {
+    // createWindow()
+    createMenuBar()
   }
 })

@@ -1,18 +1,13 @@
 <template>
   <div id="wrapper">
-    <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
-    <main>
-      <div class="left-side">
-        <div class="doc">
-          <button @click="test()">Find</button><br><br>
-          <button @click="testSave(dummy)">Save </button><br><br>
-        </div>
-        <system-information></system-information>
+      <div class="title">  People You May Know Inspector
+          <img id="logo" src="~@/assets/facebook-inspector.svg" alt="electron-vue">
+          <button @click="quit()">Quit</button><br><br>
       </div>
 
-      <div class="right-side">
+    <main>
+<!--       <div class="left-side"> -->
         <div class="doc">
-          <div class="title">Welcome to the People You May Know Inspector</div>
           <p v-if="hasCredentials">
               You've already saved your credentials. You're good to go.<button class="alt" @click="open()">Run Nightmare😱</button>
               <button @click="() => {this.$router.push({path: 'credentials'})}">Settings</button><br><br>
@@ -20,12 +15,13 @@
           <p v-else>
               Looks like this is your first time using the app or there are no credentials stored. <button ><router-link :to="{ path: '/credentials' }">Save Credentials</router-link></button><br><br>
               <button @click="() => {this.$router.push({path: 'credentials'})}">Settings</button><br><br>
-
           </p>
-
+          <button @click="test()">Schedule</button><br><br>
+          <button @click="getNext()">Get Next</button> <span v-if='nextJob'>{{nextJob}}</span><br><br>
+          <button @click="testSave(dummy)">Save </button><br><br>
         </div>
-
-      </div>
+        <!-- <system-information></system-information> -->
+      <!-- </div> -->
     </main>
   </div>
 </template>
@@ -33,11 +29,13 @@
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
   import keytar from 'keytar'
-  import { run } from '@/scripts/scrape'
-  import { parsePymk } from '@/scripts/parse'
+  import { runScrape } from '@/scripts/scrape'
+  import { setCronJob } from '@/scripts/utils'
   import { Doc } from '@/db'
   import { Dummy } from '../../../test-db.js'
-  import vo from 'vo'
+  import moment from 'moment'
+  // import vo from 'vo'
+  const app = require('electron').remote.app
 
   export default {
     name: 'landing-page',
@@ -48,7 +46,9 @@
         hasCredentials: false,
         username: '',
         password: '',
-        db: Doc
+        db: Doc,
+        cronJob: null,
+        nextJob: ''
       }
     },
     created () {
@@ -67,27 +67,38 @@
     },
     methods: {
       open () {
-        vo(run)({username: this.username, password: this.password}, function (err, result) {
-          console.log(err)
-          console.log(parsePymk(result))
-        })
+        runScrape({username: this.username, password: this.password}, this.parse)
       },
       test () {
-        this.db.find({}, (err, docs) => {
-          if (err) {
-            console.log(err)
-          }
-          console.log(docs)
-        })
+        this.cronJob = setCronJob(() => { console.log('job') })
       },
       testSave () {
-        console.log(Dummy)
         this.db.save(Dummy.data, (err, docs) => {
           if (err) {
             console.log(err)
           }
           console.log(docs)
         })
+      },
+      getNext () {
+        if (this.cronJob) {
+          // const now = moment()
+          const next = moment(this.cronJob.nextInvocation())
+          // const ms = now.diff(next, 'hours')
+          // console.log(ms)
+          console.log(next)
+          this.nextJob = next
+          // if (now.isBefore(next)) {
+          //   this.nextJob = 'now is before next'
+          // } else {
+          //   this.nextJob = 'now is after next'
+          // }
+        } else {
+          return false
+        }
+      },
+      quit () {
+        app.quit()
       }
     }
   }
@@ -112,14 +123,14 @@
         rgba(229, 229, 229, .9) 100%
       );
     height: 100vh;
-    padding: 60px 80px;
+    padding: 10px 10px;
     width: 100vw;
   }
 
   #logo {
     height: auto;
-    margin-bottom: 20px;
-    width: 420px;
+    width: 32px;
+    float: right;
   }
 
   main {
@@ -127,7 +138,8 @@
     justify-content: space-between;
   }
 
-  main > div { flex-basis: 50%; }
+  /*main > div { flex-basis: 50%; }*/
+  main > div { flex-basis: 100%; }
 
   .left-side {
     display: flex;
@@ -142,9 +154,9 @@
 
   .title {
     color: #2c3e50;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
-    margin-bottom: 6px;
+    margin-bottom: 25px;
   }
 
   .title.alt {
@@ -158,7 +170,7 @@
   }
 
   .doc button {
-    font-size: .8em;
+    font-size: .6em;
     cursor: pointer;
     outline: none;
     padding: 0.75em 2em;

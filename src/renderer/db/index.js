@@ -6,7 +6,7 @@ const models = require('./models')
 
 // Set dbPath - this should be done explicitly and will be the dir where each model's store is saved
 // Set dbPath to -> app.getPath("userData")
-LinvoDB.dbPath = process.cwd()
+// LinvoDB.dbPath = process.cwd()
 
 const Doc = new LinvoDB('pymk', models.Person, {})
 

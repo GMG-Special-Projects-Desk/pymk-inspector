@@ -1,8 +1,8 @@
 'use strict'
 
+// import { app, BrowserWindow } from 'electron'
 import { app } from 'electron'
 import menubar from 'menubar'
-// import { Doc } from '../renderer/db'
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -11,7 +11,7 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 let mb
-// let mainWindow, mb
+// let mainWindow
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
@@ -27,6 +27,7 @@ const winURL = process.env.NODE_ENV === 'development'
 //   })
 
 //   mainWindow.loadURL(winURL)
+//   mainWindow.openDevTools()
 
 //   mainWindow.on('closed', () => {
 //     mainWindow = null
@@ -34,8 +35,7 @@ const winURL = process.env.NODE_ENV === 'development'
 // }
 
 function createMenuBar () {
-  console.log()
-  mb = menubar({icon: `static/facebook-inspector.png`,
+  mb = menubar({icon: require('path').join(__static, 'facebook-inspector.png'),
     index: winURL,
     alwaysOnTop: true
   })
@@ -43,10 +43,12 @@ function createMenuBar () {
     console.log('app is ready')
   })
   mb.on('after-create-window', function () {
+    mb.window.webContents.openDevTools()
   })
 }
 
 app.on('ready', createMenuBar)
+// app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -56,6 +58,7 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (mb === null) {
+  // if (mainWindow === null) {
     // createWindow()
     createMenuBar()
   }

@@ -1,13 +1,21 @@
-import { parsePymk } from '@/scripts/parse'
+// import { parsePymk } from '@/scripts/parse'
 const Nightmare = require('nightmare')
-const vo = require('vo')
+// const vo = require('vo')
 
 function getRandomInt (min, max) {
   min = Math.ceil(min)
   max = Math.floor(max)
   return Math.floor(Math.random() * (max - min)) + min
 }
-const run = function*(creds, nightmare) {
+
+const nightmare = Nightmare({
+  show: true,
+  electronPath: require('electron-nightmare')
+})
+
+export const run = function*(creds) {
+  console.log('HERE')
+  console.log(nightmare)
   yield nightmare
     .goto('https://www.facebook.com/friends/requests/?fcref=jwl')
     .type('#email', creds.username)
@@ -36,21 +44,4 @@ const run = function*(creds, nightmare) {
   })
   yield nightmare.end()
   return html
-}
-
-export const runScrape = (creds, cb, displayBrowser = false) => {
-  const nightmare = Nightmare({
-    show: displayBrowser,
-    electronPath: require('electron-nightmare')
-  })
-
-  vo(run)(creds, nightmare, function (err, result) {
-    if (err) {
-      console.log(err)
-    } else {
-      const pymk = parsePymk(result)
-      console.log(`Complete with ${pymk.length} pymk`)
-      cb(pymk)
-    }
-  })
 }

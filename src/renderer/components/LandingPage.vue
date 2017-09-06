@@ -1,27 +1,31 @@
 <template>
   <div id="wrapper">
-      <div class="title">  People You May Know Inspector
-          <img id="logo" src="~@/assets/facebook-inspector.svg" alt="electron-vue">
-          <button @click="quit()">Quit</button><br><br>
+    <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
+    <main>
+      <div class="left-side">
+        <div class="doc">
+          <button @click="test()">Find</button><br><br>
+          <button @click="testSave(dummy)">Save </button><br><br>
+        </div>
+        <system-information></system-information>
       </div>
 
-    <main>
-<!--       <div class="left-side"> -->
+      <div class="right-side">
         <div class="doc">
+          <div class="title">Welcome to the People You May Know Inspector</div>
           <p v-if="hasCredentials">
-              You've already saved your credentials. You're good to go.<button class="alt" @click="open()">Run Nightmare😱</button>
+              You've already saved your credentials. You're good to go.<button class="alt" @click="open()">Run-Nightmare😱</button>
               <button @click="() => {this.$router.push({path: 'credentials'})}">Settings</button><br><br>
           </p>
           <p v-else>
               Looks like this is your first time using the app or there are no credentials stored. <button ><router-link :to="{ path: '/credentials' }">Save Credentials</router-link></button><br><br>
               <button @click="() => {this.$router.push({path: 'credentials'})}">Settings</button><br><br>
+
           </p>
-          <button @click="test()">Schedule</button><br><br>
-          <button @click="getNext()">Get Next</button> <span v-if='nextJob'>{{nextJob}}</span><br><br>
-          <button @click="testSave(dummy)">Save </button><br><br>
+
         </div>
-        <!-- <system-information></system-information> -->
-      <!-- </div> -->
+
+      </div>
     </main>
   </div>
 </template>
@@ -29,14 +33,17 @@
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
   import keytar from 'keytar'
-  import { runScrape } from '@/scripts/scrape'
-  import { setCronJob } from '@/scripts/utils'
-  import { Doc } from '@/db'
+  // import { run } from '@/scripts/scrape'
+  // import { parsePymk } from '@/scripts/parse'
+  // import { Doc } from '@/db'
   import { Dummy } from '../../../test-db.js'
-  import moment from 'moment'
-  // import vo from 'vo'
-  const app = require('electron').remote.app
-
+  import vo from 'vo'
+  import Nightmare from 'nightmare'
+  function *runTest (creds) {
+    let a = yield {test: 'first yield'}
+    console.log(a) // 2
+    return 'hi'
+  }
   export default {
     name: 'landing-page',
     components: { SystemInformation },
@@ -46,9 +53,11 @@
         hasCredentials: false,
         username: '',
         password: '',
-        db: Doc,
-        cronJob: null,
-        nextJob: ''
+        nightmare: Nightmare({
+          show: true,
+          electronPath: require('electron-nightmare')
+        }),
+        vo: vo
       }
     },
     created () {
@@ -67,38 +76,70 @@
     },
     methods: {
       open () {
-        runScrape({username: this.username, password: this.password}, this.parse)
+        // this.nightmare
+        //   .title()
+        //   .then(function (title) {
+        //     console.log(title)
+        //   })
+        console.log(vo)
+        vo(runTest)({username: this.username, password: this.password}, function (err, result) {
+          console.log(err)
+          console.log(result)
+          // console.log(parsePymk(result))
+        })
+      },
+      runTest: function* (creds) {
+        console.log(1)
+        let a = yield 'first yield'
+        console.log(a) // 2
+        let b = yield 'second yield'
+        console.log(b) // 3
+        return 'hi'
+        // yield this.nightmare
+        //   .goto('https://www.facebook.com/friends/requests/?fcref=jwl')
+        //   .type('#email', creds.username)
+        //   .type('#pass', creds.password)
+        //   .click('#loginbutton')
+        //   .wait(5000)
+        // var previousHeight = 0
+        // var currentHeight = 1
+        // while (previousHeight !== currentHeight) {
+        //   previousHeight = currentHeight
+        //   currentHeight = yield this.nightmare.evaluate(function () {
+        //     var body = document.querySelector('body')
+        //     return body.scrollHeight
+        //   })
+        //   // if (currentHeight - previousHeight > 2) {
+        //   //   yield this.nightmare.scrollTo(getRandomInt(previousHeight, currentHeight), 0)
+        //   //     .wait(1000)
+        //   // } else {
+        //   yield this.nightmare.scrollTo((previousHeight +   20), 0)
+        //     .wait(1000)
+        //   // }
+        // }
+
+        // var html = yield this.nightmare.evaluate(function () {
+        //   return document.getElementById('fbSearchResultsBox').innerHTML
+        // })
+        // yield this.nightmare.end()
+        // return html
       },
       test () {
-        this.cronJob = setCronJob(() => { console.log('job') })
-      },
-      testSave () {
-        this.db.save(Dummy.data, (err, docs) => {
+        this.db.find({}, (err, docs) => {
           if (err) {
             console.log(err)
           }
           console.log(docs)
         })
       },
-      getNext () {
-        if (this.cronJob) {
-          // const now = moment()
-          const next = moment(this.cronJob.nextInvocation())
-          // const ms = now.diff(next, 'hours')
-          // console.log(ms)
-          console.log(next)
-          this.nextJob = next
-          // if (now.isBefore(next)) {
-          //   this.nextJob = 'now is before next'
-          // } else {
-          //   this.nextJob = 'now is after next'
-          // }
-        } else {
-          return false
-        }
-      },
-      quit () {
-        app.quit()
+      testSave () {
+        console.log(Dummy)
+        this.db.save(Dummy.data, (err, docs) => {
+          if (err) {
+            console.log(err)
+          }
+          console.log(docs)
+        })
       }
     }
   }
@@ -106,15 +147,12 @@
 
 <style>
   @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
-
   * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
-
   body { font-family: 'Source Sans Pro', sans-serif; }
-
   #wrapper {
     background:
       radial-gradient(
@@ -123,54 +161,44 @@
         rgba(229, 229, 229, .9) 100%
       );
     height: 100vh;
-    padding: 10px 10px;
+    padding: 60px 80px;
     width: 100vw;
   }
-
   #logo {
     height: auto;
-    width: 32px;
-    float: right;
+    margin-bottom: 20px;
+    width: 420px;
   }
-
   main {
     display: flex;
     justify-content: space-between;
   }
-
-  /*main > div { flex-basis: 50%; }*/
-  main > div { flex-basis: 100%; }
-
+  main > div { flex-basis: 50%; }
   .left-side {
     display: flex;
     flex-direction: column;
   }
-
   .welcome {
     color: #555;
     font-size: 23px;
     margin-bottom: 10px;
   }
-
   .title {
     color: #2c3e50;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
-    margin-bottom: 25px;
+    margin-bottom: 6px;
   }
-
   .title.alt {
     font-size: 18px;
     margin-bottom: 10px;
   }
-
   .doc p {
     color: black;
     margin-bottom: 10px;
   }
-
   .doc button {
-    font-size: .6em;
+    font-size: .8em;
     cursor: pointer;
     outline: none;
     padding: 0.75em 2em;
@@ -182,7 +210,6 @@
     box-sizing: border-box;
     border: 1px solid #4fc08d;
   }
-
   .doc button.alt {
     color: #42b983;
     background-color: transparent;

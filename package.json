@@ -20,13 +20,13 @@
     "test": "npm run unit && npm run e2e",
     "unit": "karma start test/unit/karma.conf.js",
     "extract": "asar extract build/mac/pymk-inspector.app/Contents/Resources/app.asar build/mac/pymk-inspector.app/Contents/Resources/app",
-    "repack": "asar pack dist/mac/pymk-inspector.app/Contents/Resources/app dist/mac/pymk-inspector.app/Contents/Resources/app.asar",
+    "repack": "asar pack build/mac/pymk-inspector.app/Contents/Resources/app build/mac/pymk-inspector.app/Contents/Resources/app.asar",
     "postinstall": "npm run lint:fix",
-    "postbuild": "npm run extract node && node .electron-vue/postinstallnightmare.js && npm run repack"
+    "postbuild": "npm run extract  && node .electron-vue/postinstallnightmare.js"
   },
   "build": {
     "productName": "pymk-inspector",
-    "appId": "org.simulatedgreg.electron-vue",
+    "appId": "org.gmg.pymk-inspector",
     "directories": {
       "output": "build"
     },

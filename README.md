@@ -13,6 +13,7 @@ npm run dev
 
 # build electron application for production
 npm run build
+note: sometimes you need to run `npm run pack` to get it to actually update the build
 
 # run unit & end-to-end tests
 npm test
@@ -22,6 +23,7 @@ npm test
 npm run lint
 
 ```
+
 
 ---
 

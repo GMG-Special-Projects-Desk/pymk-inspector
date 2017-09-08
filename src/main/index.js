@@ -15,10 +15,10 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-ipcMain.on('async', (event, arg) => {
-  testing(event)
-  console.log(arg)
+ipcMain.on('async', (arg, event) => {
+  testing(event, arg)
 })
+
 function createMenuBar () {
   mb = menubar({icon: require('path').join(__static, 'facebook-inspector.png'),
     index: winURL,

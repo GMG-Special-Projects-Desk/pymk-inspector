@@ -6,7 +6,7 @@
       <div class="right-side">
         <div class="doc">
           <div class="title"></div>
-          {{error ? 'Error' : 'Store your credentials'}}
+          {{err ? 'Err' : 'Store your credentials'}}
 
         </div>
         <div class="doc">
@@ -45,7 +45,7 @@
         serviceName: 'pymkinspector',
         username: '',
         password: '',
-        error: false,
+        err: false,
         keytar: keytar
       }
     },
@@ -53,15 +53,15 @@
       save () {
         if (this.username.length > 0 && this.password.length > 0) {
           this.keytar.setPassword(this.serviceName, this.username, this.password)
-          this.error = false
+          this.err = false
           this.$storage
             .set(`${this.serviceName}.json`, {username: this.username})
             .then((d) => { console.log('username stored') })
-            .catch((err) => { console.log(`Error: username not stored ${err}`) })
+            .catch((err) => { console.log(`Err: username not stored ${err}`) })
           this.username = ''
           this.password = ''
         } else {
-          this.error = true
+          this.err = true
         }
       },
       del () {

@@ -4,8 +4,8 @@
     <main>
       <div class="left-side">
         <div class="doc">
-          <button @click="test()">Find</button><br><br>
-          <button @click="testSave(dummy)">Save </button><br><br>
+          <button @click="scrape()">Hello??</button><br><br>
+          <button @click="save()">Save </button><br><br>
         </div>
         <system-information></system-information>
       </div>
@@ -14,17 +14,14 @@
         <div class="doc">
           <div class="title">Welcome to the People You May Know Inspector</div>
           <p v-if="hasCredentials">
-              You've already saved your credentials. You're good to go.<button class="alt" @click="open()">Run-Nightmare😱</button>
+              You've already saved your credentials. You're good to go.<button class="alt" @click="scrape()">Run-Nightmare</button>
               <button @click="() => {this.$router.push({path: 'credentials'})}">Settings</button><br><br>
           </p>
           <p v-else>
               Looks like this is your first time using the app or there are no credentials stored. <button ><router-link :to="{ path: '/credentials' }">Save Credentials</router-link></button><br><br>
               <button @click="() => {this.$router.push({path: 'credentials'})}">Settings</button><br><br>
-
           </p>
-
         </div>
-
       </div>
     </main>
   </div>
@@ -33,17 +30,13 @@
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
   import keytar from 'keytar'
-  // import { run } from '@/scripts/scrape'
-  // import { parsePymk } from '@/scripts/parse'
   // import { Doc } from '@/db'
-  import { Dummy } from '../../../test-db.js'
-  import vo from 'vo'
-  import Nightmare from 'nightmare'
-  function *runTest (creds) {
-    let a = yield {test: 'first yield'}
-    console.log(a) // 2
-    return 'hi'
-  }
+  var {ipcRenderer} = require('electron')
+
+  ipcRenderer.on('async-reply', (event, arg) => {
+    console.log(arg)
+  })
+
   export default {
     name: 'landing-page',
     components: { SystemInformation },
@@ -53,11 +46,7 @@
         hasCredentials: false,
         username: '',
         password: '',
-        nightmare: Nightmare({
-          show: true,
-          electronPath: require('electron-nightmare')
-        }),
-        vo: vo
+        Dummy: {}
       }
     },
     created () {
@@ -75,66 +64,11 @@
         })
     },
     methods: {
-      open () {
-        // this.nightmare
-        //   .title()
-        //   .then(function (title) {
-        //     console.log(title)
-        //   })
-        console.log(vo)
-        vo(runTest)({username: this.username, password: this.password}, function (err, result) {
-          console.log(err)
-          console.log(result)
-          // console.log(parsePymk(result))
-        })
+      scrape: function () {
+        ipcRenderer.send('async', {username: this.username, password: this.password})
       },
-      runTest: function* (creds) {
-        console.log(1)
-        let a = yield 'first yield'
-        console.log(a) // 2
-        let b = yield 'second yield'
-        console.log(b) // 3
-        return 'hi'
-        // yield this.nightmare
-        //   .goto('https://www.facebook.com/friends/requests/?fcref=jwl')
-        //   .type('#email', creds.username)
-        //   .type('#pass', creds.password)
-        //   .click('#loginbutton')
-        //   .wait(5000)
-        // var previousHeight = 0
-        // var currentHeight = 1
-        // while (previousHeight !== currentHeight) {
-        //   previousHeight = currentHeight
-        //   currentHeight = yield this.nightmare.evaluate(function () {
-        //     var body = document.querySelector('body')
-        //     return body.scrollHeight
-        //   })
-        //   // if (currentHeight - previousHeight > 2) {
-        //   //   yield this.nightmare.scrollTo(getRandomInt(previousHeight, currentHeight), 0)
-        //   //     .wait(1000)
-        //   // } else {
-        //   yield this.nightmare.scrollTo((previousHeight +   20), 0)
-        //     .wait(1000)
-        //   // }
-        // }
-
-        // var html = yield this.nightmare.evaluate(function () {
-        //   return document.getElementById('fbSearchResultsBox').innerHTML
-        // })
-        // yield this.nightmare.end()
-        // return html
-      },
-      test () {
+      save () {
         this.db.find({}, (err, docs) => {
-          if (err) {
-            console.log(err)
-          }
-          console.log(docs)
-        })
-      },
-      testSave () {
-        console.log(Dummy)
-        this.db.save(Dummy.data, (err, docs) => {
           if (err) {
             console.log(err)
           }

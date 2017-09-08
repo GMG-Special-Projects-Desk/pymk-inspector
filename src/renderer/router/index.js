@@ -13,7 +13,7 @@ export default new Router({
     {
       path: '/credentials',
       name: 'credentials',
-      component: require('@/components/credentials')
+      component: require('@/components/Credentials')
     },
     {
       path: '*',

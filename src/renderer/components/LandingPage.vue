@@ -30,11 +30,12 @@
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
   import keytar from 'keytar'
-  // import { Doc } from '@/db'
+  import { Doc } from '@/db'
   var {ipcRenderer} = require('electron')
 
   ipcRenderer.on('async-reply', (event, arg) => {
-    console.log(arg)
+    console.log(`${arg.length} pymk found this session`)
+    arg.map()
   })
 
   export default {
@@ -46,7 +47,8 @@
         hasCredentials: false,
         username: '',
         password: '',
-        Dummy: {}
+        Dummy: {},
+        db: Doc
       }
     },
     created () {

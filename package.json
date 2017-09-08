@@ -19,7 +19,7 @@
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "test": "npm run unit && npm run e2e",
     "unit": "karma start test/unit/karma.conf.js",
-    "postinstall": "npm run lint:fix"
+    "postinstall": "electron-builder install-app-deps && npm run lint:fix"
   },
   "build": {
     "productName": "pymk-inspector",
@@ -53,22 +53,12 @@
     },
     "linux": {
       "icon": "build/icons"
-    },
-    "extraResources": [
-      {
-        "from": "node_modules/electron-nightmare",
-        "to": "appShadow/node_modules/electron-nightmare",
-        "filter": [
-          "**/*"
-        ]
-      }
-    ]
+    }
   },
   "dependencies": {
     "automatonic": "^0.1.1",
     "axios": "^0.16.1",
     "cheerio": "^1.0.0-rc.2",
-    "electron-rebuild": "^1.6.0",
     "electron-storage": "^1.0.7",
     "keytar": "^4.0.4",
     "level-js": "^2.2.4",

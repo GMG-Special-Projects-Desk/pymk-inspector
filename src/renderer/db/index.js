@@ -8,6 +8,6 @@ const models = require('./models')
 // Set dbPath to -> app.getPath("userData")
 // LinvoDB.dbPath = process.cwd()
 
-const Doc = new LinvoDB('pymk', models.Person, {})
-
-module.exports = { Doc }
+const Person = new LinvoDB('pymk', models.Person, {})
+const Session = new LinvoDB('session', models.Session, {})
+module.exports = { Person, Session }

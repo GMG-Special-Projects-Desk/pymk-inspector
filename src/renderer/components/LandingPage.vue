@@ -5,7 +5,7 @@
       <div class="left-side">
         <div class="doc">
           <button @click="scrape()">Hello??</button><br><br>
-          <button @click="save()">Save </button><br><br>
+          <button @click="find()">Find </button><br><br>
         </div>
         <system-information></system-information>
       </div>
@@ -30,7 +30,7 @@
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
   import keytar from 'keytar'
-  import { Doc } from '@/db'
+  import {dbmixin} from '@/components/mixins'
   var {ipcRenderer} = require('electron')
 
   ipcRenderer.on('async-reply', (event, arg) => {
@@ -47,10 +47,10 @@
         hasCredentials: false,
         username: '',
         password: '',
-        Dummy: {},
-        db: Doc
+        Dummy: {}
       }
     },
+    mixins: [dbmixin],
     created () {
       this.$storage.isPathExists(`${this.serviceName}.json`)
         .then(itDoes => {
@@ -69,13 +69,8 @@
       scrape: function () {
         ipcRenderer.send('async', {username: this.username, password: this.password})
       },
-      save () {
-        this.db.find({}, (err, docs) => {
-          if (err) {
-            console.log(err)
-          }
-          console.log(docs)
-        })
+      find () {
+        this.findPerson({}).then((res) => { console.log(res) })
       }
     }
   }

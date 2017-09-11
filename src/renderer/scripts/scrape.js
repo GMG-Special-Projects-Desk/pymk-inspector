@@ -2,7 +2,7 @@ const { Browser, run, sleep } = require('automatonic');
 import { parsePymk } from './parse'
 
 // added to .babelignore because babels transformation fuck up the execute function for browser rendering
-export const   testing = (creds, event) => {
+export const runScrape = (creds, event) => {
   run(function*() {
     const I = new Browser({typingInterval: 200});
     I.goto('https://www.facebook.com/friends/requests/?fcref=jwl');

@@ -1,8 +1,12 @@
 'use strict'
 
-import { testing } from '../renderer/scripts/scrape'
+import { runScrape } from '../renderer/scripts/scrape'
+// import { initDB } from '../renderer/db'
+import { initDB, save, find } from '../renderer/db'
 import { app, ipcMain } from 'electron'
 import menubar from 'menubar'
+const {Person, Session} = initDB(app.getPath('userData'))
+// console.log(Person, Session)
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -16,7 +20,12 @@ const winURL = process.env.NODE_ENV === 'development'
   : `file://${__dirname}/index.html`
 
 ipcMain.on('async', (arg, event) => {
-  testing(event, arg)
+  runScrape(event, arg)
+})
+
+ipcMain.on('get-db', (event) => {
+  console.log(app.getPath('userData'))
+  event.sender.send('get-db-reply', app.getPath('userData'))
 })
 
 function createMenuBar () {
@@ -27,6 +36,7 @@ function createMenuBar () {
   mb.on('ready', function () {
     console.log('app is ready')
   })
+
   // mb.on('after-create-window', function () {
   //   mb.window.webContents.openDevTools()
   // })

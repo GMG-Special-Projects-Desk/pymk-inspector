@@ -65,6 +65,7 @@
     "level-js": "^2.2.4",
     "leveldown": "^1.7.2",
     "linvodb3": "^3.25.0",
+    "lodash": "^4.17.4",
     "menubar": "^5.2.3",
     "moment": "^2.18.1",
     "node-schedule": "^1.2.4",

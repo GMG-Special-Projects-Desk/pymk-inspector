@@ -10,3 +10,6 @@ npm-debug.log.*
 thumbs.db
 !.gitkeep
 *.db
+test-db.js
+test-html.js
+testing.js

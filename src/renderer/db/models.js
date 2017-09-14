@@ -1,20 +1,20 @@
+// FIXME: Add sessions string array to person schema if linvodb fix their shit
 const Person = {
   name: String,
   fbid: Number,
   created: Date,
-  work: String,
-  sessions: {type: [String], index: true},
+  job: String,
+  mfStr: String,
+  mutualFriends: Number,
   firstName: { get: function () { return this.name.split(' ')[0] } }
 }
-
+// FIXME: Add pymkIds number array to Session schema if linvodb fix their shit
 const Session = {
-  _id: String,
   timestamp: Date,
   totalPymk: Number,
   numSeenBefore: Number,
   numNoMutual: Number,
-  created: Date,
-  pymkIds: {type: [String], index: true}
+  numNew: { get: function () { return (this.totalPymk - this.numSeenBefore) } }
 }
 
 module.exports = {

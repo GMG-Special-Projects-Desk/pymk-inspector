@@ -1,12 +1,9 @@
 'use strict'
 
 import { runScrape } from '../renderer/scripts/scrape'
-// import { initDB } from '../renderer/db'
-import { initDB, save, find } from '../renderer/db'
-import { app, ipcMain } from 'electron'
 import menubar from 'menubar'
-const {Person, Session} = initDB(app.getPath('userData'))
-// console.log(Person, Session)
+import {app, ipcMain} from 'electron'
+// var app = require('electron')
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -15,16 +12,21 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 let mb
+
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-ipcMain.on('async', (arg, event) => {
-  runScrape(event, arg)
+ipcMain.on('async', (event, arg) => {
+  let config = {
+    event: event,
+    creds: arg,
+    dbPath: app.getPath('userData')
+  }
+  runScrape(config)
 })
 
-ipcMain.on('get-db', (event) => {
-  console.log(app.getPath('userData'))
+ipcMain.on('get-db', (event, arg) => {
   event.sender.send('get-db-reply', app.getPath('userData'))
 })
 

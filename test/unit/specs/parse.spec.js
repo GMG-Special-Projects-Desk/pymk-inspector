@@ -1,9 +1,10 @@
-import {load} from '@/scripts/parse'
-import {html} from '../test-html.js'
+import {test} from '@/db'
+import {data} from '../../../test-db.js'
 
-describe('parse.js', () => {
-  it('should load html', () => {
-    const d = load(html)
-    expect(d.to.contain('Welcome to your new project!'))
+describe('db', () => {
+  it('should load data', () => {
+    console.log(test)
+    const d = test('TEST')
+    expect(d.to.contain('TEST'))
   })
 })

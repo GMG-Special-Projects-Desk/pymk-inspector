@@ -5,7 +5,12 @@
       <div class="left-side">
         <div class="doc">
           <button @click="scrape()">Hello??</button><br><br>
-          <button @click="find()">Find </button><br><br>
+          <button @click="insertPeople()">Insert People</button><br><br>
+          <button @click="updateDB()">updateDB</button><br><br>
+          <button @click="dbGet()">DB Get</button><br><br>
+          <button @click="dbRemove()">DB Remove</button><br><br>
+          <button @click="getNewPYMK()">New PYMK</button><br><br>
+          <button @click="getExistingPymk()">Existing PYMK</button><br><br>
         </div>
         <system-information></system-information>
       </div>
@@ -30,13 +35,10 @@
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
   import keytar from 'keytar'
-  import {dbmixin} from '@/components/mixins'
+  import dummy from '../../../test-db.js'
+  import { removeAll, getAll, insertPeople, updateDB, getNewPymk, getExistingPymk } from '@/db'
+  import {mapGetters, mapActions} from 'vuex'
   var {ipcRenderer} = require('electron')
-
-  ipcRenderer.on('async-reply', (event, arg) => {
-    console.log(`${arg.length} pymk found this session`)
-    arg.map()
-  })
 
   export default {
     name: 'landing-page',
@@ -46,11 +48,22 @@
         serviceName: 'pymkinspector',
         hasCredentials: false,
         username: '',
-        password: '',
-        Dummy: {}
+        password: ''
       }
     },
-    mixins: [dbmixin],
+    mounted () {
+      ipcRenderer.on('async-reply', (event, arg) => {
+        this.setDbPath(arg.dbPath)
+        console.log(arg)
+        console.log('async-reply')
+        updateDB({dbPath: arg.dbPath, data: arg.data})
+          .then((d) => { console.log('done') })
+          .catch(err => { console.log(err) })
+      })
+    },
+    computed: {
+      ...mapGetters(['dbPath'])
+    },
     created () {
       this.$storage.isPathExists(`${this.serviceName}.json`)
         .then(itDoes => {
@@ -69,9 +82,39 @@
       scrape: function () {
         ipcRenderer.send('async', {username: this.username, password: this.password})
       },
-      find () {
-        this.findPerson({}).then((res) => { console.log(res) })
-      }
+      insertPeople () {
+        insertPeople({dbPath: this.dbPath, data: dummy.data})
+          .then((d) => { console.log(d) })
+          .catch(err => { console.log(err) })
+      },
+      dbGet () {
+        getAll('session', this.dbPath)
+          .then((d) => { console.log(d) })
+          .catch(err => { console.log(err) })
+        getAll('pymk', this.dbPath)
+          .then((d) => { console.log(d) })
+          .catch(err => { console.log(err) })
+      },
+      dbRemove () {
+        removeAll('session', this.dbPath)
+          .then((d) => { console.log(d) })
+          .catch(err => { console.log(err) })
+        removeAll('pymk', this.dbPath)
+          .then((d) => { console.log(d) })
+          .catch(err => { console.log(err) })
+      },
+      getNewPYMK () {
+        return getNewPymk({dbPath: this.dbPath, data: dummy.data})
+      },
+      getExistingPymk () {
+        return getExistingPymk({dbPath: this.dbPath, data: dummy.data})
+      },
+      updateDB () {
+        return getExistingPymk({dbPath: this.dbPath, data: dummy.data})
+      },
+      ...mapActions([
+        'setDbPath'
+      ])
     }
   }
 </script>

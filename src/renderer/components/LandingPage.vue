@@ -34,7 +34,6 @@
 
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
-  import keytar from 'keytar'
   import dummy from '../../../test-db.js'
   import { removeAll, getAll, insertPeople, updateDB, getNewPymk, getExistingPymk } from '@/db'
   import {mapGetters, mapActions} from 'vuex'
@@ -45,7 +44,6 @@
     components: { SystemInformation },
     data () {
       return {
-        serviceName: 'pymkinspector',
         hasCredentials: false,
         username: '',
         password: ''
@@ -62,21 +60,11 @@
       })
     },
     computed: {
-      ...mapGetters(['dbPath'])
+      ...mapGetters(['dbPath',
+        'serviceName'])
     },
     created () {
-      this.$storage.isPathExists(`${this.serviceName}.json`)
-        .then(itDoes => {
-          if (itDoes) {
-            this.hasCredentials = true
-            this.$storage
-              .get(`${this.serviceName}.json`)
-              .then((d) => { this.username = d.username; return d })
-              .then((d) => { keytar.getPassword(this.serviceName, d.username).then((t) => { this.password = t }) })
-          } else {
-            this.hasCredentials = false
-          }
-        })
+
     },
     methods: {
       scrape: function () {

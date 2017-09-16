@@ -1,75 +1,100 @@
 <template>
-  <div id="wrapper">
-    <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
-    <main>
-
-      <div class="right-side">
-        <div class="doc">
-          <div class="title"></div>
-          {{err ? 'Err' : 'Store your credentials'}}
-
-        </div>
-        <div class="doc">
-          <input v-model="username" placeholder="username">
-          <input type="password" v-model="password" placeholder="password"><br><br>
-          <button @click="save()">Save credentials</button>
-          <button @click="del()">Delete credentials</button><br><br>
-          <button @click="() => {this.$router.push({ path: '/' })}">Home</router-link></button><br><br>
-        </div>
-      </div>
-    </main>
-  </div>
+  <section>
+    <div class="field">
+      <p class="control has-icons-left has-icons-right">
+        <input v-model="userNameModel" class="input" type="username" placeholder="Username">
+        <span class="icon is-small is-left">
+          <i class="fa fa-envelope"></i>
+        </span>
+        <span class="icon is-small is-right">
+          <i class="fa fa-check"></i>
+        </span>
+      </p>
+    </div>
+    <div class="field">
+      <p class="control has-icons-left">
+        <input v-model="passwordModel" class="input" type="password" placeholder="Password">
+        <span class="icon is-small is-left">
+          <i class="fa fa-lock"></i>
+        </span>
+      </p>
+    </div>
+    <div class="field">
+      <p class="control">
+        <button @click="save()" class="button is-success">
+          Save Credentials
+        </button>
+      </p>
+    </div>
+    <div class="field">
+      <p class="control">
+        <button @click="del()" class="button is-danger">
+          Delete Credentials
+        </button>
+      </p>
+    </div>
+    <div class="field">
+      <p class="control">
+        <button @click="() => {this.$router.push({path: 'main'})}" class="button is-success">
+          Go Back
+        </button>
+      </p>
+    </div>
+  </section>
 </template>
 
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
   import keytar from 'keytar'
+  import { mapGetters } from 'vuex'
   export default {
     name: 'landing-page',
     components: { SystemInformation },
     created () {
-      this.$storage.isPathExists(`${this.serviceName}.json`)
-        .then(itDoes => {
-          if (itDoes) {
-            this.hasCredentials = true
-            this.$storage
-              .get(`${this.serviceName}.json`)
-              .then((d) => { this.username = d.username; return d })
-          } else {
-            this.hasCredentials = false
-          }
-        })
+      this.userNameModel = this.username()
     },
     data () {
       return {
         serviceName: 'pymkinspector',
-        username: '',
-        password: '',
+        userNameModel: '',
+        passwordModel: '',
         err: false,
         keytar: keytar
       }
     },
     methods: {
       save () {
-        if (this.username.length > 0 && this.password.length > 0) {
-          this.keytar.setPassword(this.serviceName, this.username, this.password)
+        if (this.userNameModel.length > 0 && this.passwordModel.length > 0) {
+          this.keytar.setPassword(this.serviceName, this.userNameModel, this.passwordModel)
           this.err = false
           this.$storage
-            .set(`${this.serviceName}.json`, {username: this.username})
-            .then((d) => { console.log('username stored') })
+            .set(`${this.serviceName}.json`, {username: this.userNameModel})
+            .then((d) => {
+              this.setCredentials(d.username)
+              console.log('username stored')
+            })
             .catch((err) => { console.log(`Err: username not stored ${err}`) })
-          this.username = ''
-          this.password = ''
+          this.userNameModel = ''
+          this.passwordModel = ''
         } else {
           this.err = true
         }
       },
       del () {
-        this.keytar.findPassword(this.serviceName).then((x) => { console.log(x) })
+        this.keytar.deletePassword(this.serviceName, this.username).then((x) => {
+          console.log(x)
+        })
+        this.$storage
+          .set(`${this.serviceName}.json`, {username: ''})
+          .then((d) => { console.log('credentials cleared') })
+          .catch((err) => { console.log(`Err: credentials not deleted ${err}`) })
       },
       goBack () {
         this.$route.push('landing-page')
-      }
+      },
+      ...mapGetters([
+        'username'
+      ])
     }
   }
 </script>
@@ -77,14 +102,14 @@
 <style>
   @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
-  * {
+  /** {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
 
-  body { font-family: 'Source Sans Pro', sans-serif; }
-
+  body { font-family: 'Source Sans Pro', sans-serif; }*/
+/*
   #wrapper {
     background:
       radial-gradient(
@@ -95,15 +120,15 @@
     height: 100vh;
     padding: 60px 80px;
     width: 100vw;
-  }
+  }*/
 
-  #logo {
+ /* #logo {
     height: auto;
     margin-bottom: 20px;
     width: 420px;
-  }
+  }*/
 
-  main {
+ /* main {
     display: flex;
     justify-content: space-between;
   }
@@ -155,5 +180,5 @@
   .doc button.alt {
     color: #42b983;
     background-color: transparent;
-  }
+  }*/
 </style>

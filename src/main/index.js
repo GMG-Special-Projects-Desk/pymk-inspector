@@ -33,6 +33,8 @@ ipcMain.on('get-db', (event, arg) => {
 function createMenuBar () {
   mb = menubar({icon: require('path').join(__static, 'facebook-inspector.png'),
     index: winURL,
+    width: 400,
+    height: 500,
     alwaysOnTop: true
   })
   mb.on('ready', function () {

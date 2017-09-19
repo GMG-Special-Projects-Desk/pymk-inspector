@@ -1,17 +1,13 @@
 <template>
-  <section>
-    <h2 class="title is-5"> Facebook's People You May Know Inspector</h2>
-  <div v-if="hasCredentials">
-      <span class="subtitle is-6"> Currently collecting data for  {{username}}</span>
-      <div>
-        <button class="button is-outlined  test" @click="() => {this.$router.push({path: 'credentials'})}">Settings</button>
-      </div>
-  </div>
-  <p v-else>
-      Looks like this is your first time using the app or there are no credentials stored. <button ><router-link :to="{ path: '/credentials' }">Save Credentials</router-link></button><br><br>
-      <button class="button is-outlined is-primary" @click="() => {this.$router.push({path: 'credentials'})}">Settings</button><br><br>
-  </p>
-</section>
+  <section class="wysiwyg main">
+    <h2> Facebook's People You May Know Inspector </h2>
+    <div> The most recent session was <mark>4 hours ago</mark>. In that session <mark>54 people were suggested</mark>,  there were <mark>3 people with no mutual friends</mark> and <mark>11 people that the inspector hadn't seen before</mark>. <router-link :to="{ path: '/summary' }">Click here</router-link> to see the more details.</div>
+    <div>
+    <p> Current user: samatt@gmail.com</p>
+    <p @click="dbGet()"> Total sessions : 32</p>
+    </div>
+    <a> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></a>
+  </section>
 </template>
 
 <script>
@@ -24,6 +20,16 @@
         serviceName: 'pymkinspector'
       }
     },
+    methods: {
+      dbGet () {
+        getAll('session', this.dbPath)
+          .then((d) => { console.log(d) })
+          .catch(err => { console.log(err) })
+        getAll('pymk', this.dbPath)
+          .then((d) => { console.log(d) })
+          .catch(err => { console.log(err) })
+      }
+    },
     computed: {
       ...mapGetters([
         'hasCredentials',
@@ -34,12 +40,12 @@
 </script>
 
 <style lang='scss'>
-@import '~bulma';
-.test {
-  border-color: #292929;
-
+// @import '~bulma';
+.main{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 480px;
 }
-/*$fa-font-path: '~font-awesome/fonts/';*/
-/*@import '~font-awesome/scss/font-awesome';*/
 
 </style>

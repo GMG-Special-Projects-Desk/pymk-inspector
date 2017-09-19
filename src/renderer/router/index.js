@@ -16,9 +16,29 @@ export default new Router({
       component: require('@/components/LandingPage')
     },
     {
+      path: '/summary',
+      name: 'summary',
+      component: require('@/components/Summary')
+    },
+    {
+      path: '/sessions',
+      name: 'sessions',
+      component: require('@/components/Sessions')
+    },
+    {
+      path: '/people',
+      name: 'people',
+      component: require('@/components/People')
+    },
+    {
       path: '/credentials',
       name: 'credentials',
       component: require('@/components/Credentials')
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: require('@/components/Settings')
     },
     {
       path: '*',

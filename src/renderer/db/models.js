@@ -1,4 +1,5 @@
 // FIXME: Add sessions string array to person schema if linvodb fix their shit
+// TODO: Add photo urls
 const Person = {
   name: String,
   fbid: Number,

@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <nav class="level">
+    <!-- <nav class="level">
     <div class="level-item">
          <img id="logo" src="~@/assets/facebook-inspector.svg" alt="electron-vue" width="60" height="60" >
     </div>
-    </nav>
+    </nav> -->
     <router-view></router-view>
   </div>
 </template>
@@ -54,14 +54,9 @@
   }
 </script>
 
-<style>
-@import '~bulma';
-.level {
-  border-color: #292929;
-  margin-bottom: 0px;
-  /*background-color: #;*/
-}
-#logo {
-  /*margin-right: 150px;*/
+<style lang="scss">
+@import '~wysiwyg.css/wysiwyg.sass';
+body {
+  height: 480px;
 }
 </style>

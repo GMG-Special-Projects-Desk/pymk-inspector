@@ -10,9 +10,6 @@
           </tr>
         </tbody>
       </table>
-<!--       <div class="row" v-for="t in test">
-
-      </div> -->
     </div>
 
   </section>
@@ -83,7 +80,7 @@ export default {
 </script>
 
 <style lang="scss">
-
+$striped-rows: true;
 .row {
   overflow-y: scroll;
   font-size: 16px

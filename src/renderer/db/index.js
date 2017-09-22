@@ -1,4 +1,4 @@
-import {curry, difference, intersection} from 'lodash/fp'
+import {curry, difference, intersection, sortBy, reverse, groupBy} from 'lodash/fp'
 const LinvoDB = require('linvodb3')
 const models = require('./models')
 const Promise = require('bluebird')
@@ -197,3 +197,76 @@ export const removeAll = (model, dbPath, data) => {
     }
   })
 }
+
+export const SessionsCount = (dbPath) => {
+  const task = initDB('session', dbPath, {})
+  console.log(task)
+  return new Promise((resolve, reject) => {
+    task.db.find({}, function (err, count) {
+      if (err) reject(err)
+      resolve(count.length)
+    })
+  })
+}
+
+export const PymkCount = (dbPath) => {
+  const task = initDB('pymk', dbPath, {})
+  return new Promise((resolve, reject) => {
+    task.db.find({}).count(function (err, count) {
+      if (err) reject(err)
+      resolve(count)
+    })
+  })
+}
+
+export const getStartDate = (dbPath) => {
+  const task = initDB('session', dbPath, {})
+  return new Promise((resolve, reject) => {
+    task.db.find({})
+      .map(x => x.timestamp)
+      .exec((err, res) => {
+        if (err) reject(err)
+        res.sort()
+        resolve(res[0])
+      })
+  })
+}
+
+export const getCommonPymk = (dbPath) => {
+  const task = initDB('pymk', dbPath, {})
+  return new Promise((resolve, reject) => {
+    task.db.find({}, (err, res) => {
+      const common = sortBy([function (o) { return o.sessions.length }], res)
+      if (err) { reject(err) }
+      const names = reverse(common).map((d) => {
+        return d.name
+      })
+      resolve(names.slice(0, 4))
+    })
+  })
+}
+
+export const getPopularWork = (dbPath) => {
+  const task = initDB('pymk', dbPath, {})
+  return new Promise((resolve, reject) => {
+    task.db.find({}, (err, res) => {
+      if (err) { reject(err) }
+      const values = groupBy('job', res)
+      let result = []
+      for (let job in values) {
+        if (job) {
+          result.push({ name: job, count: values[job].length })
+        }
+      }
+      const sorted = sortBy([function (o) { return o.count }], result)
+      const all = reverse(sorted)
+      const top = all.map((t) => { return t.name })
+      resolve(top.slice(0, 4))
+    })
+  })
+}
+// TODO: Queries
+// Most Common Work Places
+// Avg PYMK per session
+// Avergage new PYMK
+// Average no mutual PYMK

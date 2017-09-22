@@ -5,6 +5,8 @@ import App from './App'
 import router from './router'
 import store from './store'
 import VueElectronStorage from 'vue-electron-storage'
+import vueMoment from 'vue-moment'
+Vue.use(vueMoment)
 
 Vue.use(VueElectronStorage)
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))

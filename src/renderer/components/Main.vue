@@ -1,12 +1,21 @@
 <template>
-  <section class="wysiwyg main">
-    <h2> Facebook's People You May Know Inspector </h2>
-    <div> The most recent session was <mark>4 hours ago</mark>. In that session <mark>54 people were suggested</mark>,  there were <mark>3 people with no mutual friends</mark> and <mark>11 people that the inspector hadn't seen before</mark>. <router-link :to="{ path: '/summary' }">Click here</router-link> to see the more details.</div>
-    <div>
-    <p> Current user: samatt@gmail.com</p>
-    <p @click="dbGet()"> Total sessions : 32</p>
+  <section>
+    <div v-if="hasCredentials" class="wysiwyg main">
+      <h2> Facebook's People You May Know Inspector </h2>
+      <div> The most recent session was <mark>4 hours ago</mark>. In that session <mark>54 people were suggested</mark>,  there were <mark>3 people with no mutual friends</mark> and <mark>11 people that the inspector hadn't seen before</mark>. <router-link :to="{ path: '/summary' }">Click here</router-link> to see the more details.</div>
+      <div>
+      <p> Current user: samatt@gmail.com</p>
+      <p @click="dbGet()"> Total sessions : 32</p>
+      </div>
+      <a> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></a>
     </div>
-    <a> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></a>
+    <div v-else class="wysiwyg main">
+      <h2> Facebook's People You May Know Inspector </h2>
+      <p> It looks like this is either your first time or you don't have your credentials stored.</p>
+      <p> Please go to the setting page to add your Facebook credentials.</p>
+      <p>These are stored in your computers keychain and never recorded or directly read by this app.</p>
+      <a> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></a>
+    </div>
   </section>
 </template>
 
@@ -33,7 +42,8 @@
     computed: {
       ...mapGetters([
         'hasCredentials',
-        'username'
+        'username',
+        'dbPath'
       ])
     }
   }
@@ -41,6 +51,7 @@
 
 <style lang='scss'>
 // @import '~bulma';
+
 .main{
   display: flex;
   flex-direction: column;

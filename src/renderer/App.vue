@@ -1,10 +1,5 @@
 <template>
   <div id="app">
-    <!-- <nav class="level">
-    <div class="level-item">
-         <img id="logo" src="~@/assets/facebook-inspector.svg" alt="electron-vue" width="60" height="60" >
-    </div>
-    </nav> -->
     <router-view></router-view>
   </div>
 </template>
@@ -56,7 +51,9 @@
 
 <style lang="scss">
 @import '~wysiwyg.css/wysiwyg.sass';
+
 body {
   height: 480px;
 }
+
 </style>

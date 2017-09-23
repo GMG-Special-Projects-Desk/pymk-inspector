@@ -179,7 +179,6 @@ export const updateDB = ({dbPath, data}) => {
 }
 
 // All
-
 export const getAll = (model, dbPath) => {
   const task = initDB(model, dbPath, {})
   return find({}, task.db)
@@ -198,28 +197,29 @@ export const removeAll = (model, dbPath, data) => {
   })
 }
 
-export const SessionsCount = (dbPath) => {
+export const SessionsCount = ({dbPath, current}) => {
   const task = initDB('session', dbPath, {})
-  console.log(task)
   return new Promise((resolve, reject) => {
     task.db.find({}, function (err, count) {
       if (err) reject(err)
-      resolve(count.length)
+      const updatedOutput = {...current, ...{sessionCount: count.length}}
+      resolve({dbPath: dbPath, current: updatedOutput})
     })
   })
 }
 
-export const PymkCount = (dbPath) => {
+export const PymkCount = ({dbPath, current}) => {
   const task = initDB('pymk', dbPath, {})
   return new Promise((resolve, reject) => {
     task.db.find({}).count(function (err, count) {
       if (err) reject(err)
-      resolve(count)
+      const updatedOutput = {...current, ...{pymkCount: count}}
+      resolve({dbPath: dbPath, current: updatedOutput})
     })
   })
 }
 
-export const getStartDate = (dbPath) => {
+export const getStartDate = ({dbPath, current}) => {
   const task = initDB('session', dbPath, {})
   return new Promise((resolve, reject) => {
     task.db.find({})
@@ -227,12 +227,14 @@ export const getStartDate = (dbPath) => {
       .exec((err, res) => {
         if (err) reject(err)
         res.sort()
-        resolve(res[0])
+        // FIXME: For momentjs
+        const updatedOutput = {...current, ...{startDate: res[0]}}
+        resolve({dbPath: dbPath, current: updatedOutput})
       })
   })
 }
 
-export const getCommonPymk = (dbPath) => {
+export const getCommonPymk = ({dbPath, current}) => {
   const task = initDB('pymk', dbPath, {})
   return new Promise((resolve, reject) => {
     task.db.find({}, (err, res) => {
@@ -241,12 +243,13 @@ export const getCommonPymk = (dbPath) => {
       const names = reverse(common).map((d) => {
         return d.name
       })
-      resolve(names.slice(0, 4))
+      const updatedOutput = {...current, ...{commonPymk: names.slice(0, 4)}}
+      resolve({dbPath: dbPath, current: updatedOutput})
     })
   })
 }
 
-export const getPopularWork = (dbPath) => {
+export const getPopularWork = ({dbPath, current}) => {
   const task = initDB('pymk', dbPath, {})
   return new Promise((resolve, reject) => {
     task.db.find({}, (err, res) => {
@@ -260,11 +263,21 @@ export const getPopularWork = (dbPath) => {
       }
       const sorted = sortBy([function (o) { return o.count }], result)
       const all = reverse(sorted)
-      const top = all.map((t) => { return t.name })
-      resolve(top.slice(0, 4))
+      const jobs = all.map((t) => { return t.name })
+      const updatedOutput = {...current, ...{commonWork: jobs.slice(0, 4)}}
+      resolve({dbPath: dbPath, current: updatedOutput})
     })
   })
 }
+
+export const getSummary = (dbPath) => {
+  return SessionsCount({dbPath, current: {}})
+    .then(PymkCount)
+    .then(getCommonPymk)
+    .then(getPopularWork)
+    .then(getStartDate)
+}
+
 // TODO: Queries
 // Most Common Work Places
 // Avg PYMK per session

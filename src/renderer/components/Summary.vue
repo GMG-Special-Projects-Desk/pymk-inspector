@@ -1,71 +1,49 @@
 <template>
- <section class="wysiwyg summary">
+ <section v-if="summary" class="wysiwyg summary">
     <h2> Summary </h2>
     <div>
-      The inspector has run <mark>{{sessionCount}} times</mark> in the past <mark>{{startDate | moment("from", true) }}.</mark>  <a> <router-link :to="{ path: '/sessions' }">More info</router-link> </a>
+      The inspector has run <mark>{{summary.sessionCount}} times</mark> in the past <mark>{{summary.startDate | moment("from", true) }}.</mark>
+       <a> <router-link :to="{ path: '/sessions' }">More info</router-link> </a>
     </div>
-    <div>
-      In that time Facebook has suggested <mark>{{PymkCount}} people</mark> to you.
-      The most common were <mark> {{commonPymk[0]}} </mark> <span v-for="name in commonPymk.slice(1, commonPymk.length)"> ,<mark> {{name}} </mark> </span>
+    <div v-if="summary.commonPymk">
+      In that time Facebook has suggested <mark>{{summary.pymkCount}} people</mark> to you.
+      The most common were <mark> {{summary.commonPymk[0]}} </mark>
+      <span v-for="name in summary.commonPymk.slice(1, summary.commonPymk.length)">
+        ,<mark> {{name}} </mark>
+      </span>
       <router-link :to="{ path: '/people' }">  More Info </router-link>
+    </div >
+    <div v-if="summary.commonWork">
+      The most common places people work are
+      <mark>{{summary.commonWork[0]}}</mark>
+       <span v-for="name in summary.commonWork.slice(1,summary.commonWork.length)">
+        ,<mark> {{name}} </mark>
+       </span>
     </div>
-    <div> The most common places people work are <mark>{{commonWork[0]}}</mark> <span v-for="name in commonWork.slice(1,commonWork.length)"> ,<mark> {{name}} </mark> </span> </div>
     <a> <router-link :to="{ path: '/' }">Go Back</router-link></a>
  </section>
 </template>
-<!-- <mark>Big Daddy Kane</mark>, <mark>J Dilla</mark>, and <mark>Phife Dog</mark>. -->
 <script>
 
-import {SessionsCount, getStartDate, PymkCount, getCommonPymk, getPopularWork} from '@/db'
+import {getSummary} from '@/db'
 import {mapGetters} from 'vuex'
 export default {
 
   name: 'Summary',
   data () {
     return {
-      sessionCount: null,
-      startDate: null,
-      PymkCount: null,
-      commonPymk: [],
-      commonWork: []
+      summary: {}
     }
   },
   mounted () {
-    this.getInfo()
+    getSummary(this.dbPath).then((summary) => {
+      this.summary = summary.current
+    })
   },
   computed: {
     ...mapGetters([
       'dbPath'
     ])
-  },
-  methods: {
-    getInfo () {
-      SessionsCount(this.dbPath)
-        .then((count) => {
-          this.sessionCount = count
-          return this.dbPath
-        })
-        .then(getStartDate)
-        .then((date) => {
-          this.startDate = Date.parse(date)
-          return this.dbPath
-        })
-        .then(PymkCount)
-        .then((count) => {
-          this.PymkCount = count
-          return this.dbPath
-        })
-        .then(getCommonPymk)
-        .then((common) => {
-          this.commonPymk = common
-          return this.dbPath
-        })
-        .then(getPopularWork)
-        .then((work) => {
-          this.commonWork = work
-          return this.dbPath
-        })
-    }
   }
 }
 </script>

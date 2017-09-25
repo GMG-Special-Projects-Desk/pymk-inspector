@@ -32,17 +32,14 @@ export default {
   name: 'Summary',
   data () {
     return {
-      summary: {}
     }
   },
   mounted () {
-    getSummary(this.dbPath).then((summary) => {
-      this.summary = summary.current
-    })
   },
   computed: {
     ...mapGetters([
-      'dbPath'
+      'dbPath',
+      'summary'
     ])
   }
 }

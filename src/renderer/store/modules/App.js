@@ -2,14 +2,18 @@ const state = {
   dbPath: '',
   hasCredentials: false,
   username: '',
-  serviceName: 'pymkinspector'
+  serviceName: 'pymkinspector',
+  summary: {},
+  mostRecent: {}
 }
 
 const getters = {
   dbPath: state => state.dbPath,
   hasCredentials: state => state.hasCredentials,
   username: state => state.username,
-  serviceName: state => state.serviceName
+  serviceName: state => state.serviceName,
+  summary: state => state.summary,
+  mostRecent: state => state.mostRecent
 }
 
 const mutations = {
@@ -23,6 +27,12 @@ const mutations = {
   DELETE_CREDENTIALS (state) {
     state.username = ''
     state.hasCredentials = false
+  },
+  SET_SUMMARY (state, summary) {
+    state.summary = summary
+  },
+  SET_MOST_RECENT (state, mostRecent) {
+    state.mostRecent = mostRecent
   }
 }
 
@@ -35,6 +45,12 @@ const actions = {
   },
   deleteCredentials ({ commit }, username) {
     commit('DELETE_CREDENTIALS')
+  },
+  setMostRecent ({ commit }, mostRecent) {
+    commit('SET_MOST_RECENT', mostRecent)
+  },
+  setSummary ({ commit }, summary) {
+    commit('SET_SUMMARY', summary)
   }
 }
 

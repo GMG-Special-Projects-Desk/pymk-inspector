@@ -197,6 +197,7 @@ export const removeAll = (model, dbPath, data) => {
   })
 }
 
+// Summary Queries
 export const SessionsCount = ({dbPath, current}) => {
   const task = initDB('session', dbPath, {})
   return new Promise((resolve, reject) => {
@@ -234,6 +235,25 @@ export const getStartDate = ({dbPath, current}) => {
   })
 }
 
+export const findMostRecentSession = ({dbPath, current}) => {
+  const task = initDB('session', dbPath, {})
+  return new Promise((resolve, reject) => {
+    task.db.find({})
+      .map(x => x.timestamp)
+      .exec((err, res) => {
+        if (err) reject(err)
+        res.sort()
+        const updatedOutput = {...current, ...{lastSession: res.pop()}}
+        resolve({dbPath: dbPath, current: updatedOutput})
+      })
+  })
+}
+
+export const getSession = ({dbPath, timestamp}) => {
+  const task = initDB('session', dbPath, {})
+  return find({timestamp: timestamp}, task.db)
+}
+
 export const getCommonPymk = ({dbPath, current}) => {
   const task = initDB('pymk', dbPath, {})
   return new Promise((resolve, reject) => {
@@ -247,6 +267,10 @@ export const getCommonPymk = ({dbPath, current}) => {
       resolve({dbPath: dbPath, current: updatedOutput})
     })
   })
+}
+
+export const getMedianPymk = ({dbPath, current}) => {
+
 }
 
 export const getPopularWork = ({dbPath, current}) => {
@@ -276,6 +300,14 @@ export const getSummary = (dbPath) => {
     .then(getCommonPymk)
     .then(getPopularWork)
     .then(getStartDate)
+}
+
+export const getMostRecentSession = (dbPath) => {
+  return findMostRecentSession({dbPath, current: {}})
+    .then((data) => {
+      return {dbPath: data.dbPath, timestamp: data.current.lastSession}
+    })
+    .then(getSession)
 }
 
 // TODO: Queries

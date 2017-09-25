@@ -7,6 +7,7 @@
 <script>
   import {ipcRenderer} from 'electron'
   import { mapActions } from 'vuex'
+  import {getSummary, getMostRecentSession} from '@/db'
   import keytar from 'keytar'
   export default {
     name: 'pymk-inspector',
@@ -38,12 +39,26 @@
       ipcRenderer.send('get-db')
       ipcRenderer.on('get-db-reply', (e, arg) => {
         this.setDbPath(arg)
+        getSummary(arg)
+          .then((data) => {
+            this.setSummary(data.current)
+            return data.dbPath
+          })
+          .then(getMostRecentSession)
+          .then((d) => {
+            this.setMostRecent(d[0])
+          })
+          .catch((err) => {
+            console.log(`err: ${err}`)
+          })
       })
     },
     methods: {
       ...mapActions([
         'setDbPath',
-        'setCredentials'
+        'setCredentials',
+        'setMostRecent',
+        'setSummary'
       ])
     }
   }

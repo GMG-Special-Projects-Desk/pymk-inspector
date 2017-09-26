@@ -1,6 +1,5 @@
 <template>
  <section v-if="summary" class="wysiwyg summary">
-    <h2> Summary </h2>
     <div>
       The inspector has run <mark>{{summary.sessionCount}} times</mark> in the past <mark>{{summary.startDate | moment("from", true) }}.</mark>
        <a> <router-link :to="{ path: '/sessions' }">More info</router-link> </a>
@@ -51,6 +50,7 @@ export default {
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  height: 480px;
+  height: 420px;
+  margin-top:60px;
 }
 </style>

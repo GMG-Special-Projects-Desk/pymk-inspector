@@ -50,14 +50,6 @@
       }
     },
     mounted () {
-      ipcRenderer.on('async-reply', (event, arg) => {
-        this.setDbPath(arg.dbPath)
-        console.log(arg)
-        console.log('async-reply')
-        updateDB({dbPath: arg.dbPath, data: arg.data})
-          .then((d) => { console.log('done') })
-          .catch(err => { console.log(err) })
-      })
     },
     computed: {
       ...mapGetters(['dbPath',

@@ -7,7 +7,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'main',
+      name: 'People You May Know Inspector',
       component: require('@/components/Main')
     },
     {

@@ -66,7 +66,7 @@ const insertSession = ({dbPath, data}) => {
     .then((pymk) => prepNewSession(Object.assign(task, {pymk: pymk})))
     .then(insert)
     .then((d) => {
-      console.log('New Session added', d)
+      console.log('New Session added')
       return {dbPath, data}
     })
 }
@@ -113,7 +113,6 @@ export const getNewPymk = (task) => {
     })
 
     const newPymkIds = difference(allIds, existing)
-    console.log(newPymkIds)
     const newStuff = task.data.filter((d) => {
       return newPymkIds.indexOf(parseInt((d.fbid))) > -1
     })
@@ -228,7 +227,6 @@ export const getStartDate = ({dbPath, current}) => {
       .exec((err, res) => {
         if (err) reject(err)
         res.sort()
-        console.log(res)
         // FIXME: For momentjs
         const updatedOutput = {...current, ...{startDate: res.pop()}}
         resolve({dbPath: dbPath, current: updatedOutput})
@@ -282,7 +280,6 @@ export const getAveragePymk = ({dbPath, current}) => {
       .exec((err, res) => {
         if (err) reject(err)
         // res.sort()
-        console.log(res)
         const total = sum(res)
         const average = Math.floor(total / res.length)
         const updatedOutput = {...current, ...{avgPymk: average}}

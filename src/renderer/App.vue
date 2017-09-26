@@ -1,13 +1,17 @@
 <template>
   <div id="app">
+    <top-bar></top-bar>
     <router-view></router-view>
+    <bottom-bar v-if="['sessions', 'settings'].indexOf($route.name) < 0" ></bottom-bar>
   </div>
 </template>
 
 <script>
   import {ipcRenderer} from 'electron'
   import { mapActions } from 'vuex'
-  import {getSummary, getMostRecentSession} from '@/db'
+  import {getSummary, getMostRecentSession, updateDB} from '@/db'
+  import TopBar from './components/TopBar'
+  import BottomBar from './components/BottomBar'
   import keytar from 'keytar'
   export default {
     name: 'pymk-inspector',
@@ -15,6 +19,31 @@
       return {
         serviceName: 'pymkinspector'
       }
+    },
+    components: {
+      TopBar,
+      BottomBar
+    },
+    mounted () {
+      ipcRenderer.on('async-reply', (event, arg) => {
+        this.setDbPath(arg.dbPath)
+        console.log('Scrape Complete!')
+        updateDB({dbPath: arg.dbPath, data: arg.data})
+          .then((d) => { console.log('done') })
+          .catch(err => { console.log(err) })
+        getSummary(arg.dbPath)
+          .then((data) => {
+            this.setSummary(data.current)
+            return data.dbPath
+          })
+          .then(getMostRecentSession)
+          .then((d) => {
+            this.setMostRecent(d[0])
+          })
+          .catch((err) => {
+            console.log(`err: ${err}`)
+          })
+      })
     },
     created () {
       this.$storage.isPathExists(`${this.serviceName}.json`)
@@ -65,7 +94,7 @@
 </script>
 
 <style lang="scss">
-@import '~wysiwyg.css/wysiwyg.sass';
+// @import '~wysiwyg.css/wysiwyg.sass';
 
 body {
   height: 480px;

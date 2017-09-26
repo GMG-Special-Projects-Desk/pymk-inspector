@@ -1,93 +1,63 @@
 <template>
-  <section class='popup'>
+  <section>
+      <b-table
+          :data="allSessions"
+          @click="(row, index) =>{ $toast.open(`Expanded ${row.timestamp}`)}"
+          >
+          <template scope="props">
+<!--               <b-table-column label="Session Id" width="40">
+                  {{props.index }}
+              </b-table-column> -->
+              <b-table-column label="Session Time" width="40">
+                  {{props.row.timestamp | moment("MMM Do YYYY, hh:mm:ss") }}
+              </b-table-column>
+
+              <b-table-column label="People Suggested">
+                  {{props.row.totalPymk}}
+              </b-table-column>
+
+              <b-table-column label="New Suggestions">
+                  {{props.row.numNew}}
+              </b-table-column>
+              <b-table-column label="No Mutual Friends">
+                  {{props.row.numNoMutual}}
+              </b-table-column>
+          </template>
+      </b-table>
+  </section>
+<!--   <section class='popup'>
     <div class="popup-body">
-      <div class="row" v-for="t in test">
-        {{t.timestamp}}. {{t.totalPymk}} total and  {{t.numNew}} new people.
+      <div class="row" v-for="t in allSessions">
+        <span> {{t.timestamp | moment("MMM Do YYYY") }}</span>
+        <span>{{t.totalPymk}} total</span>
+        <span> {{t.numNew}} new people. </span>
       </div>
     </div>
-
-  </section>
+  </section> -->
 </template>
 
 <script>
+import {getAll, getMostRecentSession} from '@/db'
+import {mapGetters} from 'vuex'
 export default {
 
   name: 'SessionsTable',
   data () {
     return {
-      test: [
-        {
-          timestamp: '3rd of March',
-          totalPymk: 127,
-          numNew: 20
-        },
-        {
-          timestamp: '3rd of March',
-          totalPymk: 17,
-          numNew: 220
-        },
-        {
-          timestamp: '3rd of March',
-          totalPymk: 127,
-          numNew: 202
-        },
-        {
-          timestamp: '3rd of March',
-          totalPymk: 127,
-          numNew: 0
-        },
-        {
-          timestamp: '3rd of March',
-          totalPymk: 127,
-          numNew: 202
-        },
-        {
-          timestamp: '3rd of March',
-          totalPymk: 127,
-          numNew: 0
-        },
-        {
-          timestamp: '3rd of March',
-          totalPymk: 127,
-          numNew: 202
-        },
-        {
-          timestamp: '3rd of March',
-          totalPymk: 127,
-          numNew: 0
-        },
-        {
-          timestamp: '3rd of March',
-          totalPymk: 127,
-          numNew: 202
-        },
-        {
-          timestamp: '3rd of March',
-          totalPymk: 127,
-          numNew: 0
-        },
-        {
-          timestamp: '3rd of March',
-          totalPymk: 127,
-          numNew: 0
-        },
-        {
-          timestamp: '3rd of March',
-          totalPymk: 127,
-          numNew: 202
-        },
-        {
-          timestamp: '3rd of March',
-          totalPymk: 127,
-          numNew: 0
-        },
-        {
-          timestamp: '3rd of March',
-          totalPymk: 127,
-          numNew: 0
-        }
-      ]
+      allSessions: [
+      ],
+      selected: []
     }
+  },
+  mounted () {
+    getAll('session', this.dbPath)
+      .then((d) => { this.allSessions = d; this.selected = d[0] })
+      .catch(err => { console.log(err) })
+  },
+  computed: {
+    ...mapGetters([
+      'dbPath'
+    ])
   }
 }
 </script>

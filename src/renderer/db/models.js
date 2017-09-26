@@ -6,6 +6,7 @@ const Person = {
   created: Date,
   job: String,
   mfStr: String,
+  imgSrc: String,
   mutualFriends: Number,
   firstName: { get: function () { return this.name.split(' ')[0] } }
 }

@@ -1,4 +1,4 @@
-import {curry, difference, intersection, sortBy, reverse, groupBy} from 'lodash/fp'
+import {sum, curry, difference, intersection, sortBy, reverse, groupBy} from 'lodash/fp'
 const LinvoDB = require('linvodb3')
 const models = require('./models')
 const Promise = require('bluebird')
@@ -129,7 +129,7 @@ const prepNewPYMK = (newPymk) => {
 
 const updateExistingPerson = (db, person) => {
   return new Promise((resolve, reject) => {
-    db.update({fbid: parseInt(person.fbid)}, {$addToSet: {sessions: person.session}}, {}, (err, num) => {
+    db.update({fbid: parseInt(person.fbid)}, {$addToSet: {sessions: person.session}, $set: {imgSrc: person.imgSrc}}, {}, (err, num) => {
       if (err) { reject(err) }
       resolve(num)
     })
@@ -228,8 +228,9 @@ export const getStartDate = ({dbPath, current}) => {
       .exec((err, res) => {
         if (err) reject(err)
         res.sort()
+        console.log(res)
         // FIXME: For momentjs
-        const updatedOutput = {...current, ...{startDate: res[0]}}
+        const updatedOutput = {...current, ...{startDate: res.pop()}}
         resolve({dbPath: dbPath, current: updatedOutput})
       })
   })
@@ -242,7 +243,11 @@ export const findMostRecentSession = ({dbPath, current}) => {
       .map(x => x.timestamp)
       .exec((err, res) => {
         if (err) reject(err)
-        res.sort()
+        res.sort(function (x, y) {
+          const date1 = new Date(x)
+          const date2 = new Date(y)
+          return date1 - date2
+        })
         const updatedOutput = {...current, ...{lastSession: res.pop()}}
         resolve({dbPath: dbPath, current: updatedOutput})
       })
@@ -269,8 +274,51 @@ export const getCommonPymk = ({dbPath, current}) => {
   })
 }
 
-export const getMedianPymk = ({dbPath, current}) => {
+export const getAveragePymk = ({dbPath, current}) => {
+  const task = initDB('session', dbPath, {})
+  return new Promise((resolve, reject) => {
+    task.db.find({})
+      .map(x => x.totalPymk)
+      .exec((err, res) => {
+        if (err) reject(err)
+        // res.sort()
+        console.log(res)
+        const total = sum(res)
+        const average = Math.floor(total / res.length)
+        const updatedOutput = {...current, ...{avgPymk: average}}
+        resolve({dbPath: dbPath, current: updatedOutput})
+      })
+  })
+}
 
+export const getAverageNew = ({dbPath, current}) => {
+  const task = initDB('session', dbPath, {})
+  return new Promise((resolve, reject) => {
+    task.db.find({})
+      .map(x => x.numNew)
+      .exec((err, res) => {
+        if (err) reject(err)
+        const total = sum(res)
+        const average = Math.floor(total / res.length)
+        const updatedOutput = {...current, ...{avgNewPymk: average}}
+        resolve({dbPath: dbPath, current: updatedOutput})
+      })
+  })
+}
+
+export const getAverageNoMutual = ({dbPath, current}) => {
+  const task = initDB('session', dbPath, {})
+  return new Promise((resolve, reject) => {
+    task.db.find({})
+      .map(x => x.numNoMutual)
+      .exec((err, res) => {
+        if (err) reject(err)
+        const total = sum(res)
+        const average = Math.floor(total / res.length)
+        const updatedOutput = {...current, ...{avgNoMutualPymk: average}}
+        resolve({dbPath: dbPath, current: updatedOutput})
+      })
+  })
 }
 
 export const getPopularWork = ({dbPath, current}) => {
@@ -300,6 +348,9 @@ export const getSummary = (dbPath) => {
     .then(getCommonPymk)
     .then(getPopularWork)
     .then(getStartDate)
+    .then(getAveragePymk)
+    .then(getAverageNew)
+    .then(getAverageNoMutual)
 }
 
 export const getMostRecentSession = (dbPath) => {

@@ -18,15 +18,14 @@ function parseMutual (mfStr) {
 export const parsePymk = (html) => {
   const $ = cheerio.load(html)
   return $('li.friendBrowserListUnit').toArray().map(el => {
-    console.log(el)
-    // const fbid = el.attribs['data-signature']
     const name = $('div.friendBrowserNameTitle', el).children('a').text()
+    const imgSrc = $('img.fbProfileLargePortraitImgScaleWidth', el).attr('src')
     const url = $('div.friendBrowserNameTitle', el).children('a').attr('href').replace('?hc_location=friend_browser&fref=pymk', '')
     const fbid = $('div.friendBrowserNameTitle', el).children('a').data('gt').engagement.eng_tid
     const mfStr = $('.friendBrowserSocialContext', el).children('span').contents().text()
     const mutualFriends = parseMutual($('.friendBrowserSocialContext', el).children('span').contents().text())
     const job = $('.friendBrowserMarginTopMini', el).contents().text()
     const session = moment().format()
-    return {fbid, name, url, mfStr, mutualFriends, job, session}
+    return {fbid, name, url, mfStr, mutualFriends, job, session, imgSrc}
   })
 }

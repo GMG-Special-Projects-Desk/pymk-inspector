@@ -24,7 +24,7 @@ export const runScrape = (config) => {
         var id = setInterval(() => {
           try {
             // TODO: Remove after debugging
-            if (count > 3) {
+            if (count > 2) {
               resolve('resolved!')
             }
 
@@ -52,11 +52,12 @@ export const runScrape = (config) => {
         dbPath: config.dbPath,
         data: parsePymk(data)
       }
+      // console.log(parsePymk(data))
       config.event.sender.send('async-reply', result)
     } catch (e) {
       const err = {
         dbPath: config.dbPath,
-        error: e(data)
+        error: e
       }
       config.event.sender.send('async-reply', err)
     }

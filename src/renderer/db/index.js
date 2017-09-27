@@ -226,9 +226,13 @@ export const getStartDate = ({dbPath, current}) => {
       .map(x => x.timestamp)
       .exec((err, res) => {
         if (err) reject(err)
-        res.sort()
+        res.sort(function (x, y) {
+          const date1 = new Date(x)
+          const date2 = new Date(y)
+          return date1 - date2
+        })
         // FIXME: For momentjs
-        const updatedOutput = {...current, ...{startDate: res.pop()}}
+        const updatedOutput = {...current, ...{startDate: res[0]}}
         resolve({dbPath: dbPath, current: updatedOutput})
       })
   })

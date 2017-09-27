@@ -1,18 +1,22 @@
 <template>
   <section>
-    <div v-if="hasCredentials" class="wysiwyg main">
-      <div>
-      <p> Current user: samatt@gmail.com</p>
-      <p @click="dbGet()"> Total sessions : {{summary.sessionCount}}</p>
-      </div>
-      <div> The most recent session was <mark>{{mostRecent.timestamp | moment("from", true) }} ago</mark>.
+    <div v-if="hasCredentials" class="main">
+      <div class="panel">
+        The most recent session was <mark>{{mostRecent.timestamp | moment("from", true) }} ago</mark>.
         In that session <mark>{{mostRecent.totalPymk}} people</mark> were suggested to you,
         there were <mark>{{mostRecent.numNoMutual}} people with no mutual friends</mark> and
          <mark>{{mostRecent.numNew}} people that the inspector hadn't seen before</mark>.
-         <router-link :to="{ path: '/summary' }">Click here</router-link> to see the more details.</div>
-      <a> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></a>
+         <router-link :to="{ path: '/summary' }">Click here</router-link> to see the more details.
+      </div>
+      <div class="panel">
+      <p> Current user: {{username}}</p>
+      <p @click="dbGet()"> Total sessions : {{summary.sessionCount}}</p>
+      </div>
+      <div class="panel">
+        <router-link :to="{ path: '/settings' }">Inspector settings</router-link>
+      </div>
     </div>
-    <div v-else class="wysiwyg main">
+    <div v-else class="main">
       <h2> Facebook's People You May Know Inspector </h2>
       <p> It looks like this is either your first time or you don't have your credentials stored.</p>
       <p> Please go to the setting page to add your Facebook credentials.</p>
@@ -77,9 +81,11 @@
 // @import '~bulma';
 
 .main{
+  overflow: hidden;
   display: flex;
+  align-items: center;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   height: 420px;
   margin-top:60px;
 }

@@ -1,11 +1,11 @@
 <template>
-<section class="sessions">
-    <div class="session-text">
-      The inspector has run <mark>{{summary.sessionCount}} times</mark> since
+<section class="section">
+    <div class="panel-top">
+      <!-- The inspector has run <mark>{{summary.sessionCount}} times</mark> since
       <mark>{{ summary.startDate | moment("dddd, MMMM Do YYYY") }}.</mark>
       On average per session you were shown <mark>{{summary.avgPymk}} people per session</mark>,
       <mark>{{summary.avgNewPymk}} of whom had not been seen before</mark> and
-      <mark>{{summary.avgNoMutualPymk}} with no mutual friends</mark>
+      <mark>{{summary.avgNoMutualPymk}} with no mutual friends</mark> -->
     <a> <router-link :to="{ path: '/summary' }">Go Back</router-link></a>
     </div>
     <sessions-table> </sessions-table>

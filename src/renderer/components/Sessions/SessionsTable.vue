@@ -1,13 +1,21 @@
 <template>
   <section>
+  <article class="media" v-for="row in allSessions">
+      <div class="media-content">
+        <div class="content">
+            Session ran at <mark> {{row.timestamp | moment("MMM Do YYYY, hh:mm:ss") }} </mark>. <br>
+             <mark> {{row.totalPymk}} </mark> people were suggested, <mark> {{row.numNew}} </mark> of them were new and <mark> {{row.numNoMutual}} </mark>
+              <a> Click here </a> to see a list of the people you were suggested
+        </div>
+      </div>
+    </article>
+  </section>
+<!--   <section>
       <b-table
           :data="allSessions"
           @click="(row, index) =>{ $toast.open(`Expanded ${row.timestamp}`)}"
           >
           <template scope="props">
-<!--               <b-table-column label="Session Id" width="40">
-                  {{props.index }}
-              </b-table-column> -->
               <b-table-column label="Session Time" width="40">
                   {{props.row.timestamp | moment("MMM Do YYYY, hh:mm:ss") }}
               </b-table-column>
@@ -24,7 +32,7 @@
               </b-table-column>
           </template>
       </b-table>
-  </section>
+  </section> -->
 <!--   <section class='popup'>
     <div class="popup-body">
       <div class="row" v-for="t in allSessions">

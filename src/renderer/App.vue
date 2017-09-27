@@ -94,10 +94,106 @@
 </script>
 
 <style lang="scss">
-// @import '~wysiwyg.css/wysiwyg.sass';
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+
+
+$red: #F25F5C;
+$red-invert: findColorInvert($red);
+$cyan: #ADFCF9;
+$blue: #247BA0;
+$blue-invert: findColorInvert($blue);
+$green: #70C1B3;
+$light-green: #BCE784;
+$light-green-invert: findColorInvert($light-green);
+$yellow: #FFE066;
+$primary: #FFA630;
+// // Set your colors
+// $primary: #8c67ef;
+$primary-invert: findColorInvert($primary);
+$twitter: #4099FF;
+$twitter-invert: findColorInvert($twitter);
+
+// // Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$colors: (
+    "white": ($white, $black),
+    "black": ($black, $white),
+    "light": ($light, $light-invert),
+    "dark": ($dark, $dark-invert),
+    "primary": ($primary, $primary-invert),
+    "info": ($info, $info-invert),
+    "success": ($success, $success-invert),
+    "warning": ($warning, $warning-invert),
+    "danger": ($danger, $danger-invert),
+    "twitter": ($twitter, $twitter-invert)
+);
+
+// Links
+$link: $red;
+$link-invert: $red-invert;
+$link-focus-border: $red;
+$background: $white-ter;
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
 
 body {
   height: 480px;
+  background-color: $background;
 }
 
+.panel-top {
+  background-color: $white;
+  border-width: thin;
+  border-style: dashed;
+  border-top-width: 0;
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  top: 59px;
+  left: 0px;
+}
+
+.section {
+  background-color: $background;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 420px;
+  margin-top:60px;
+}
+
+.panel {
+  background-color: $white;
+  padding: 0.5rem 0.5rem;
+  border: solid;
+  border-width: 1px;
+  border-radius: 10px;
+
+}
+.media + .media {
+
+  border: solid;
+  border-width: 1px;
+  border-radius: 10px;
+}
+.media {
+  background-color: $white;
+  padding: 0.5rem 0.5rem;
+  border: solid;
+  border-width: 1px;
+  border-radius: 10px;
+}
+.name {
+  border-bottom: dashed;
+  border-width: 1px;
+
+}
+.name:hover {
+  background-color: $red;
+}
+mark {
+  background-color: $cyan;
+}
 </style>

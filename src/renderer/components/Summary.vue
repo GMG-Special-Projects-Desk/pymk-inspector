@@ -1,18 +1,23 @@
 <template>
- <section v-if="summary" class="wysiwyg summary">
-    <div>
-      The inspector has run <mark>{{summary.sessionCount}} times</mark> in the past <mark>{{summary.startDate | moment("from", true) }}.</mark>
+ <section v-if="summary" class="section summary">
+    <div class="panel">
+      The inspector has run <mark>{{summary.sessionCount}} times</mark> since
+      <mark>{{ summary.startDate | moment("dddd, MMMM Do YYYY") }}.</mark>
+      On average per session you were shown <mark>{{summary.avgPymk}} people per session</mark>,
+      <mark>{{summary.avgNewPymk}} of whom had not been seen before</mark> and
+      <mark>{{summary.avgNoMutualPymk}} with no mutual friends</mark>
+      <!-- The inspector has run <mark>{{summary.sessionCount}} times</mark> in the past <mark>{{summary.startDate | moment("from", true) }}.</mark> -->
        <a> <router-link :to="{ path: '/sessions' }">More info</router-link> </a>
     </div>
-    <div v-if="summary.commonPymk">
+    <div class="panel" v-if="summary.commonPymk">
       In that time Facebook has suggested <mark>{{summary.pymkCount}} people</mark> to you.
       The most common were <mark> {{summary.commonPymk[0]}} </mark>
       <span v-for="name in summary.commonPymk.slice(1, summary.commonPymk.length)">
         ,<mark> {{name}} </mark>
       </span>
       <router-link :to="{ path: '/people' }">  More Info </router-link>
-    </div >
-    <div v-if="summary.commonWork">
+    </div>
+    <div class="panel" v-if="summary.commonWork">
       The most common places people work are
       <mark>{{summary.commonWork[0]}}</mark>
        <span v-for="name in summary.commonWork.slice(1,summary.commonWork.length)">
@@ -46,11 +51,11 @@ export default {
 
 <style lang="scss">
 .summary{
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 420px;
-  margin-top:60px;
+  // display: flex;
+  // align-items: center;
+  // flex-direction: column;
+  // justify-content: space-between;
+  // height: 420px;
+  margin-top:20px;
 }
 </style>

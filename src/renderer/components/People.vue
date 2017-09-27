@@ -1,10 +1,9 @@
 <template>
-<section class="people">
-    <div>
+<section class="sections">
+    <div class="panel-top">
       The inspector has seen <mark> {{summary.pymkCount}} people</mark> since it started running.
-
+      <a> <router-link :to="{ path: '/summary' }">Go Back</router-link></a>
     </div>
-    <a> <router-link :to="{ path: '/summary' }">Go Back</router-link></a>
     <people-table> </people-table>
  </section>
 </template>

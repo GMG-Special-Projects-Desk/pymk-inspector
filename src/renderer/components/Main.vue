@@ -1,12 +1,12 @@
 <template>
   <section>
-    <div v-if="hasCredentials" class="main">
+    <div v-if="hasCredentials" class="section">
       <div class="panel">
         The most recent session was <mark>{{mostRecent.timestamp | moment("from", true) }} ago</mark>.
         In that session <mark>{{mostRecent.totalPymk}} people</mark> were suggested to you,
         there were <mark>{{mostRecent.numNoMutual}} people with no mutual friends</mark> and
          <mark>{{mostRecent.numNew}} people that the inspector hadn't seen before</mark>.
-         <router-link :to="{ path: '/summary' }">Click here</router-link> to see the more details.
+         <span class="name"> <router-link :to="{ path: '/summary' }">Details</router-link> </span>
       </div>
       <div class="panel">
       <p> Current user: {{username}}</p>

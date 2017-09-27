@@ -2,7 +2,7 @@
   <div id="app">
     <top-bar></top-bar>
     <router-view></router-view>
-    <bottom-bar v-if="['sessions', 'settings'].indexOf($route.name) < 0" ></bottom-bar>
+    <bottom-bar></bottom-bar>
   </div>
 </template>
 
@@ -160,8 +160,8 @@ body {
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 420px;
-  margin-top:60px;
+  min-height: 400px;
+  padding-top:100px;
 }
 
 .panel {
@@ -190,6 +190,19 @@ body {
   border-width: 1px;
 
 }
+.footer {
+  padding: 0px;
+  width: 100%;
+  bottom: 0px;
+  left: 0px;
+  position: fixed;
+  background-color: $yellow;
+}
+
+.footer-text {
+  font-size: 0.8em;
+}
+
 .name:hover {
   background-color: $red;
 }

@@ -3,45 +3,17 @@
   <article class="media" v-for="row in allSessions">
       <div class="media-content">
         <div class="content">
-            Session ran at <mark> {{row.timestamp | moment("MMM Do YYYY, hh:mm:ss") }} </mark>. <br>
-             <mark> {{row.totalPymk}} </mark> people were suggested, <mark> {{row.numNew}} </mark> of them were new and <mark> {{row.numNoMutual}} </mark>
-              <a> Click here </a> to see a list of the people you were suggested
+            <h5> {{row.timestamp | moment("MMM Do YYYY, h:mA") }} </h5>
+             <mark> {{row.totalPymk}} people</mark>  were suggested,
+             <mark> {{row.numNew}} </mark> of them were new and
+             <mark> {{row.numNoMutual}} {{row.numNoMutual === 1 ? 'person' : 'people'}}</mark>
+              had no mutual friends.
+             <br>
+            <span class="name"> See the list </span>
         </div>
       </div>
     </article>
   </section>
-<!--   <section>
-      <b-table
-          :data="allSessions"
-          @click="(row, index) =>{ $toast.open(`Expanded ${row.timestamp}`)}"
-          >
-          <template scope="props">
-              <b-table-column label="Session Time" width="40">
-                  {{props.row.timestamp | moment("MMM Do YYYY, hh:mm:ss") }}
-              </b-table-column>
-
-              <b-table-column label="People Suggested">
-                  {{props.row.totalPymk}}
-              </b-table-column>
-
-              <b-table-column label="New Suggestions">
-                  {{props.row.numNew}}
-              </b-table-column>
-              <b-table-column label="No Mutual Friends">
-                  {{props.row.numNoMutual}}
-              </b-table-column>
-          </template>
-      </b-table>
-  </section> -->
-<!--   <section class='popup'>
-    <div class="popup-body">
-      <div class="row" v-for="t in allSessions">
-        <span> {{t.timestamp | moment("MMM Do YYYY") }}</span>
-        <span>{{t.totalPymk}} total</span>
-        <span> {{t.numNew}} new people. </span>
-      </div>
-    </div>
-  </section> -->
 </template>
 
 <script>

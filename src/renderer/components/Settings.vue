@@ -1,5 +1,23 @@
 <template>
-  <section class="wysiwyg settings">
+  <section class="section">
+    <div class="panel-top">
+      <a> <router-link :to="{ path: '/' }">Go Back</router-link></a>
+    </div>
+      <b-input placeholder="Username"></b-input>
+      <b-input placeholder="Password"></b-input>
+      <b-field grouped>
+          <p class="control">
+              <button class="button is-primary"> Save Settings </button>
+              <button class="button is-primary"> Delete Settings </button>
+          </p>
+      </b-field>
+      <b-field grouped>
+          <p class="control">
+            <button class="button is-primary" @click="scrape()"> Do a test run </button>
+          </p>
+      </b-field>
+  </section>
+<!--   <section class="wysiwyg settings">
     <h3 >Username</h3>
     <input v-model="userNameModel" class="input" type="username"/>
 
@@ -14,7 +32,7 @@
     <a> Delete Settings </a>
     <a @click="scrape()"> Do a test run </a>
     <a> <router-link :to="{ path: '/' }">Go Back</router-link></a>
-  </section>
+  </section -->
 </template>
 
 <script>

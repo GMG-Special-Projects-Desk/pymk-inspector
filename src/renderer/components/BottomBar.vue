@@ -27,10 +27,5 @@ export default {
 #spd-logo {
   max-width: 40px;
 }
-.footer {
-  padding: 0rem 1.3rem 0rem;
-}
-.footer-text {
-  font-size: 0.8em;
-}
+
 </style>

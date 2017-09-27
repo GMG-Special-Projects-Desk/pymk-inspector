@@ -1,8 +1,5 @@
 <template>
   <section class="section">
-<!--     <button class="button is-medium is-warning" @click="warning">
-        Launch snackbar (custom)
-    </button> -->
     <div class="panel-top">
       <a> <router-link :to="{ path: '/' }">Go Back</router-link></a>
     </div>
@@ -152,17 +149,7 @@
   }
 </script>
 
-<style lang="scss">
-.settings{
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 480px;
-  margin-top: 60px;
-}
-
-
+<style lang="scss" scoped>
 button:hover {
   background-color: #F25F5C;
 }

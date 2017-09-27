@@ -29,12 +29,4 @@ export default {
 </script>
 
 <style lang="scss">
-.sessions{
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 420px;
-  margin-top:60px;
-}
 </style>

@@ -10,7 +10,6 @@
         On average per session you were shown <mark>{{summary.avgPymk}} people per session</mark>,
         <mark>{{summary.avgNewPymk}} of whom had not been seen before</mark> and
         <mark>{{summary.avgNoMutualPymk}} with no mutual friends</mark>
-        <!-- The inspector has run <mark>{{summary.sessionCount}} times</mark> in the past <mark>{{summary.startDate | moment("from", true) }}.</mark> -->
          <span class="name"> <router-link :to="{ path: '/sessions' }">Details</router-link> </span>
       </div>
       <div class="panel" v-if="summary.commonPymk">
@@ -54,12 +53,4 @@ export default {
 </script>
 
 <style lang="scss">
-.summary{
-  // display: flex;
-  // align-items: center;
-  // flex-direction: column;
-  // justify-content: space-between;
-  // height: 420px;
-  margin-top: 0px;
-}
 </style>

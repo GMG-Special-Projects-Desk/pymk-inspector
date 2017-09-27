@@ -16,9 +16,6 @@
           </mark> and you have <mark> {{row.mutualFriends}} mutual friends </mark>.
         </span>
         </p>
-<!--         <a @click="sendTip()" class="tips">
-         Seems odd? Tell us why. <b-icon icon="mail"></b-icon>
-       </a> -->
       </div>
     </div>
   </article>
@@ -59,10 +56,6 @@ export default {
 
 <style lang="scss">
 $striped-rows: true;
-.row {
-  overflow: scroll;
-  font-size: 16px
-}
 
 .details {
   font-size: 0.8rem;
@@ -71,27 +64,6 @@ $striped-rows: true;
 .tips {
   font-size: 0.7em;
   float: right;
-}
-/* https://jsfiddle.net/r7ztu8oL/3/ */
-.popup {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  position: fixed;
-  top: 25%;
-  left: 18px;
-  // margin:auto 0;
-  width: 90%;
-  max-height: 60%;
-}
-
-.profile {
-  max-width: 80px;
-}
-.popup-body {
-  // margin-top: 40px;
-  overflow-y: auto;
-  height: 340px;
-  display: block;
 }
 
 </style>

@@ -43,9 +43,6 @@
       }
     },
     mounted () {
-      // getMostRecentSession(this.dbPath)
-      //   .then((d) => { console.log(d); this.recentSession = d[0] })
-      //   .catch(err => { console.log(err) })
     },
     methods: {
       dbGet () {
@@ -84,16 +81,4 @@
 </script>
 
 <style lang='scss'>
-// @import '~bulma';
-
-.main{
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  height: 420px;
-  margin-top:60px;
-}
-
 </style>

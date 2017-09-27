@@ -27,7 +27,4 @@ export default {
 </script>
 
 <style lang="scss">
-.people {
-  margin-top: 60px;
-}
 </style>

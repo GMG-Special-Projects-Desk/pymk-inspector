@@ -110,14 +110,14 @@ $green: #70C1B3;
 $light-green: #BCE784;
 $light-green-invert: findColorInvert($light-green);
 $yellow: #FFE066;
+
 $primary: #FFA630;
-// // Set your colors
-// $primary: #8c67ef;
 $primary-invert: findColorInvert($primary);
 $twitter: #4099FF;
 $twitter-invert: findColorInvert($twitter);
 $info: $light-green;
 $info-invert: $light-green-invert;
+
 // // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: (
     "white": ($white, $black),

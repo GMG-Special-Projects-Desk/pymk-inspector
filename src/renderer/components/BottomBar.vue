@@ -2,8 +2,9 @@
 <footer class="footer">
   <div class="container">
     <div class="content">
-      <p class="footer-text">
-        Send us tips at tips@gizmodomedia.com
+      <p class="footer-text has-text-centered">
+          Did you find somone noteworthy? <br>
+          Share your story with  the <span @click="sendTip()" class="name"> Special Projects Desk </span> <!--  <b-icon icon="mail"></b-icon> -->
       </p>
     </div>
   </div>
@@ -11,13 +12,14 @@
 </template>
 
 <script>
+const {shell} = require('electron')
+
 export default {
 
   name: 'BottomBar',
-
-  data () {
-    return {
-
+  methods: {
+    sendTip () {
+      shell.openExternal('https://specialprojectsdesk.kinja.com/about-the-gizmodo-media-group-special-projects-desk-1792136692')
     }
   }
 }
@@ -26,6 +28,13 @@ export default {
 <style lang="scss">
 #spd-logo {
   max-width: 40px;
+}
+.footer {
+
+}
+.name{
+  color: #247BA0;
+  cursor: pointer;
 }
 
 </style>

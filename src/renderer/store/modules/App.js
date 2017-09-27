@@ -4,6 +4,7 @@ const state = {
   username: '',
   serviceName: 'pymkinspector',
   summary: {},
+  scrapeFrequency: 2,
   mostRecent: {}
 }
 
@@ -13,7 +14,8 @@ const getters = {
   username: state => state.username,
   serviceName: state => state.serviceName,
   summary: state => state.summary,
-  mostRecent: state => state.mostRecent
+  mostRecent: state => state.mostRecent,
+  scrapeFrequency: state => state.scrapeFrequency
 }
 
 const mutations = {
@@ -27,12 +29,16 @@ const mutations = {
   DELETE_CREDENTIALS (state) {
     state.username = ''
     state.hasCredentials = false
+    state.scrapeFrequency = 2
   },
   SET_SUMMARY (state, summary) {
     state.summary = summary
   },
   SET_MOST_RECENT (state, mostRecent) {
     state.mostRecent = mostRecent
+  },
+  SET_FREQUENCY (state, freq) {
+    state.scrapeFrequency = freq
   }
 }
 
@@ -43,7 +49,7 @@ const actions = {
   setCredentials ({ commit }, username) {
     commit('SET_CREDENTIALS', username)
   },
-  deleteCredentials ({ commit }, username) {
+  deleteCredentials ({ commit }) {
     commit('DELETE_CREDENTIALS')
   },
   setMostRecent ({ commit }, mostRecent) {
@@ -51,6 +57,9 @@ const actions = {
   },
   setSummary ({ commit }, summary) {
     commit('SET_SUMMARY', summary)
+  },
+  setFrequency ({ commit }, freq) {
+    commit('SET_FREQUENCY', freq)
   }
 }
 

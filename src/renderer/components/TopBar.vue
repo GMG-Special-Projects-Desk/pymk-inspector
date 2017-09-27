@@ -4,7 +4,7 @@
       <div class="container">
 
         <h1 class="title is-4 has-text-centered">
-          {{$route.name}}
+          {{$route.name | capitalize}}
         </h1>
         <h2 class="subtitle">
         </h2>
@@ -15,7 +15,14 @@
 
 <script>
 export default {
-  name: 'TopBar'
+  name: 'TopBar',
+  filters: {
+    capitalize: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    }
+  }
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
-  <section>
-    <div v-if="hasCredentials" class="section">
+  <section  class="section">
+    <div v-if="hasCredentials">
       <div class="panel">
         The most recent session was <mark>{{mostRecent.timestamp | moment("from", true) }} ago</mark>.
         In that session <mark>{{mostRecent.totalPymk}} people</mark> were suggested to you,
@@ -12,16 +12,22 @@
       <p> Current user: {{username}}</p>
       <p @click="dbGet()"> Total sessions : {{summary.sessionCount}}</p>
       </div>
-      <div class="panel">
-        <router-link :to="{ path: '/settings' }">Inspector settings</router-link>
-      </div>
+    <div class="panel">
+      <span class="name"> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></span>
     </div>
-    <div v-else class="main">
-      <h2> Facebook's People You May Know Inspector </h2>
-      <p> It looks like this is either your first time or you don't have your credentials stored.</p>
-      <p> Please go to the setting page to add your Facebook credentials.</p>
-      <p>These are stored in your computers keychain and never recorded or directly read by this app.</p>
-      <a> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></a>
+    </div>
+    <div v-else>
+      <div class="panel">
+        Welcome to the People You May Know Inspector!
+      </div>
+      <div class="panel">
+        It looks like this is either your first time or you don't have your credentials stored.
+        Please go to the setting page to add your Facebook credentials.
+        These are stored in your computers keychain and never recorded or directly read by this app.
+      </div>
+      <div class="panel">
+        <span class="name"> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></span>
+      </div>
     </div>
   </section>
 </template>

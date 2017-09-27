@@ -53,16 +53,18 @@
               .get(`${this.serviceName}.json`)
               .then((d) => {
                 if (d.username) {
-                  this.hasCredentials = false
                   this.setCredentials(d.username)
-                  return d
                 } else {
                   console.log('Coundnt find username')
                 }
+                if (d.frequency) {
+                  this.setFrequency(d.frequency)
+                  console.log(`Setting frequency to ${d.frequency}`)
+                } else {
+                  console.log('Didnt find frequency settings. Setting default')
+                }
+                return d
               })
-              // .then((d) => { keytar.getPassword(this.serviceName, d.username).then((t) => { this.password = t }) })
-          } else {
-            // this.hasCredentials = false
           }
         })
       ipcRenderer.send('get-db')
@@ -86,6 +88,7 @@
       ...mapActions([
         'setDbPath',
         'setCredentials',
+        'setFrequency',
         'setMostRecent',
         'setSummary'
       ])
@@ -113,7 +116,8 @@ $primary: #FFA630;
 $primary-invert: findColorInvert($primary);
 $twitter: #4099FF;
 $twitter-invert: findColorInvert($twitter);
-
+$info: $light-green;
+$info-invert: $light-green-invert;
 // // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: (
     "white": ($white, $black),
@@ -190,6 +194,10 @@ body {
   border-width: 1px;
 
 }
+input {
+  border-style: solid;
+  // border-
+}
 .footer {
   padding: 0px;
   width: 100%;
@@ -203,6 +211,7 @@ body {
   font-size: 0.8em;
 }
 
+bu
 .name:hover {
   background-color: $red;
 }

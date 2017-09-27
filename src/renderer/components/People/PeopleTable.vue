@@ -16,9 +16,9 @@
           </mark> and you have <mark> {{row.mutualFriends}} mutual friends </mark>.
         </span>
         </p>
-        <a @click="sendTip()" class="tips">
+<!--         <a @click="sendTip()" class="tips">
          Seems odd? Tell us why. <b-icon icon="mail"></b-icon>
-       </a>
+       </a> -->
       </div>
     </div>
   </article>

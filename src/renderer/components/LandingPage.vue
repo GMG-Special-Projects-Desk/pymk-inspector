@@ -35,7 +35,7 @@
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
   import dummy from '../../../test-db.js'
-  import { removeAll, getAll, insertPeople, updateDB, getNewPymk, getExistingPymk } from '@/db'
+  import { removeAll, getAll, insertPeople, getNewPymk, getExistingPymk } from '@/db'
   import {mapGetters, mapActions} from 'vuex'
   var {ipcRenderer} = require('electron')
 

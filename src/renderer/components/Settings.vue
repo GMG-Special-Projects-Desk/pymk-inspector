@@ -38,7 +38,6 @@
   import SystemInformation from './LandingPage/SystemInformation'
   import keytar from 'keytar'
   import { mapGetters, mapActions } from 'vuex'
-  import { updateDB } from '@/db'
   var {ipcRenderer} = require('electron')
 
   export default {

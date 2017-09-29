@@ -1,6 +1,7 @@
 'use strict'
 
 import { runScrape } from '../renderer/scripts/scrape'
+import { initBackgroundScrape } from '../renderer/scripts/utils'
 import menubar from 'menubar'
 import {app, ipcMain} from 'electron'
 // var app = require('electron')
@@ -19,6 +20,7 @@ const winURL = process.env.NODE_ENV === 'development'
 
 ipcMain.on('async', (event, arg) => {
   let config = {
+    type: 'foreground',
     event: event,
     creds: arg,
     dbPath: app.getPath('userData')
@@ -40,7 +42,16 @@ function createMenuBar () {
   mb.on('ready', function () {
     console.log('app is ready')
   })
-
+  initBackgroundScrape(app.getPath('userData'))
+  // setCronJob(() => {
+  //   let config = {
+  //     type: 'foreground',
+  //     event: event,
+  //     creds: arg,
+  //     dbPath: app.getPath('userData')
+  //   }
+  //   console.log(`Cron Job is running ${Date.now()}`)
+  // })
   // mb.on('after-create-window', function () {
   //   mb.window.webContents.openDevTools()
   // })

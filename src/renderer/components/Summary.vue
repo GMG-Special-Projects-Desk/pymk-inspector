@@ -32,7 +32,6 @@
 </template>
 <script>
 
-import {getSummary} from '@/db'
 import {mapGetters} from 'vuex'
 export default {
 

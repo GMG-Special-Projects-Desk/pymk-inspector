@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import {getAll, getMostRecentSession} from '@/db'
+import {getAll} from '@/db'
 import {mapGetters} from 'vuex'
 export default {
 

@@ -1,10 +1,10 @@
-import { parsePymk } from './parse'
+const { parsePymk } = require('./parse')
 const { Browser, run, sleep } = require('automatonic')
 
 // added to .babelignore because babels transformation fuck up the execute function for browser rendering
 export const runScrape = (config) => {
   run(function*() {
-    const I = new Browser({typingInterval: 200})
+    const I = new Browser({typingInterval: 200, width: 200, height: 200, x: 10, y: 10})
     I.goto('https://www.facebook.com/friends/requests/?fcref=jwl')
     yield I.waitFor(1000)
     var isLoginPage = yield I.checkFor('#email')
@@ -24,9 +24,9 @@ export const runScrape = (config) => {
         var id = setInterval(() => {
           try {
             // TODO: Remove after debugging
-            if (count > 2) {
-              resolve('resolved!')
-            }
+            // if (count > 2) {
+            //   resolve('resolved!')
+            // }
 
             if (!((window.scrollY + window.innerHeight) + 200 > document.body.clientHeight)) {
               window.scrollBy(0, 500)
@@ -53,13 +53,21 @@ export const runScrape = (config) => {
         data: parsePymk(data)
       }
       // console.log(parsePymk(data))
-      config.event.sender.send('async-reply', result)
+      if (config.type === 'background') {
+        config.cb(result)
+      } else {
+        config.event.sender.send('fg-scrape', result)
+      }
     } catch (e) {
       const err = {
         dbPath: config.dbPath,
         error: e
       }
-      config.event.sender.send('async-reply', err)
+      if (config.type === 'background') {
+        config.cb(err)
+      } else {
+        config.event.sender.send('fg-scrape', err)
+      }
     }
 
     yield sleep(2000)

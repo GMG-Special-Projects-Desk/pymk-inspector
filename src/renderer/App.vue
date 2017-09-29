@@ -12,7 +12,7 @@
   import {getSummary, getMostRecentSession, updateDB} from '@/db'
   import TopBar from './components/TopBar'
   import BottomBar from './components/BottomBar'
-  import keytar from 'keytar'
+
   export default {
     name: 'pymk-inspector',
     data () {
@@ -25,25 +25,11 @@
       BottomBar
     },
     mounted () {
-      ipcRenderer.on('async-reply', (event, arg) => {
-        this.setDbPath(arg.dbPath)
-        console.log('Scrape Complete!')
-        updateDB({dbPath: arg.dbPath, data: arg.data})
-          .then((d) => { console.log('done') })
-          .catch(err => { console.log(err) })
-        getSummary(arg.dbPath)
-          .then((data) => {
-            this.setSummary(data.current)
-            return data.dbPath
-          })
-          .then(getMostRecentSession)
-          .then((d) => {
-            this.setMostRecent(d[0])
-          })
-          .catch((err) => {
-            console.log(`err: ${err}`)
-          })
+      ipcRenderer.on('bg-scrape', (event, arg) => {
+        console.log('here')
       })
+      // this.initUpdateListeners('async-reply')
+      // this.initUpdateListeners('bg-scrape')
     },
     created () {
       this.$storage.isPathExists(`${this.serviceName}.json`)
@@ -85,6 +71,28 @@
       })
     },
     methods: {
+      initUpdateListeners (channel) {
+        ipcRenderer.on(channel, (event, arg) => {
+          console.log(arg)
+          this.setDbPath(arg.dbPath)
+          console.log('Scrape Complete!')
+          updateDB({dbPath: arg.dbPath, data: arg.data})
+            .then((d) => { console.log('done') })
+            .catch(err => { console.log(err) })
+          getSummary(arg.dbPath)
+            .then((data) => {
+              this.setSummary(data.current)
+              return data.dbPath
+            })
+            .then(getMostRecentSession)
+            .then((d) => {
+              this.setMostRecent(d[0])
+            })
+            .catch((err) => {
+              console.log(`err: ${err}`)
+            })
+        })
+      },
       ...mapActions([
         'setDbPath',
         'setCredentials',

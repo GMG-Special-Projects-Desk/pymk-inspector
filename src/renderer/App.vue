@@ -24,56 +24,21 @@
       TopBar,
       BottomBar
     },
-    mounted () {
-      ipcRenderer.on('bg-scrape', (event, arg) => {
-        console.log('here')
-      })
-      // this.initUpdateListeners('async-reply')
-      // this.initUpdateListeners('bg-scrape')
-    },
     created () {
-      this.$storage.isPathExists(`${this.serviceName}.json`)
-        .then(itDoes => {
-          if (itDoes) {
-            this.$storage
-              .get(`${this.serviceName}.json`)
-              .then((d) => {
-                if (d.username) {
-                  this.setCredentials(d.username)
-                } else {
-                  console.log('Coundnt find username')
-                }
-                if (d.frequency) {
-                  this.setFrequency(d.frequency)
-                  console.log(`Setting frequency to ${d.frequency}`)
-                } else {
-                  console.log('Didnt find frequency settings. Setting default')
-                }
-                return d
-              })
-          }
-        })
-      ipcRenderer.send('get-db')
-      ipcRenderer.on('get-db-reply', (e, arg) => {
-        this.setDbPath(arg)
-        getSummary(arg)
-          .then((data) => {
-            this.setSummary(data.current)
-            return data.dbPath
-          })
-          .then(getMostRecentSession)
-          .then((d) => {
-            this.setMostRecent(d[0])
-          })
-          .catch((err) => {
-            console.log(`err: ${err}`)
-          })
-      })
+      this.initConfig()
+      this.initDbStuff()
+      this.initUpdateListeners('fg-scrape')
+      this.initUpdateListeners('bg-scrape')
     },
     methods: {
       initUpdateListeners (channel) {
         ipcRenderer.on(channel, (event, arg) => {
-          console.log(arg)
+          if (arg.error) {
+            console.log(`There was an error in the scrape! ${arg.error}`)
+            return
+          }
+
+          console.log(event, arg)
           this.setDbPath(arg.dbPath)
           console.log('Scrape Complete!')
           updateDB({dbPath: arg.dbPath, data: arg.data})
@@ -92,6 +57,45 @@
               console.log(`err: ${err}`)
             })
         })
+      },
+      initDbStuff () {
+        const dbPath = ipcRenderer.sendSync('get-db-path')
+        this.setDbPath(dbPath)
+        getSummary(dbPath)
+          .then((data) => {
+            this.setSummary(data.current)
+            return data.dbPath
+          })
+          .then(getMostRecentSession)
+          .then((d) => {
+            this.setMostRecent(d[0])
+          })
+          .catch((err) => {
+            console.log(`err: ${err}`)
+          })
+      },
+      initConfig () {
+        this.$storage.isPathExists(`${this.serviceName}.json`)
+          .then(itDoes => {
+            if (itDoes) {
+              this.$storage
+                .get(`${this.serviceName}.json`)
+                .then((d) => {
+                  if (d.username) {
+                    this.setCredentials(d.username)
+                  } else {
+                    console.log('Coundnt find username')
+                  }
+                  if (d.frequency) {
+                    this.setFrequency(d.frequency)
+                    console.log(`Setting frequency to ${d.frequency}`)
+                  } else {
+                    console.log('Didnt find frequency settings. Setting default')
+                  }
+                  return d
+                })
+            }
+          })
       },
       ...mapActions([
         'setDbPath',

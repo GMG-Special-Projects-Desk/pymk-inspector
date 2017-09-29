@@ -52,7 +52,6 @@ export const runScrape = (config) => {
         dbPath: config.dbPath,
         data: parsePymk(data)
       }
-      // console.log(parsePymk(data))
       if (config.type === 'background') {
         config.cb(result)
       } else {

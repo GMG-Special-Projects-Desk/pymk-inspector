@@ -18,7 +18,7 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-ipcMain.on('async', (event, arg) => {
+ipcMain.on('fg-scrape', (event, arg) => {
   let config = {
     type: 'foreground',
     event: event,
@@ -28,36 +28,30 @@ ipcMain.on('async', (event, arg) => {
   runScrape(config)
 })
 
-ipcMain.on('get-db', (event, arg) => {
-  event.sender.send('get-db-reply', app.getPath('userData'))
+ipcMain.on('get-db-path', (event, arg) => {
+  event.returnValue = app.getPath('userData')
 })
-
 function createMenuBar () {
-  mb = menubar({icon: require('path').join(__static, 'facebook-inspector.png'),
+  let mb = menubar({icon: require('path').join(__static, 'facebook-inspector.png'),
     index: winURL,
     width: 400,
     height: 500,
+    preloadWindow: true,
     alwaysOnTop: true
   })
+
   mb.on('ready', function () {
     console.log('app is ready')
+    initBackgroundScrape(app.getPath('userData'),
+      (results) => {
+        console.log(results.dbPath)
+        mb.window.webContents.send('bg-scrape', results)
+      })
   })
-  initBackgroundScrape(app.getPath('userData'))
-  // setCronJob(() => {
-  //   let config = {
-  //     type: 'foreground',
-  //     event: event,
-  //     creds: arg,
-  //     dbPath: app.getPath('userData')
-  //   }
-  //   console.log(`Cron Job is running ${Date.now()}`)
-  // })
-  // mb.on('after-create-window', function () {
-  //   mb.window.webContents.openDevTools()
-  // })
 }
 
-app.on('ready', createMenuBar)
+createMenuBar()
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
@@ -69,7 +63,30 @@ app.on('activate', () => {
     createMenuBar()
   }
 })
-
+// function createMenuBar () {
+//   mb = menubar({icon: require('path').join(__static, 'facebook-inspector.png'),
+//     index: winURL,
+//     width: 400,
+//     height: 500,
+//     alwaysOnTop: true
+//   })
+//   mb.on('ready', function () {
+//     console.log('app is ready')
+//   })
+//   initBackgroundScrape(app.getPath('userData'))
+//   // setCronJob(() => {
+//   //   let config = {
+//   //     type: 'foreground',
+//   //     event: event,
+//   //     creds: arg,
+//   //     dbPath: app.getPath('userData')
+//   //   }
+//   //   console.log(`Cron Job is running ${Date.now()}`)
+//   // })
+//   // mb.on('after-create-window', function () {
+//   //   mb.window.webContents.openDevTools()
+//   // })
+// }
 // import { app, BrowserWindow, ipcMain } from 'electron'
 // let mainWindow
 // function createWindow () {

@@ -26,12 +26,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#spd-logo {
-  max-width: 40px;
-}
-.name{
+.name {
   color: #247BA0;
   cursor: pointer;
 }
-
 </style>

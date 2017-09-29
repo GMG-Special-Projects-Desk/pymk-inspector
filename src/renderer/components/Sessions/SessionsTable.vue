@@ -3,7 +3,7 @@
   <article class="media" v-for="row in allSessions">
       <div class="media-content">
         <div class="content">
-            <h5> {{row.timestamp | moment("MMM Do YYYY, h:mA") }} </h5>
+            <h5> {{row.timestamp | moment("MMM Do YYYY, h:mmA") }} </h5>
              <mark> {{row.totalPymk}} people</mark>  were suggested,
              <mark> {{row.numNew}} {{row.numNew === 1 ? 'person' : 'people'}}</mark> of them {{row.numNew === 1 ? 'was' : 'were'}} new and
              <mark> {{row.numNoMutual}} {{row.numNoMutual === 1 ? 'person' : 'people'}}</mark>
@@ -31,7 +31,16 @@ export default {
   },
   mounted () {
     getAll('session', this.dbPath)
-      .then((d) => { this.allSessions = d; this.selected = d[0] })
+      .then((d) => {
+        console.log(d)
+        d.sort(function (x, y) {
+          const date1 = new Date(x.timestamp)
+          const date2 = new Date(y.timestamp)
+          return date2 - date1
+        })
+        this.allSessions = d
+        this.selected = d[0]
+      })
       .catch(err => { console.log(err) })
   },
   computed: {

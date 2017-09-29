@@ -9,6 +9,7 @@ const schema = {
 }
 
 const initDB = curry((model, dbPath, data) => {
+  LinvoDB.defaults.store = { db: require('level-js') }
   LinvoDB.dbPath = dbPath
   let db = new LinvoDB(model, schema[model], {})
   return {db, data}
@@ -265,7 +266,7 @@ export const getCommonPymk = ({dbPath, current}) => {
   const task = initDB('pymk', dbPath, {})
   return new Promise((resolve, reject) => {
     task.db.find({}, (err, res) => {
-      const common = sortBy([function (o) { return o.sessions.length }], res)
+      const common = sortBy([function (o) { return Array.isArray(o.sessions) ? o.sessions.length : 0 }], res)
       if (err) { reject(err) }
       const names = reverse(common).map((d) => {
         return d.name
@@ -361,9 +362,3 @@ export const getMostRecentSession = (dbPath) => {
     })
     .then(getSession)
 }
-
-// TODO: Queries
-// Most Common Work Places
-// Avg PYMK per session
-// Avergage new PYMK
-// Average no mutual PYMK

@@ -110,7 +110,7 @@
           keytar.getPassword(this.serviceName, this.username)
             .then((t) => {
               this.info('Running scrapper. You should see a browser pop up')
-              ipcRenderer.send('async', {username: this.username, password: t})
+              ipcRenderer.send('fg-scrape', {username: this.username, password: t})
             })
             .catch((err) => {
               console.log('err')
@@ -140,7 +140,6 @@
         })
       },
       ...mapActions([
-        'setDbPath',
         'setCredentials',
         'deleteCredentials'
       ])

@@ -1,11 +1,10 @@
 const { runScrape } = require('./scrape')
-const {updateDB} = require('../db')
 const scheduler = require('node-schedule')
 const storage = require('electron-storage')
 const keytar = require('keytar')
 
 const setCronJob = (cb) => {
-  return scheduler.scheduleJob(`0 */22 * * * *`, cb)
+  return scheduler.scheduleJob(`0 */12 * * * *`, cb)
 }
 
 const getConfig = () => {
@@ -23,7 +22,7 @@ const getConfig = () => {
     })
 }
 
-const initBackgroundScrape = (dbPath) => {
+const initBackgroundScrape = (dbPath, cb) => {
   getConfig()
     .then((config) => {
       setCronJob(() => {
@@ -32,13 +31,6 @@ const initBackgroundScrape = (dbPath) => {
         keytar.getPassword('pymkinspector', username)
           .then((password) => {
             const type = 'background'
-            const cb = (results) => {
-              console.log(results.dbPath)
-              console.log(results.data.length)
-              updateDB({dbPath: results.dbPath, data: results.data})
-                .then((d) => { console.log('done') })
-                .catch(err => { console.log(err) })
-            }
             const config = {username, password, type, cb, dbPath}
             console.log(config)
             runScrape(config)

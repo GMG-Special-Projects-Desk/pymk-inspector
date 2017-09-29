@@ -10,7 +10,7 @@
       </div>
       <div class="panel">
       <p> Current user: {{username}}</p>
-      <p @click="dbGet()"> Total sessions : {{summary.sessionCount}}</p>
+      <p> Total sessions : {{summary.sessionCount}}</p>
       </div>
     <div class="panel">
       <span class="name"> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></span>
@@ -33,45 +33,15 @@
 </template>
 
 <script>
-  import {getAll, getMostRecentSession, getSummary} from '@/db'
+  import {getAll} from '@/db'
   import {mapGetters} from 'vuex'
   export default {
     name: 'main',
-    data () {
-      return {
-        serviceName: 'pymkinspector'
-      }
-    },
-    mounted () {
-    },
-    methods: {
-      dbGet () {
-        getAll('session', this.dbPath)
-          .then((d) => { console.log(d) })
-          .catch(err => { console.log(err) })
-        getAll('pymk', this.dbPath)
-          .then((d) => { console.log(d) })
-          .catch(err => { console.log(err) })
-      },
-      refresh () {
-        getSummary(this.dbPath)
-          .then((data) => {
-            this.setSummary(data.current)
-            return data.dbPath
-          })
-          .then(getMostRecentSession)
-          .then((d) => {
-            this.setMostRecent(d[0])
-          })
-          .catch((err) => {
-            console.log(`err: ${err}`)
-          })
-      }
-    },
     computed: {
       ...mapGetters([
         'hasCredentials',
         'username',
+        'serviceName',
         'summary',
         'mostRecent',
         'dbPath'

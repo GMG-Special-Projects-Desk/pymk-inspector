@@ -36,12 +36,6 @@ import {mapGetters} from 'vuex'
 export default {
 
   name: 'Summary',
-  data () {
-    return {
-    }
-  },
-  mounted () {
-  },
   computed: {
     ...mapGetters([
       'dbPath',

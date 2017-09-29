@@ -1,8 +1,6 @@
 <template>
 <section class="section">
-    <div class="panel-top">
-      <a> <router-link :to="{ path: '/summary' }">Go Back</router-link></a>
-    </div>
+  <FilterBar/>
     <div>
     <people-table> </people-table>
     </div>
@@ -12,11 +10,13 @@
 <script>
 import PeopleTable from './People/PeopleTable'
 import {mapGetters} from 'vuex'
+import FilterBar from './FilterBar'
 export default {
 
   name: 'People',
   components: {
-    PeopleTable
+    PeopleTable,
+    FilterBar
   },
   computed: {
     ...mapGetters([

@@ -32,7 +32,6 @@ export default {
   mounted () {
     getAll('session', this.dbPath)
       .then((d) => {
-        console.log(d)
         d.sort(function (x, y) {
           const date1 = new Date(x.timestamp)
           const date2 = new Date(y.timestamp)

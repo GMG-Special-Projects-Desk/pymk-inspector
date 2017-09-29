@@ -1,20 +1,23 @@
 <template>
 <section class="section">
-    <div class="panel-top">
+    <FilterBar/>
+    <!-- <div class="panel-top">
     <a> <router-link :to="{ path: '/summary' }">Go Back</router-link></a>
-    </div>
+    </div> -->
     <sessions-table> </sessions-table>
  </section>
 </template>
 
 <script>
 import SessionsTable from './Sessions/SessionsTable'
+import FilterBar from './FilterBar'
 import {mapGetters} from 'vuex'
 export default {
 
   name: 'Sessions',
   components: {
-    SessionsTable
+    SessionsTable,
+    FilterBar
   },
   data () {
     return {

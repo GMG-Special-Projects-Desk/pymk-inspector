@@ -226,6 +226,7 @@ input {
 bu
 .name:hover {
   background-color: $red;
+  cursor: pointer;
 }
 mark {
   background-color: $cyan;

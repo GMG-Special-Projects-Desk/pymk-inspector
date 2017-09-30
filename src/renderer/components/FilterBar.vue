@@ -1,6 +1,6 @@
 <template>
     <div class="panel-top">
-      <b-field expanded>
+      <b-field class="filterbar" expanded group-multiline>
               <p class="control">
                 <b-dropdown v-model="sortKey">
                     <button class="button" slot="trigger">
@@ -10,7 +10,7 @@
                     <b-dropdown-item
                       v-for="f in filter"
                       :key="f.value"
-                      :value="f.value">
+                      :value="f">
                         {{f.text}}
                       </b-dropdown-item>
                 </b-dropdown>
@@ -28,17 +28,26 @@
               type="search"
               placeholder="Search...">
             </b-input>
-            <b-field
-              v-else
-              label="Browse Session"
-              style="width: 100%;">
-            </b-field>
+            <!-- <b-field v-else> -->
+              <p class="control">
+                  <button class="button" @click="isOpen = !isOpen" slot="trigger"><b-icon size="is-medium" icon="add"> </b-icon> </button>
+              </p>
+            <!-- </b-field> -->
             <p class="control">
               <span class="button">
                 <router-link :to="{ path: '/summary' }"> Go Back</router-link>
               </span>
             </p>
         </b-field>
+        <b-collapse :open.sync="isOpen">
+            <div class="notification">
+                <div class="content">
+                  Displaying {{filteredTotal}} of {{allTotal}}
+                  <br>
+                  Sorting by {{this.sortText}}
+                </div>
+            </div>
+        </b-collapse>
   </div>
 </template>
 
@@ -50,6 +59,8 @@ export default {
   data () {
     return {
       sortKey: '',
+      sortText: '',
+      isOpen: false,
       sortOrder: true,
       filterKey: ''
     }
@@ -60,8 +71,9 @@ export default {
   watch: {
     sortKey (value) {
       const data = this.getCurrentData()
-      const sortedData = this.sortData(data, value)
+      const sortedData = this.sortData(data, value.value)
       this.setData(sortedData)
+      this.sortText = value.text
     },
     filterKey (value) {
       const filtered = this.filterData(value)
@@ -123,6 +135,13 @@ export default {
         return this.sessionFilters
       }
     },
+    allTotal () {
+      return this.$route.name === 'sessions' ? this.allSessions.length : this.allPeople.length
+    },
+    filteredTotal () {
+      const currentData = this.getCurrentData()
+      return currentData.length
+    },
     ...mapGetters([
       'pymkFilters',
       'sessionFilters',
@@ -136,4 +155,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.filterbar {
+  margin-bottom: 0px;
+}
+.notification {
+padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+}
 </style>

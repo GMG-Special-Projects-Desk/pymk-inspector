@@ -1,16 +1,15 @@
 <template>
 <section class="section">
   <FilterBar/>
-    <div>
-    <people-table> </people-table>
-    </div>
+  <people-table> </people-table>
  </section>
 </template>
 
 <script>
 import PeopleTable from './People/PeopleTable'
-import {mapGetters} from 'vuex'
 import FilterBar from './FilterBar'
+import {mapGetters, mapActions} from 'vuex'
+import {getAll} from '@/db'
 export default {
 
   name: 'People',
@@ -18,9 +17,21 @@ export default {
     PeopleTable,
     FilterBar
   },
+  created () {
+    getAll('pymk', this.dbPath)
+      .then((d) => {
+        this.setAllPeople(d)
+      })
+  },
   computed: {
     ...mapGetters([
-      'summary'
+      'summary',
+      'dbPath'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'setAllPeople'
     ])
   }
 }

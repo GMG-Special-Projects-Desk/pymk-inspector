@@ -30,6 +30,7 @@ export default {
 .hero-body {
   padding: 1rem 0.5rem;
 }
+
 .hero {
   position: fixed;
   z-index: 999;

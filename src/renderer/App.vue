@@ -9,7 +9,7 @@
 <script>
   import {ipcRenderer} from 'electron'
   import { mapActions } from 'vuex'
-  import {getSummary, getMostRecentSession, updateDB} from '@/db'
+  import {getSummary, getMostRecentSession, updateDB, getAll} from '@/db'
   import TopBar from './components/TopBar'
   import BottomBar from './components/BottomBar'
 
@@ -18,6 +18,17 @@
     data () {
       return {
         serviceName: 'pymkinspector'
+      }
+    },
+    watch: {
+      '$route' (to, from) {
+        // allPeople and allSessions are loaded in their respective components
+        if (from.name === 'sessions') {
+          this.clearSessions()
+        }
+        if (from.name === 'people') {
+          this.clearPeople()
+        }
       }
     },
     components: {
@@ -61,6 +72,7 @@
       initDbStuff () {
         const dbPath = ipcRenderer.sendSync('get-db-path')
         this.setDbPath(dbPath)
+
         getSummary(dbPath)
           .then((data) => {
             this.setSummary(data.current)
@@ -100,9 +112,13 @@
       ...mapActions([
         'setDbPath',
         'setCredentials',
+        'setAllPeople',
         'setFrequency',
+        'setAllSessions',
         'setMostRecent',
-        'setSummary'
+        'setSummary',
+        'clearSessions',
+        'clearPeople'
       ])
     }
   }
@@ -209,6 +225,12 @@ body {
 input {
   border-style: solid;
   // border-
+}
+
+.rounded {
+   -webkit-border-radius: 20px;
+   -moz-border-radius: 20px;
+   border-radius: 20px;
 }
 .footer {
   padding: 0px;

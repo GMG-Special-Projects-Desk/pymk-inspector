@@ -1,6 +1,6 @@
 <template>
   <section>
-  <article class="media" v-for="row in filteredPeople">
+  <article class="media" v-for="row in displayPeople">
     <figure class="media-left">
       <p class="image">
         <img style="max-width: 100px;" v-if="row.imgSrc" :src="row.imgSrc">
@@ -10,7 +10,8 @@
       <div class="content">
         <p>
           <strong class="name" @click="open(row.url)">{{row.name}} </strong>
-          <small v-if="row.job"> Works at {{row.job}} </small>
+          <br>
+          <small v-if="row.job">{{row.job}} </small>
           <br>
           <span class="details">
           They have been suggested to you <mark> {{row.sessions.length}} {{row.sessions.length === 1 ? 'time' : 'times'}}
@@ -37,7 +38,6 @@ export default {
       sortOrders[key] = -1
     })
     return {
-      allPeople: [],
       sortKey: 'mutualFriends',
       filterKey: '',
       sortOrders: sortOrders,
@@ -45,9 +45,6 @@ export default {
     }
   },
   mounted () {
-    getAll('pymk', this.dbPath)
-      .then((d) => { this.allPeople = d })
-      .catch(err => { console.log(err) })
   },
   methods: {
     open (url) {
@@ -63,29 +60,17 @@ export default {
     }
   },
   computed: {
-    filteredPeople: function () {
-      const sortKey = this.sortKey
-      const filterKey = this.filterKey && this.filterKey.toLowerCase()
-      const order = this.sortOrders[sortKey] || 1
-      let data = this.allPeople
-      if (filterKey) {
-        data = data.filter(function (row) {
-          return Object.keys(row).some(function (key) {
-            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
-          })
-        })
+    displayPeople: function () {
+      if (this.filteredPeople.length > 0) {
+        return this.filteredPeople
+      } else {
+        return this.allPeople
       }
-      if (sortKey) {
-        data = data.slice().sort(function (a, b) {
-          a = a[sortKey]
-          b = b[sortKey]
-          return (a === b ? 0 : a > b ? 1 : -1) * order
-        })
-      }
-      return data
     },
     ...mapGetters([
-      'dbPath'
+      'dbPath',
+      'filteredPeople',
+      'allPeople'
     ])
   }
 }

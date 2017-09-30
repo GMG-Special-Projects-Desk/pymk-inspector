@@ -1,6 +1,6 @@
 <template>
   <section>
-  <article class="media" v-for="row in allSessions">
+  <article class="media" v-for="row in displaySessions">
       <div class="media-content">
         <div class="content">
             <h5> {{row.timestamp | moment("MMM Do YYYY, h:mmA") }} </h5>
@@ -19,32 +19,20 @@
 <script>
 import {getAll} from '@/db'
 import {mapGetters} from 'vuex'
-export default {
 
+export default {
   name: 'SessionsTable',
-  data () {
-    return {
-      allSessions: [
-      ],
-      selected: []
-    }
-  },
-  mounted () {
-    getAll('session', this.dbPath)
-      .then((d) => {
-        d.sort(function (x, y) {
-          const date1 = new Date(x.timestamp)
-          const date2 = new Date(y.timestamp)
-          return date2 - date1
-        })
-        this.allSessions = d
-        this.selected = d[0]
-      })
-      .catch(err => { console.log(err) })
-  },
   computed: {
+    displaySessions: function () {
+      if (this.filteredSessions.length > 0) {
+        return this.filteredSessions
+      } else {
+        return this.allSessions
+      }
+    },
     ...mapGetters([
-      'dbPath'
+      'filteredSessions',
+      'allSessions'
     ])
   }
 }

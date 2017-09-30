@@ -1,17 +1,15 @@
 <template>
 <section class="section">
-    <FilterBar/>
-    <!-- <div class="panel-top">
-    <a> <router-link :to="{ path: '/summary' }">Go Back</router-link></a>
-    </div> -->
-    <sessions-table> </sessions-table>
+  <FilterBar/>
+  <sessions-table> </sessions-table>
  </section>
 </template>
 
 <script>
 import SessionsTable from './Sessions/SessionsTable'
 import FilterBar from './FilterBar'
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
+import {getAll} from '@/db'
 export default {
 
   name: 'Sessions',
@@ -19,13 +17,21 @@ export default {
     SessionsTable,
     FilterBar
   },
-  data () {
-    return {
-    }
+  created () {
+    getAll('session', this.dbPath)
+      .then((d) => {
+        this.setAllSessions(d)
+      })
   },
   computed: {
     ...mapGetters([
-      'summary'
+      'summary',
+      'dbPath'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'setAllSessions'
     ])
   }
 }

@@ -9,13 +9,13 @@
           <b-input v-model="userNameModel" placeholder="Your Facebook Username"></b-input>
         </b-field>
         <b-field label="Password">
-          <b-input password-reveal v-model="passwordModel" placeholder="Your Facebook Password"></b-input>
+          <b-input v-model="passwordModel" placeholder="Your Facebook Password"></b-input>
         </b-field>
         <b-field label="Frequency">
             <b-select  v-model="frequencyModel" placeholder="How often do you want to run the insepctor?">
-                <option value="1"> Once a day </option>
-                <option value="2"> Twice a day (default) </option>
-                <option value="3"> Three times a day </option>
+                <option value="3"> Every 3 hours </option>
+                <option value="6"> Every 6 hours (default) </option>
+                <option value="12"> Every 12 hours </option>
             </b-select>
         </b-field>
       </p>
@@ -24,12 +24,13 @@
       <p class="control">
             <button @click="save()" class="panel"> <span class="name"> <a> Save Settings </a></span></button>
             <button @click="del()" class="panel"> <span class="name"> <a> Delete Settings </a></span></button>
+            <button @click="scrape()" class="panel"> <span class="name"> <a> Run it now </a> </span></button>
       </p>
     </b-field>
       <b-field grouped>
-          <p class="control">
-            <button @click="scrape()" class="panel"> <span class="name"> <a> Run it now </a> </span></button>
-            <button @click="scrape()" class="panel"> <span class="name"> <a> Data Settings </a> </span></button>
+          <p v-if="hasData" class="control">
+            <button @click="exportData()" class="panel"> <span class="name"> <a> Export Data </a> </span></button>
+            <button @click="delData()" class="panel"> <span class="name"> <a> Delete Data </a> </span></button>
           </p>
       </b-field>
   </section>
@@ -38,6 +39,7 @@
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
   import keytar from 'keytar'
+  import {getCsvData, deleteAllData} from '@/db'
   import { mapGetters, mapActions } from 'vuex'
   var {ipcRenderer} = require('electron')
 
@@ -52,7 +54,7 @@
       return {
         userNameModel: '',
         passwordModel: '',
-        frequencyModel: '',
+        frequencyModel: '3',
         err: false,
         keytar: keytar
       }
@@ -61,6 +63,8 @@
       ...mapGetters([
         'username',
         'serviceName',
+        'hasData',
+        'dbPath',
         'hasCredentials',
         'scrapeFrequency'
       ])
@@ -84,6 +88,20 @@
           this.warning('Please set a username and password before you save')
         }
       },
+      exportData () {
+        getCsvData(this.dbPath).then((results) => {
+          ipcRenderer.send('export-data', {exportData: results})
+        })
+      },
+      delData () {
+        deleteAllData(this.dbPath)
+          .then((results) => {
+            this.info(`Deleted all ${results.session} sessions and ${results.pymk} people from the app.`)
+          })
+          .catch((err) => {
+            this.warning(`Err: database not deleted ${err}`)
+          })
+      },
       del () {
         if (this.userNameModel.length > 0) {
           this.keytar.deletePassword(this.serviceName, this.username).then((x) => {
@@ -95,7 +113,7 @@
                 this.deleteCredentials()
                 this.userNameModel = ''
                 this.passwordModel = ''
-                this.frequencyModel = '2'
+                this.frequencyModel = '3'
                 this.info('Settings deleted')
               })
               .catch((err) => {

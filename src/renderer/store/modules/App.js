@@ -6,9 +6,10 @@ const state = {
   allSessions: [],
   filteredPeople: [],
   filteredSessions: [],
+  hasData: false,
   serviceName: 'pymkinspector',
   summary: {},
-  scrapeFrequency: 2,
+  scrapeFrequency: 6,
   mostRecent: {}
 }
 
@@ -18,6 +19,7 @@ const getters = {
   allSessions: state => state.allSessions,
   filteredPeople: state => state.filteredPeople,
   hasCredentials: state => state.hasCredentials,
+  hasData: state => state.hasData,
   filteredSessions: state => state.filteredSessions,
   username: state => state.username,
   serviceName: state => state.serviceName,
@@ -64,6 +66,7 @@ const mutations = {
   },
   SET_SUMMARY (state, summary) {
     state.summary = summary
+    state.hasData = summary.sessionCount
   },
   SET_MOST_RECENT (state, mostRecent) {
     state.mostRecent = mostRecent

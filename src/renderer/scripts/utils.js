@@ -3,8 +3,8 @@ const scheduler = require('node-schedule')
 const storage = require('electron-storage')
 const keytar = require('keytar')
 
-const setCronJob = (cb) => {
-  return scheduler.scheduleJob(`0 */12 * * * *`, cb)
+const setCronJob = (freq, cb) => {
+  return scheduler.scheduleJob(`0 0 */${freq} * * *`, cb)
 }
 
 const getConfig = () => {
@@ -25,14 +25,15 @@ const getConfig = () => {
 const initBackgroundScrape = (dbPath, cb) => {
   getConfig()
     .then((config) => {
-      setCronJob(() => {
+      const frequency = config.frequency
+      console.log(`Setting cron to every ${frequency} hours`)
+      setCronJob(frequency, () => {
         const username = config.username
         console.log(`${Date.now()} - ${username}`)
         keytar.getPassword('pymkinspector', username)
           .then((password) => {
             const type = 'background'
             const config = {username, password, type, cb, dbPath}
-            console.log(config)
             runScrape(config)
           })
       })

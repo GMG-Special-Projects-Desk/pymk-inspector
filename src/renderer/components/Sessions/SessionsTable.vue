@@ -4,7 +4,7 @@
       <div class="media-content">
         <div class="content">
             <h5> {{row.timestamp | moment("MMM Do YYYY, h:mmA") }} </h5>
-             <mark> {{row.totalPymk}} people</mark>  were suggested,
+             <mark> {{row.totalPymk}} people</mark> were suggested,
              <mark> {{row.numNew}} {{row.numNew === 1 ? 'person' : 'people'}}</mark> of them {{row.numNew === 1 ? 'was' : 'were'}} new and
              <mark> {{row.numNoMutual}} {{row.numNoMutual === 1 ? 'person' : 'people'}}</mark>
               had no mutual friends.

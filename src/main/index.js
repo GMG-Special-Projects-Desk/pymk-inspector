@@ -3,7 +3,10 @@
 import { runScrape } from '../renderer/scripts/scrape'
 import { initBackgroundScrape } from '../renderer/scripts/utils'
 import menubar from 'menubar'
-import {app, ipcMain} from 'electron'
+import {app, ipcMain, dialog} from 'electron'
+const fs = require('fs')
+const path = require('path')
+
 // var app = require('electron')
 /**
  * Set `__static` path to static files in production
@@ -31,6 +34,31 @@ ipcMain.on('fg-scrape', (event, arg) => {
 ipcMain.on('get-db-path', (event, arg) => {
   event.returnValue = app.getPath('userData')
 })
+
+ipcMain.on('quit-app', (event, arg) => {
+  app.quit()
+})
+
+ipcMain.on('export-data', (event, arg) => {
+  // FIXME:Choosing dir instead of files from electron thing.
+  dialog.showSaveDialog({title: 'Chose a folder to save the data to'}, (filepath) => {
+    try {
+      console.log(`Exporting data to ${filepath}`)
+      const dirname = path.dirname(filepath)
+      fs.writeFile(path.join(dirname, 'pymk-inspector-people.csv'), arg.exportData.pymk, (err) => {
+        if (err) throw err
+        console.log('Pymk file has been saved!')
+        fs.writeFile(path.join(dirname, 'pymk-inspector-sessions.csv'), arg.exportData.session, (err) => {
+          if (err) throw err
+          console.log('Session file has been saved!')
+        })
+      })
+    } catch (err) {
+      console.log(`Error while exporting data ${err}`)
+    }
+  })
+})
+
 function createMenuBar () {
   let mb = menubar({icon: require('path').join(__static, 'facebook-inspector-dashboard.png'),
     index: winURL,

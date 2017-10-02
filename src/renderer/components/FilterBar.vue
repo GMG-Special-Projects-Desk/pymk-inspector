@@ -18,9 +18,6 @@
             <p class="control">
               <button @click="sortButton()" class="button">
                 {{sortOrder ? 'asc' :'desc'}}
-                  <!-- <b-icon size="is-medium" :icon="sortOrder  ? 'arrow_upward' : 'arrow_downward' "> </b-icon> -->
-                <!-- } -->
-                <!-- } -->
               </button>
             </p>
             <b-input
@@ -36,9 +33,6 @@
               label=""
               style="width:100%; text-align: center;">
             </b-field>
-<!--               <p class="control">
-                  <button class="button" @click="isOpen = !isOpen" slot="trigger"><b-icon size="is-medium" icon="add"> </b-icon> </button>
-              </p> -->
             <p class="control">
               <span class="button">
                 <router-link :to="{ path: '/summary' }"> Go Back</router-link>

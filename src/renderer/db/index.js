@@ -1,4 +1,5 @@
 import {sum, curry, difference, intersection, sortBy, reverse, groupBy} from 'lodash/fp'
+const json2csv = require('json2csv')
 const LinvoDB = require('linvodb3')
 const models = require('./models')
 const Promise = require('bluebird')
@@ -34,14 +35,14 @@ const find = (query, db) => {
   })
 }
 
-const removeMany = (query, db) => {
-  return new Promise((resolve, reject) => {
-    db.remove(query, { multi: true }, (err, numRemoved) => {
-      if (err) reject(err)
-      resolve(numRemoved)
-    })
-  })
-}
+// const removeMany = (query, db) => {
+//   return new Promise((resolve, reject) => {
+//     db.remove(query, { multi: true }, (err, numRemoved) => {
+//       if (err) reject(err)
+//       resolve(numRemoved)
+//     })
+//   })
+// }
 
 // Session
 const prepNewSession = (task) => {
@@ -73,19 +74,19 @@ const insertSession = ({dbPath, data}) => {
 }
 
 // PYMK
-export const removeFbids = (task) => {
-  return new Promise((resolve, reject) => {
-    try {
-      const ids = task.data.map((d) => { return parseInt(d.fbid) })
-      const query = {fbid: {$in: ids}}
-      removeMany(query, task.db).then((numRemoved) => {
-        resolve(numRemoved)
-      })
-    } catch (err) {
-      reject(err)
-    }
-  })
-}
+// export const removeFbids = (task) => {
+//   return new Promise((resolve, reject) => {
+//     try {
+//       const ids = task.data.map((d) => { return parseInt(d.fbid) })
+//       const query = {fbid: {$in: ids}}
+//       removeMany(query, task.db).then((numRemoved) => {
+//         resolve(numRemoved)
+//       })
+//     } catch (err) {
+//       reject(err)
+//     }
+//   })
+// }
 
 export const getExistingPymk = (task, idsOnly = false) => {
   return new Promise((resolve, reject) => {
@@ -184,19 +185,59 @@ export const getAll = (model, dbPath) => {
   return find({}, task.db)
 }
 
-export const removeAll = (model, dbPath, data) => {
-  const task = initDB(model, dbPath, data)
+export const removeAll = (current) => {
+  const task = initDB(current.model, current.dbPath, {})
   return new Promise((resolve, reject) => {
-    try {
-      removeMany({}, task.db).then((numRemoved) => {
-        resolve(numRemoved)
-      })
-    } catch (err) {
-      reject(err)
-    }
+    task.db.remove({}, { multi: true }, (err, numRemoved) => {
+      if (err) reject(err)
+      resolve({...current, ...{data: numRemoved}})
+    })
   })
 }
 
+export const getAllExport = (current) => {
+  const task = initDB(current.model, current.dbPath, {})
+  return new Promise((resolve, reject) => {
+    task.db.find({}, (err, docs) => {
+      if (err) reject(err)
+      const updated = {...current, ...{data: docs}}
+      resolve(updated)
+    })
+  })
+}
+
+export const deleteAllData = (dbPath) => {
+  return removeAll({model: 'pymk', dbPath})
+    .then((current) => {
+      return removeAll(...current, {model: 'session', dbPath: dbPath, pymk: current.data})
+    })
+    .then((current) => {
+      const result = {...current, session: current.data}
+      delete result.data
+      return result
+    })
+}
+
+export const getAllData = (dbPath) => {
+  return getAllExport({model: 'pymk', dbPath})
+    .then((current) => {
+      return getAllExport(...current, {model: 'session', dbPath: dbPath, pymk: current.data})
+    })
+    .then((current) => {
+      const result = {...current, session: current.data}
+      delete result.data
+      return result
+    })
+}
+
+export const getCsvData = (dbPath) => {
+  return getAllData(dbPath)
+    .then((results) => {
+      const pymk = json2csv({data: results.pymk, fields: Object.keys(results.pymk[0])})
+      const session = json2csv({data: results.session, fields: Object.keys(results.session[0])})
+      return {pymk, session}
+    })
+}
 // Summary Queries
 export const SessionsCount = ({dbPath, current}) => {
   const task = initDB('session', dbPath, {})

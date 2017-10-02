@@ -48,7 +48,6 @@
             console.log(`There was an error in the scrape! ${arg.error}`)
             return
           }
-
           console.log(event, arg)
           this.setDbPath(arg.dbPath)
           console.log('Scrape Complete!')
@@ -125,6 +124,28 @@
 </script>
 
 <style lang="scss">
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(http://fonts.gstatic.com/s/materialicons/v29/2fcrYFNaTjcS6g4U3t-Y5UEw0lE80llgEseQY3FEmqw.woff2) format('woff2');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
 // Import Bulma's core
 @import "~bulma/sass/utilities/_all";
 
@@ -203,6 +224,9 @@ body {
   justify-content: space-between;
   min-height: 400px;
   padding-top:100px;
+}
+.section.main {
+  padding-top:80px;
 }
 
 .section {

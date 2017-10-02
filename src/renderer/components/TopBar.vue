@@ -6,14 +6,14 @@
         <h1 class="title is-4 has-text-centered">
           {{$route.name | capitalize}}
         </h1>
-        <h2 class="subtitle">
-        </h2>
+
       </div>
     </div>
   </section>
 </template>
 
 <script>
+
 export default {
   name: 'TopBar',
   filters: {

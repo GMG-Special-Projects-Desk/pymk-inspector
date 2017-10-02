@@ -32,7 +32,7 @@ ipcMain.on('get-db-path', (event, arg) => {
   event.returnValue = app.getPath('userData')
 })
 function createMenuBar () {
-  let mb = menubar({icon: require('path').join(__static, 'facebook-inspector.png'),
+  let mb = menubar({icon: require('path').join(__static, 'facebook-inspector-dashboard.png'),
     index: winURL,
     width: 400,
     height: 500,

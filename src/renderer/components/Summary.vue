@@ -1,5 +1,5 @@
 <template>
- <section v-if="summary" class="section">
+ <section v-if="summary" class="section summary">
     <div class="panel-top">
       <a> <router-link :to="{ path: '/' }">Go Back</router-link></a>
     </div>

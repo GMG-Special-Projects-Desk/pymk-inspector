@@ -9,7 +9,7 @@
 <script>
   import {ipcRenderer} from 'electron'
   import { mapActions } from 'vuex'
-  import {getSummary, getMostRecentSession, updateDB, getAll} from '@/db'
+  import {getSummary, getMostRecentSession, updateDB} from '@/db'
   import TopBar from './components/TopBar'
   import BottomBar from './components/BottomBar'
 
@@ -186,7 +186,7 @@ body {
   left: 0px;
 }
 
-.section {
+.section.summary {
   background-color: $background;
   display: flex;
   align-items: center;
@@ -194,6 +194,25 @@ body {
   justify-content: space-between;
   min-height: 400px;
   padding-top:100px;
+}
+.section.settings {
+  background-color: $background;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 400px;
+  padding-top:100px;
+}
+
+.section {
+  background-color: $background;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 400px;
+  padding-top:130px;
 }
 
 .panel {
@@ -245,7 +264,12 @@ input {
   font-size: 0.8em;
 }
 
-bu
+.notification {
+  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+  font-size: 0.8em;
+  background-color : $light-green;
+  color: $light-green-invert;
+}
 .name:hover {
   background-color: $red;
   cursor: pointer;

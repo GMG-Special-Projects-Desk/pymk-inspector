@@ -7887,6 +7887,10 @@ vue-loader@^12.2.2:
     vue-style-loader "^3.0.0"
     vue-template-es2015-compiler "^1.2.2"
 
+vue-lodash@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/vue-lodash/-/vue-lodash-1.0.4.tgz#99f4f2f5832ce0168c4d45618789288a638562cd"
+
 vue-moment@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/vue-moment/-/vue-moment-2.0.2.tgz#c480341f281d8edc08126ffea5c45ce92e6c584b"

@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="section settings">
     <div class="panel-top">
       <a> <router-link :to="{ path: '/' }">Go Back</router-link></a>
     </div>
@@ -29,6 +29,7 @@
       <b-field grouped>
           <p class="control">
             <button @click="scrape()" class="panel"> <span class="name"> <a> Run it now </a> </span></button>
+            <button @click="scrape()" class="panel"> <span class="name"> <a> Data Settings </a> </span></button>
           </p>
       </b-field>
   </section>

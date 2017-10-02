@@ -25,7 +25,6 @@
 </section>
 </template>
 <script>
-import {getAll} from '@/db'
 import {mapGetters} from 'vuex'
 const {shell} = require('electron')
 

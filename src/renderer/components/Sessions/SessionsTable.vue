@@ -17,9 +17,7 @@
 </template>
 
 <script>
-import {getAll} from '@/db'
 import {mapGetters} from 'vuex'
-
 export default {
   name: 'SessionsTable',
   computed: {

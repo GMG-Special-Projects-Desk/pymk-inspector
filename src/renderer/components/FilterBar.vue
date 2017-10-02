@@ -16,8 +16,11 @@
                 </b-dropdown>
             </p>
             <p class="control">
-              <button @click="sortButton()" class="button is-info is-inverted">
-                  <b-icon size="is-medium" :icon="sortOrder  ? 'arrow_upward' : 'arrow_downward' "> </b-icon>
+              <button @click="sortButton()" class="button">
+                {{sortOrder ? 'asc' :'desc'}}
+                  <!-- <b-icon size="is-medium" :icon="sortOrder  ? 'arrow_upward' : 'arrow_downward' "> </b-icon> -->
+                <!-- } -->
+                <!-- } -->
               </button>
             </p>
             <b-input
@@ -28,11 +31,14 @@
               type="search"
               placeholder="Search...">
             </b-input>
-            <!-- <b-field v-else> -->
-              <p class="control">
+            <b-field
+              v-else
+              label=""
+              style="width:100%; text-align: center;">
+            </b-field>
+<!--               <p class="control">
                   <button class="button" @click="isOpen = !isOpen" slot="trigger"><b-icon size="is-medium" icon="add"> </b-icon> </button>
-              </p>
-            <!-- </b-field> -->
+              </p> -->
             <p class="control">
               <span class="button">
                 <router-link :to="{ path: '/summary' }"> Go Back</router-link>
@@ -42,9 +48,8 @@
         <b-collapse :open.sync="isOpen">
             <div class="notification">
                 <div class="content">
-                  Displaying {{filteredTotal}} of {{allTotal}}
-                  <br>
-                  Sorting by {{this.sortText}}
+                  Sorting by {{this.sortText}} <span v-if="this.$route.name === 'people'">. Displaying {{filteredTotal}} of {{allTotal}}</span>
+
                 </div>
             </div>
         </b-collapse>
@@ -53,14 +58,13 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
-import {getAll} from '@/db'
 export default {
   name: 'FilterBar',
   data () {
     return {
       sortKey: '',
       sortText: '',
-      isOpen: false,
+      isOpen: true,
       sortOrder: true,
       filterKey: ''
     }
@@ -100,8 +104,8 @@ export default {
       const order = this.sortOrder ? 1 : -1
       if (sortKey) {
         data = data.slice().sort(function (a, b) {
-          a = a[sortKey]
-          b = b[sortKey]
+          a = a[sortKey.value]
+          b = b[sortKey.value]
           return (a === b ? 0 : a > b ? 1 : -1) * order
         })
       }
@@ -158,7 +162,5 @@ export default {
 .filterbar {
   margin-bottom: 0px;
 }
-.notification {
-padding: 0.25rem 0.5rem 0.25rem 0.5rem;
-}
+
 </style>

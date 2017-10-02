@@ -9,6 +9,10 @@ import vueMoment from 'vue-moment'
 import Buefy from 'buefy'
 import 'buefy/lib/buefy.css'
 
+import lodash from 'lodash'
+import VueLodash from 'vue-lodash'
+Vue.use(VueLodash, lodash)
+
 Vue.use(vueMoment)
 Vue.use(Buefy)
 Vue.use(VueElectronStorage)

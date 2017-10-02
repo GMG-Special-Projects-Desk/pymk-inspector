@@ -13,3 +13,4 @@ thumbs.db
 test-db.js
 test-html.js
 testing.js
+src/renderer/db/index-with-db.js

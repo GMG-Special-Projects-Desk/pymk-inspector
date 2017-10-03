@@ -54,7 +54,7 @@
       return {
         userNameModel: '',
         passwordModel: '',
-        frequencyModel: '3',
+        frequencyModel: '',
         err: false,
         keytar: keytar
       }

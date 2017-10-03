@@ -26,6 +26,11 @@ export default new Router({
       component: require('@/components/Sessions')
     },
     {
+      path: '/sessions-people',
+      name: 'sessions people',
+      component: require('@/components/Sessions/SessionPeopleTable')
+    },
+    {
       path: '/people',
       name: 'people',
       component: require('@/components/People')

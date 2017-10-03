@@ -9,7 +9,7 @@
              <mark> {{row.numNoMutual}} {{row.numNoMutual === 1 ? 'person' : 'people'}}</mark>
               had no mutual friends.
              <br>
-            <span class="name"> See the list </span>
+            <span @click="seePeopleFromSession(row)" class="name"> See the list </span>
         </div>
       </div>
     </article>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 export default {
   name: 'SessionsTable',
   computed: {
@@ -30,7 +30,21 @@ export default {
     },
     ...mapGetters([
       'filteredSessions',
-      'allSessions'
+      'allSessions',
+      'allPeople'
+    ])
+  },
+  methods: {
+    seePeopleFromSession (row) {
+      const sessionPeople = this.allPeople.slice().filter((t) => {
+        return row.pymkIds.indexOf(t.fbid) > -1
+      })
+      console.log(row.pymkIds, this.allPeople)
+      this.setSessionFbids(sessionPeople)
+      this.$router.push({name: 'sessions-people'})
+    },
+    ...mapActions([
+      'setSessionFbids'
     ])
   }
 }

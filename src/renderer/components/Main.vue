@@ -27,8 +27,8 @@
       </div>
       <div class="panel">
         It looks like this is either your first time or you don't have your credentials stored.
-        Please go to the setting page to add your Facebook credentials.
-        These are stored in your computers keychain and never recorded or directly read by this app.
+        Please go to settings to add your Facebook credentials.
+        These are stored in your computer's keychain and never recorded or directly read by this app.
       </div>
       <div class="panel">
         <span class="name"> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></span>

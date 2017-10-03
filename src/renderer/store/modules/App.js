@@ -4,6 +4,7 @@ const state = {
   username: '',
   allPeople: [],
   allSessions: [],
+  sessionFbids: [],
   filteredPeople: [],
   filteredSessions: [],
   hasData: false,
@@ -20,6 +21,7 @@ const getters = {
   filteredPeople: state => state.filteredPeople,
   hasCredentials: state => state.hasCredentials,
   hasData: state => state.hasData,
+  sessionFbids: state => state.sessionFbids,
   filteredSessions: state => state.filteredSessions,
   username: state => state.username,
   serviceName: state => state.serviceName,
@@ -41,9 +43,15 @@ const mutations = {
   SET_SESSION_IDS (state, sessionIds) {
     state.sessionIds = sessionIds
   },
+  SET_SESSION_FBIDS (state, sessionFbids) {
+    state.sessionFbids = sessionFbids
+  },
   CLEAR_SESSIONS (state) {
     state.allSessions = []
     state.filteredSessions = []
+  },
+  CLEAR_SESSION_FBIDS (state) {
+    state.sessionFbids = []
   },
   SET_FILTERED_PEOPLE (state, filteredPeople) {
     state.filteredPeople = filteredPeople
@@ -89,6 +97,9 @@ const actions = {
   setMostRecent ({ commit }, mostRecent) {
     commit('SET_MOST_RECENT', mostRecent)
   },
+  setSessionFbids ({ commit }, sessionFbids) {
+    commit('SET_SESSION_FBIDS', sessionFbids)
+  },
   setSummary ({ commit }, summary) {
     commit('SET_SUMMARY', summary)
   },
@@ -112,6 +123,9 @@ const actions = {
   },
   clearPeople ({ commit }) {
     commit('CLEAR_PEOPLE')
+  },
+  clearSessionFbids ({ commit }) {
+    commit('CLEAR_SESSION_FBIDS')
   }
 }
 

@@ -34,7 +34,7 @@
 
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
-  import dummy from '../../../test-db.js'
+  // import dummy from '../../../test-db.js'
   import { removeAll, getAll, insertPeople, getNewPymk, getExistingPymk } from '@/db'
   import {mapGetters, mapActions} from 'vuex'
   var {ipcRenderer} = require('electron')
@@ -63,7 +63,7 @@
         ipcRenderer.send('async', {username: this.username, password: this.password})
       },
       insertPeople () {
-        insertPeople({dbPath: this.dbPath, data: dummy.data})
+        insertPeople({dbPath: this.dbPath, data: {}})
           .then((d) => { console.log(d) })
           .catch(err => { console.log(err) })
       },
@@ -84,13 +84,13 @@
           .catch(err => { console.log(err) })
       },
       getNewPYMK () {
-        return getNewPymk({dbPath: this.dbPath, data: dummy.data})
+        // return getNewPymk({dbPath: this.dbPath, data: dummy.data})
       },
       getExistingPymk () {
-        return getExistingPymk({dbPath: this.dbPath, data: dummy.data})
+        // return getExistingPymk({dbPath: this.dbPath, data: dummy.data})
       },
       updateDB () {
-        return getExistingPymk({dbPath: this.dbPath, data: dummy.data})
+        // return getExistingPymk({dbPath: this.dbPath, data: dummy.data})
       },
       ...mapActions([
         'setDbPath'

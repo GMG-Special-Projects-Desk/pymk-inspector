@@ -62,6 +62,12 @@ const prepNewSession = (task) => {
     resolve(d)
   })
 }
+
+const updateExistingManySessions = ({db, data}) => {
+  return Promise.map(data, (p) => {
+    return updateExistingPerson(db, p)
+  })
+}
 const insertSession = ({dbPath, data}) => {
   const task = initDB('session', dbPath, data)
   return getAll('pymk', dbPath, data)
@@ -73,20 +79,102 @@ const insertSession = ({dbPath, data}) => {
     })
 }
 
+export const getSession = ({dbPath, timestamp}) => {
+  const task = initDB('session', dbPath, {})
+  return find({timestamp: timestamp}, task.db)
+}
+
+export const getSessionNew = ({dbPath, timestamp}) => {
+  return getSession({dbPath, timestamp})
+    .then((result) => {
+      return getPymkById({dbPath, ids: result[0].pymkIds})
+    })
+    .then((pymk) => {
+      return pymk.filter((p) => {
+        const diff = (new Date(p.created) - new Date(timestamp)) / 1000
+        // need to do this because timestamps may differ by seconds between session-timestamp and pymk-created
+        return diff < 5
+      })
+    })
+}
+
+export const getSessionNoMutual = ({dbPath, timestamp, numNoMutal}) => {
+  return getSession({dbPath, timestamp})
+    .then((result) => {
+      console.log(result)
+      return getPymkById({dbPath, ids: result[0].pymkIds})
+    })
+    .then((pymks) => {
+      const fromDb = pymks.filter((p) => {
+        return p.mutualFriends < 1
+      })
+      if (fromDb.length !== numNoMutal) {
+        console.log(`numNoMutual has changed! updating ${timestamp} to ${fromDb.length}`)
+        return updateSessionDbNoMutual({dbPath, timestamp, numNoMutal: fromDb.length})
+          .then((results) => {
+            console.log(`numNoMutual has changed! updating ${timestamp} to ${fromDb.length}`)
+            return fromDb
+          })
+      } else {
+        return fromDb
+      }
+    })
+}
+// {dbPath, timestamp, numNoMutual}
+export const updateSessionDbNoMutual = (dbPath) => {
+  return getAll('session', dbPath, {})
+    .then((sessions) => {
+      return Promise.map(sessions, (s) => {
+        const numNoMutal = s.numNoMutual
+        const timestamp = s.timestamp
+        return getPymkById({dbPath, ids: s.pymkIds})
+          .then((pymks) => {
+            const fromDb = pymks.filter((p) => {
+              return p.mutualFriends < 1
+            })
+            if (fromDb.length !== numNoMutal) {
+              console.log(fromDb)
+              return {timestamp, newNumNoMutual: fromDb.length}
+            } else {
+              return false
+            }
+          })
+      })
+    })
+    .then((sessionInfo) => {
+      const sessionsToUpdate = sessionInfo.filter((s) => {
+        return s
+      })
+      console.log(`${sessionsToUpdate.length} sessions to update`)
+      const task = initDB('session', dbPath, {})
+      return Promise.map(sessionsToUpdate, (sessionData) => {
+        return updateSession(task.db, sessionData)
+      })
+    })
+}
+const updateSession = (db, sessionData) => {
+  return new Promise((resolve, reject) => {
+    db.update({timestamp: sessionData.timestamp}, {$set: {numNoMutual: sessionData.newNumNoMutual}}, {}, (err, num) => {
+      if (err) { reject(err) }
+      resolve(`updating ${sessionData.timestamp} to ${sessionData.newNumNoMutual} no mutual friends`)
+    })
+  })
+}
 // PYMK
-// export const removeFbids = (task) => {
-//   return new Promise((resolve, reject) => {
-//     try {
-//       const ids = task.data.map((d) => { return parseInt(d.fbid) })
-//       const query = {fbid: {$in: ids}}
-//       removeMany(query, task.db).then((numRemoved) => {
-//         resolve(numRemoved)
-//       })
-//     } catch (err) {
-//       reject(err)
-//     }
-//   })
-// }
+export const getPymkById = ({dbPath, ids}) => {
+  const task = initDB('pymk', dbPath, {})
+  return new Promise((resolve, reject) => {
+    try {
+      const query = {'fbid': {$in: ids}}
+      console.log(task.db)
+      find(query, task.db).then((docs) => {
+        resolve(docs)
+      })
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
 
 export const getExistingPymk = (task, idsOnly = false) => {
   return new Promise((resolve, reject) => {
@@ -130,7 +218,7 @@ const prepNewPYMK = (newPymk) => {
 
 const updateExistingPerson = (db, person) => {
   return new Promise((resolve, reject) => {
-    db.update({fbid: parseInt(person.fbid)}, {$addToSet: {sessions: person.session}, $set: {imgSrc: person.imgSrc}}, {}, (err, num) => {
+    db.update({fbid: parseInt(person.fbid)}, {$addToSet: {sessions: person.session}, $set: {imgSrc: person.imgSrc, mutualFriends: person.mutualFriends}}, {}, (err, num) => {
       if (err) { reject(err) }
       resolve(num)
     })
@@ -296,11 +384,6 @@ export const findMostRecentSession = ({dbPath, current}) => {
         resolve({dbPath: dbPath, current: updatedOutput})
       })
   })
-}
-
-export const getSession = ({dbPath, timestamp}) => {
-  const task = initDB('session', dbPath, {})
-  return find({timestamp: timestamp}, task.db)
 }
 
 export const getCommonPymk = ({dbPath, current}) => {

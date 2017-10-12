@@ -11,6 +11,9 @@ function parseMutual (mfStr) {
     numMutual = 2
   } else if (mfStr.indexOf('is a mutual friend') > -1) {
     numMutual = 1
+  } else if (/\d{1,} mutual friends/.test(mfStr)) {
+    const tokens = mfStr.split(' ')
+    numMutual = parseInt(tokens[0])
   }
   return numMutual
 }
@@ -24,6 +27,9 @@ export const parsePymk = (html) => {
     const fbid = $('div.friendBrowserNameTitle', el).children('a').data('gt').engagement.eng_tid
     const mfStr = $('.friendBrowserSocialContext', el).children('span').contents().text()
     const mutualFriends = parseMutual($('.friendBrowserSocialContext', el).children('span').contents().text())
+    if (mutualFriends === 0) {
+      console.log(name, `-${mfStr}-`)
+    }
     const job = $('.friendBrowserMarginTopMini', el).contents().text()
     const session = moment().format()
     return {fbid, name, url, mfStr, mutualFriends, job, session, imgSrc}

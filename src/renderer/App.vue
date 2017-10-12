@@ -29,6 +29,9 @@
         if (from.name === 'people') {
           this.clearPeople()
         }
+        if (from.name === 'sessions people') {
+          this.clearSessionFbids()
+        }
       }
     },
     components: {
@@ -117,7 +120,8 @@
         'setMostRecent',
         'setSummary',
         'clearSessions',
-        'clearPeople'
+        'clearPeople',
+        'clearSessionFbids'
       ])
     }
   }

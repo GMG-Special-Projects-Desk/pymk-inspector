@@ -23,13 +23,13 @@
     watch: {
       '$route' (to, from) {
         // allPeople and allSessions are loaded in their respective components
-        if (from.name === 'sessions') {
+        if (to.name === 'pymk-inspector' && from.name === 'sessions') {
           this.clearSessions()
         }
-        if (from.name === 'people') {
+        if (to.name === 'pymk-inspector' && from.name === 'people') {
           this.clearPeople()
         }
-        if (from.name === 'sessions people') {
+        if (to.name === 'sessions' && from.name === 'sessions people') {
           this.clearSessionFbids()
         }
       }
@@ -65,6 +65,22 @@
             .then(getMostRecentSession)
             .then((d) => {
               this.setMostRecent(d[0])
+              return d
+            })
+            .then((d) => {
+              return this.$storage
+                .get(`${this.serviceName}.json`)
+                .then((config) => {
+                  console.log(config)
+                  return {...config, ...{mostRecent: d[0].timestamp}}
+                })
+            })
+            .then((updatedConfig) => {
+              console.log(updatedConfig)
+              return this.$storage.set(`${this.serviceName}.json`, updatedConfig)
+            })
+            .then((d) => {
+              console.log(`completed: ${d}`)
             })
             .catch((err) => {
               console.log(`err: ${err}`)
@@ -108,6 +124,18 @@
                   }
                   return d
                 })
+            // .then((d) => {
+            //   return this.$storage
+            //     .get(`${this.serviceName}.json`)
+            //     .then((config) => {
+            //       console.log(config)
+            //       return {...config, ...{mostRecent: d[0].timestamp}}
+            //     })
+            // })
+            // .then((updatedConfig) => {
+            //   console.log(updatedConfig)
+            //   return this.$storage.set(`${this.serviceName}.json`, updatedConfig)
+            // })
             }
           })
       },
@@ -240,7 +268,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   min-height: 400px;
-  padding-top:130px;
+  padding-top: 140px;
 }
 
 .panel {

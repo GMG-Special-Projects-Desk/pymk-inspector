@@ -8,6 +8,7 @@
                         <b-icon icon="arrow_drop_down"></b-icon>
                     </button>
                     <b-dropdown-item
+                      @click="sortButton()"
                       v-for="f in filter"
                       :key="f.value"
                       :value="f">
@@ -17,7 +18,8 @@
             </p>
             <p class="control">
               <button @click="sortButton()" class="button">
-                {{sortOrder ? 'asc' :'desc'}}
+                <!-- {{sortOrder ? 'asc' :'desc'}} -->
+                <b-icon size="is-medium" :icon="sortOrder  ? 'arrow_upward' : 'arrow_downward' "> </b-icon>                
               </button>
             </p>
             <b-input
@@ -42,7 +44,9 @@
         <b-collapse :open.sync="isOpen">
             <div class="notification">
                 <div class="content">
-                  Sorting by {{this.sortText}} <span v-if="this.$route.name === 'people'">. Displaying {{filteredTotal}} of {{allTotal}}</span>
+                  <span v-if="this.$route.name !== 'sessions-people'"> Sorting by {{this.sortText}}.</span>
+                  <span v-if="this.$route.name === 'people'">Displaying {{filteredTotal}} of {{allTotal}} </span>
+                  <span v-if="this.$route.name === 'sessions-people'"> Displaying {{sessionFbids.length}} of {{currentSession.totalPymk}}</span>
 
                 </div>
             </div>
@@ -65,6 +69,10 @@ export default {
   },
   created () {
     this.sortKey = this.filter[0]
+    const data = this.getCurrentData()
+    const sortedData = this.sortData(data, this.sortKey)
+    this.setData(sortedData)
+    this.sortText = 'Name'
   },
   watch: {
     sortKey (value) {
@@ -143,6 +151,8 @@ export default {
     ...mapGetters([
       'pymkFilters',
       'sessionFilters',
+      'sessionFbids',
+      'currentSession',
       'allSessions',
       'filteredSessions',
       'allPeople',

@@ -13,6 +13,7 @@
         </b-field>
         <b-field label="Frequency">
             <b-select  v-model="frequencyModel" placeholder="How often do you want to run the insepctor?">
+                <option value="1"> Every 1 hours </option>
                 <option value="3"> Every 3 hours </option>
                 <option value="6"> Every 6 hours (default) </option>
                 <option value="12"> Every 12 hours </option>
@@ -113,7 +114,7 @@
                 this.deleteCredentials()
                 this.userNameModel = ''
                 this.passwordModel = ''
-                this.frequencyModel = '3'
+                this.frequencyModel = '6'
                 this.info('Settings deleted')
               })
               .catch((err) => {

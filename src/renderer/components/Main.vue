@@ -61,7 +61,19 @@
           })
           .then(getMostRecentSession)
           .then((d) => {
-            this.setMostRecent(d[0])
+            return this.$storage
+              .get(`${this.serviceName}.json`)
+              .then((config) => {
+                console.log(config)
+                return {...config, ...{mostRecent: d[0].timestamp}}
+              })
+          })
+          .then((updatedConfig) => {
+            console.log(updatedConfig)
+            return this.$storage.set(`${this.serviceName}.json`, updatedConfig)
+          })
+          .then((d) => {
+            console.log(d)
           })
           .catch((err) => {
             console.log(`err: ${err}`)

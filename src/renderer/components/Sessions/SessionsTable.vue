@@ -4,12 +4,9 @@
       <div class="media-content">
         <div class="content">
             <h5> {{row.timestamp | moment("MMM Do YYYY, h:mmA") }} </h5>
-             <mark> {{row.totalPymk}}</mark> were suggested,
-             <mark @click="newFromSession(row)"> {{row.numNew}} {{row.numNew === 1 ? 'person' : 'people'}}</mark> of them {{row.numNew === 1 ? 'was' : 'were'}} new and
-             <mark @click="noMutualFromSession(row)"> {{row.numNoMutual}} {{row.numNoMutual === 1 ? 'person' : 'people'}}</mark>
-              had no mutual friends.
-             <br>
-            <span @click="seePeopleFromSession(row)" class="name"> See the list </span>
+             <mark @click="seePeopleFromSession(row)"> {{row.totalPymk}} {{row.totalPymk === 1 ? 'person' : 'people'}}</mark> were suggested,
+             <mark @click="newFromSession(row)"> {{row.numNew}} new</mark> and
+             <mark @click="noMutualFromSession(row)"> {{row.numNoMutual}} {{row.numNoMutual === 1 ? 'person' : 'people'}} with no mutual friends</mark>.
         </div>
       </div>
     </article>
@@ -18,7 +15,7 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
-import {getPymkById, updateSessionDbNoMutual, getSessionNew} from '@/db'
+import {getPymkById, getSessionNoMutual, getSessionNew} from '@/db'
 export default {
   name: 'SessionsTable',
   computed: {
@@ -38,45 +35,46 @@ export default {
   },
   methods: {
     seePeopleFromSession (row) {
-      console.log({dbPath: this.dbPath, ids: row.pymkIds})
+      this.setCurrentSession(row)
       getPymkById({dbPath: this.dbPath, ids: row.pymkIds})
         .then((people) => {
-          console.log(people)
           this.setSessionFbids(people)
-          this.$router.push({name: 'sessions people'})
+          this.$router.push({name: 'sessions-people'})
         })
         .catch((err) => {
           console.log(`error seePeopleFromSession: ${err}`)
         })
     },
     noMutualFromSession (row) {
-      console.log(row)
-      updateSessionDbNoMutual(this.dbPath)
-        .then((result) => {
-          console.log(result)
+      this.setCurrentSession(row)
+      getSessionNoMutual({dbPath: this.dbPath, timestamp: row.timestamp, numNoMutual: row.numNoMutual})
+        .then((people) => {
+          if (people.length > 0) {
+            this.setSessionFbids(people)
+            this.$router.push({name: 'sessions-people'})
+          }
         })
         .catch((err) => {
-          console.log(`error: updateSessionDbNoMutual: ${err}`)
+          console.log(`error: noMutualFromSession: ${err}`)
         })
-      // getSessionNoMutual({dbPath: this.dbPath, timestamp: row.timestamp, numNoMutual: row.numNoMutual})
-      //   .then((people) => {
-      //     console.log(people)
-      //   })
-      //   .catch((err) => {
-      //     console.log(`error: noMutualFromSession: ${err}`)
-      //   })
     },
     newFromSession (row) {
+      this.setCurrentSession(row)
       getSessionNew({dbPath: this.dbPath, timestamp: row.timestamp})
         .then((people) => {
-          console.log(people)
+          if (people.length > 0) {
+            console.log(people.length)
+            this.setSessionFbids(people)
+            this.$router.push({name: 'sessions-people'})
+          }
         })
         .catch((err) => {
           console.log(`error newFromSession: ${err}`)
         })
     },
     ...mapActions([
-      'setSessionFbids'
+      'setSessionFbids',
+      'setCurrentSession'
     ])
   }
 }

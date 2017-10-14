@@ -72,7 +72,6 @@ function createMenuBar () {
     console.log('app is ready')
     initBackgroundScrape(app.getPath('userData'),
       (results) => {
-        console.log(results.dbPath)
         mb.window.webContents.send('bg-scrape', results)
       })
   })

@@ -63,11 +63,11 @@ const prepNewSession = (task) => {
   })
 }
 
-const updateExistingManySessions = ({db, data}) => {
-  return Promise.map(data, (p) => {
-    return updateExistingPerson(db, p)
-  })
-}
+// const updateExistingManySessions = ({db, data}) => {
+//   return Promise.map(data, (p) => {
+//     return updateExistingPerson(db, p)
+//   })
+// }
 const insertSession = ({dbPath, data}) => {
   const task = initDB('session', dbPath, data)
   return getAll('pymk', dbPath, data)
@@ -91,26 +91,25 @@ export const getSessionNew = ({dbPath, timestamp}) => {
     })
     .then((pymk) => {
       return pymk.filter((p) => {
+        // need to do it like this because the timestamps may differ by seconds (ms/1000)
         const diff = (new Date(p.created) - new Date(timestamp)) / 1000
-        // need to do this because timestamps may differ by seconds between session-timestamp and pymk-created
-        return diff < 5
+        return Math.abs(diff) < 5
       })
     })
 }
 
-export const getSessionNoMutual = ({dbPath, timestamp, numNoMutal}) => {
+export const getSessionNoMutual = ({dbPath, timestamp, numNoMutual}) => {
   return getSession({dbPath, timestamp})
     .then((result) => {
-      console.log(result)
       return getPymkById({dbPath, ids: result[0].pymkIds})
     })
     .then((pymks) => {
       const fromDb = pymks.filter((p) => {
         return p.mutualFriends < 1
       })
-      if (fromDb.length !== numNoMutal) {
-        console.log(`numNoMutual has changed! updating ${timestamp} to ${fromDb.length}`)
-        return updateSessionDbNoMutual({dbPath, timestamp, numNoMutal: fromDb.length})
+      if (fromDb.length !== numNoMutual) {
+        console.log(`numNoMutual has changed! updating ${timestamp}  from ${numNoMutual}to ${fromDb.length}`)
+        return updateSessionDbNoMutual({dbPath})
           .then((results) => {
             console.log(`numNoMutual has changed! updating ${timestamp} to ${fromDb.length}`)
             return fromDb
@@ -121,7 +120,7 @@ export const getSessionNoMutual = ({dbPath, timestamp, numNoMutal}) => {
     })
 }
 // {dbPath, timestamp, numNoMutual}
-export const updateSessionDbNoMutual = (dbPath) => {
+export const updateSessionDbNoMutual = ({dbPath}) => {
   return getAll('session', dbPath, {})
     .then((sessions) => {
       return Promise.map(sessions, (s) => {

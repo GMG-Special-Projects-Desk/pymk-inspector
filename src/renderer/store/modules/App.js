@@ -4,6 +4,7 @@ const state = {
   username: '',
   allPeople: [],
   allSessions: [],
+  currentSession: {},
   sessionFbids: [],
   filteredPeople: [],
   filteredSessions: [],
@@ -18,6 +19,7 @@ const getters = {
   dbPath: state => state.dbPath,
   allPeople: state => state.allPeople,
   allSessions: state => state.allSessions,
+  currentSession: state => state.currentSession,
   filteredPeople: state => state.filteredPeople,
   hasCredentials: state => state.hasCredentials,
   hasData: state => state.hasData,
@@ -40,6 +42,9 @@ const mutations = {
   SET_ALL_SESSIONS (state, allSessions) {
     state.allSessions = allSessions
   },
+  SET_CURRENT_SESSION (state, currentSession) {
+    state.currentSession = currentSession
+  },
   SET_SESSION_IDS (state, sessionIds) {
     state.sessionIds = sessionIds
   },
@@ -49,6 +54,7 @@ const mutations = {
   CLEAR_SESSIONS (state) {
     state.allSessions = []
     state.filteredSessions = []
+    state.currentSession = {}
   },
   CLEAR_SESSION_FBIDS (state) {
     state.sessionFbids = []
@@ -111,6 +117,9 @@ const actions = {
   },
   setAllSessions ({ commit }, allSessions) {
     commit('SET_ALL_SESSIONS', allSessions)
+  },
+  setCurrentSession ({ commit }, currentSession) {
+    commit('SET_CURRENT_SESSION', currentSession)
   },
   setFilteredPeople ({ commit }, filteredPeople) {
     commit('SET_FILTERED_PEOPLE', filteredPeople)

@@ -7,7 +7,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'People You May Know Inspector',
+      name: 'pymk-inspector',
       component: require('@/components/Main')
     },
     {
@@ -27,8 +27,8 @@ export default new Router({
     },
     {
       path: '/sessions-people',
-      name: 'sessions people',
-      component: require('@/components/Sessions/SessionPeopleTable')
+      name: 'sessions-people',
+      component: require('@/components/Sessions')
     },
     {
       path: '/people',

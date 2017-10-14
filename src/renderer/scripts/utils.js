@@ -2,9 +2,10 @@ const { runScrape } = require('./scrape')
 const scheduler = require('node-schedule')
 const storage = require('electron-storage')
 const keytar = require('keytar')
-
-const setCronJob = (freq, cb) => {
-  return scheduler.scheduleJob(`0 0 */${freq} * * *`, cb)
+const moment = require('moment')
+const setCronJob = (cb) => {
+  // return scheduler.scheduleJob(`0 0 */${freq} * * *`, cb)
+  return scheduler.scheduleJob(`0 * * * * *`, cb)
 }
 
 const getConfig = () => {
@@ -26,16 +27,21 @@ const initBackgroundScrape = (dbPath, cb) => {
   getConfig()
     .then((config) => {
       const frequency = config.frequency
-      console.log(`Setting cron to every ${frequency} hours`)
-      setCronJob(frequency, () => {
+      console.log(`Setting scrape to check every ${frequency} hours`)
+      setCronJob(() => {
         const username = config.username
-        console.log(`${Date.now()} - ${username}`)
-        keytar.getPassword('pymkinspector', username)
-          .then((password) => {
-            const type = 'background'
-            const config = {username, password, type, cb, dbPath}
-            runScrape(config)
-          })
+        const mostRecent = moment(config.mostRecent)
+        const now = moment()
+        const timeSinceLastScrape = moment.duration(now.diff(mostRecent))
+        console.log(`${Date.now()} - ${timeSinceLastScrape.hours()} - ${timeSinceLastScrape.minutes()}  - ${mostRecent.fromNow()}`)
+        if (timeSinceLastScrape.hours() >= frequency) {
+          keytar.getPassword('pymkinspector', username)
+            .then((password) => {
+              const type = 'background'
+              const config = {username, password, type, cb, dbPath}
+              runScrape(config)
+            })
+        }
       })
     })
 }

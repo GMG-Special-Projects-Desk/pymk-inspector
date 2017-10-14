@@ -20,6 +20,7 @@ export default {
   created () {
     getAll('pymk', this.dbPath)
       .then((d) => {
+        this._.sortBy(d, [function (o) { return o.name }])
         this.setAllPeople(d)
       })
   },

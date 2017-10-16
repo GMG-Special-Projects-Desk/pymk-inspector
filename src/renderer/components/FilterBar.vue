@@ -2,11 +2,15 @@
     <div class="panel-top">
       <b-field class="filterbar" expanded group-multiline>
               <p class="control">
+              <b-tooltip label="Select sort key"
+                  type=""
+                  size="is-danger"
+                  position="is-right">
                 <b-dropdown v-model="sortKey">
-                    <button class="button" slot="trigger">
-                        <span>Sort</span>
-                        <b-icon icon="arrow_drop_down"></b-icon>
-                    </button>
+                      <button class="button" slot="trigger">
+                          <span>Sort</span>
+                          <b-icon icon="arrow_drop_down"></b-icon>
+                      </button>
                     <b-dropdown-item
                       @click="sortButton()"
                       v-for="f in filter"
@@ -15,12 +19,17 @@
                         {{f.text}}
                       </b-dropdown-item>
                 </b-dropdown>
+               </b-tooltip>
             </p>
             <p class="control">
-              <button @click="sortButton()" class="button">
-                <!-- {{sortOrder ? 'asc' :'desc'}} -->
-                <b-icon size="is-medium" :icon="sortOrder  ? 'arrow_upward' : 'arrow_downward' "> </b-icon>                
-              </button>
+                <b-tooltip :label="sortOrder ? 'Display data in ascending order' :'Display data in descending order'"
+                    type=""
+                    size="is-danger"
+                    position="is-right">
+                <button @click="sortButton()" class="button">
+                  <b-icon size="is-medium" :icon="sortOrder  ? 'arrow_upward' : 'arrow_downward' "> </b-icon>
+                </button>
+              </b-tooltip>
             </p>
             <b-input
               v-model="filterKey"
@@ -28,7 +37,7 @@
               style="width: 100%;"
               icon="search"
               type="search"
-              placeholder="Search...">
+              placeholder="Name or work">
             </b-input>
             <b-field
               v-else
@@ -105,9 +114,10 @@ export default {
       const sortKey = sk
       const order = this.sortOrder ? 1 : -1
       if (sortKey) {
+        console.log(sortKey, data)
         data = data.slice().sort(function (a, b) {
-          a = a[sortKey.value]
-          b = b[sortKey.value]
+          a = sortKey.value === 'sessions' ? a[sortKey.value].length : a[sortKey.value]
+          b = sortKey.value === 'sessions' ? b[sortKey.value].length : b[sortKey.value]
           return (a === b ? 0 : a > b ? 1 : -1) * order
         })
       }

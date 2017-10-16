@@ -5,26 +5,44 @@
     </div>
     <div >
       <div class="panel">
-        The inspector has run <mark>{{summary.sessionCount}} times</mark> since
-        <mark>{{ summary.startDate | moment("dddd, MMMM Do YYYY") }}.</mark>
-        On average per session you were shown <mark>{{summary.avgPymk}} people per session</mark>,
-        <mark>{{summary.avgNewPymk}} of whom had not been seen before</mark> and
-        <mark>{{summary.avgNoMutualPymk}} with no mutual friends</mark>
-         <span class="name"> <router-link :to="{ path: '/sessions' }">Details</router-link> </span>
+        The inspector has run <em>{{summary.sessionCount}} times</em> since
+        <em>{{ summary.startDate | moment("dddd, MMMM Do YYYY") }}.</em>
+        On average per session you were shown <em>{{summary.avgPymk}} people per session</em>,
+        <em>{{summary.avgNewPymk}} of whom had not been seen before</em> and
+        <em>{{summary.avgNoMutualPymk}} with no mutual friends</em>
+         <span class="name"> <router-link :to="{ path: '/sessions' }">Click  here for more details</router-link> </span>
       </div>
       <div class="panel" v-if="summary.commonPymk">
-        In that time Facebook has suggested <mark>{{summary.pymkCount}} people</mark> to you.
-        The most common were <mark> {{summary.commonPymk[0]}} </mark>
-        <span v-for="name in summary.commonPymk.slice(1, summary.commonPymk.length)">
-          ,<mark> {{name}} </mark>
+        In that time Facebook has suggested <em>{{summary.pymkCount}} people</em> to you.
+        The most common were
+        <b-tooltip :label="`${summary.commonPymk[0].sessions.length} sessions`"
+            type="is-dark"
+            position="is-bottom">
+          <em class="data-hover"> {{summary.commonPymk[0].name}} </em>
+        </b-tooltip>
+
+        <span v-for="pymk in summary.commonPymk.slice(1, summary.commonPymk.length)">
+          <b-tooltip :label="`${pymk.sessions.length} sessions`"
+              type="is-dark"
+              position="is-bottom">
+            , <em class="data-hover"> {{pymk.name}} </em>
+          </b-tooltip>
         </span>
-        <span class="name"> <router-link :to="{ path: '/people' }">Details</router-link> </span>
+        <span class="name"> <router-link :to="{ path: '/people' }">Click  here for more details</router-link> </span>
       </div>
       <div class="panel" v-if="summary.commonWork">
         The most common places people work are
-        <mark>{{summary.commonWork[0]}}</mark>
-         <span v-for="name in summary.commonWork.slice(1,summary.commonWork.length)">
-          ,<mark> {{name}} </mark>
+        <b-tooltip :label="`${summary.commonWork[0].count} people you may know`"
+            type="is-dark"
+            position="is-bottom">
+        <em class="data-hover">{{summary.commonWork[0].name}}</em>
+      </b-tooltip>
+         <span v-for="job in summary.commonWork.slice(1,summary.commonWork.length)">
+        <b-tooltip :label="`${summary.commonWork[0].count} people you may know`"
+            type="is-dark"
+            position="is-bottom">
+          ,<em class="data-hover"> {{job.name}} </em>
+        </b-tooltip>
          </span>
       </div>
   </div>

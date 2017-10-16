@@ -93,7 +93,7 @@ export const getSessionNew = ({dbPath, timestamp}) => {
       return pymk.filter((p) => {
         // need to do it like this because the timestamps may differ by seconds (ms/1000)
         const diff = (new Date(p.created) - new Date(timestamp)) / 1000
-        return Math.abs(diff) < 5
+        return Math.abs(diff) < 60
       })
     })
 }
@@ -165,7 +165,6 @@ export const getPymkById = ({dbPath, ids}) => {
   return new Promise((resolve, reject) => {
     try {
       const query = {'fbid': {$in: ids}}
-      console.log(task.db)
       find(query, task.db).then((docs) => {
         resolve(docs)
       })
@@ -391,10 +390,10 @@ export const getCommonPymk = ({dbPath, current}) => {
     task.db.find({}, (err, res) => {
       const common = sortBy([function (o) { return Array.isArray(o.sessions) ? o.sessions.length : 0 }], res)
       if (err) { reject(err) }
-      const names = reverse(common).map((d) => {
-        return d.name
+      const commonSorted = reverse(common).map((d) => {
+        return d
       })
-      const updatedOutput = {...current, ...{commonPymk: names.slice(0, 4)}}
+      const updatedOutput = {...current, ...{commonPymk: commonSorted.slice(0, 4)}}
       resolve({dbPath: dbPath, current: updatedOutput})
     })
   })
@@ -460,7 +459,7 @@ export const getPopularWork = ({dbPath, current}) => {
       }
       const sorted = sortBy([function (o) { return o.count }], result)
       const all = reverse(sorted)
-      const jobs = all.map((t) => { return t.name })
+      const jobs = all.map((t) => { return t })
       const updatedOutput = {...current, ...{commonWork: jobs.slice(0, 4)}}
       resolve({dbPath: dbPath, current: updatedOutput})
     })

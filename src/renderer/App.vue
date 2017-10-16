@@ -226,7 +226,18 @@ body {
   height: 480px;
   background-color: $background;
 }
-
+em {
+  font-weight: 600;
+}
+.data-hover {
+  border-bottom-style: dashed;
+  border-bottom-width: 1px;
+  border-bottom-color: $red;
+  // text-decoration-style: dashed;
+}
+.data-hover:hover {
+  background-color: $red;
+}
 .panel-top {
   background-color: $white;
   border-width: thin;

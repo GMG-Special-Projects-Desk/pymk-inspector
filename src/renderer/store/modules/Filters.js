@@ -3,8 +3,6 @@ const state = {
     { value: 'name', text: 'Name' },
     { value: 'mutualFriends', text: 'Number of mutual friends' },
     { value: 'created', text: 'First seen' },
-    { value: 'fbid', text: 'Facebook Id' },
-    { value: 'job', text: 'Work ' },
     { value: 'sessions', text: 'Number of times suggested ' }
   ],
   sessionFilters: [

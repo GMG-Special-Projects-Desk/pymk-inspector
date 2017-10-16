@@ -8,7 +8,7 @@
         <b-field label="Username">
           <b-input v-model="userNameModel" placeholder="Your Facebook Username"></b-input>
         </b-field>
-        <b-field label="Password">
+        <b-field :label=" hasCredentials ? 'Password (stored in keychain)' : 'Password'">
           <b-input v-model="passwordModel" placeholder="Your Facebook Password"></b-input>
         </b-field>
         <b-field label="Frequency">
@@ -72,8 +72,11 @@
     },
     methods: {
       save () {
-        if (this.userNameModel.length > 0 && this.passwordModel.length > 0) {
+        if (this.passwordModel.length > 0) {
           this.keytar.setPassword(this.serviceName, this.userNameModel, this.passwordModel)
+          this.passwordModel = ''
+        }
+        if (this.userNameModel.length > 0) {
           this.err = false
           this.$storage
             .set(`${this.serviceName}.json`, {username: this.userNameModel, frequency: this.frequencyModel})
@@ -84,7 +87,6 @@
             .catch((err) => {
               this.warning(`Err: username not stored ${err}`)
             })
-          this.passwordModel = ''
         } else {
           this.warning('Please set a username and password before you save')
         }

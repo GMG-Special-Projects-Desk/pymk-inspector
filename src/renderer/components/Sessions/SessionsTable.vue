@@ -63,7 +63,6 @@ export default {
       getSessionNew({dbPath: this.dbPath, timestamp: row.timestamp})
         .then((people) => {
           if (people.length > 0) {
-            console.log(people.length)
             this.setSessionFbids(people)
             this.$router.push({name: 'sessions-people'})
           }

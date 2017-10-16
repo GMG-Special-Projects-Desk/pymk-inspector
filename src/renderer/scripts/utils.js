@@ -5,7 +5,7 @@ const keytar = require('keytar')
 const moment = require('moment')
 const setCronJob = (cb) => {
   // return scheduler.scheduleJob(`0 0 */${freq} * * *`, cb)
-  return scheduler.scheduleJob(`0 * * * * *`, cb)
+  return scheduler.scheduleJob(`0 2 * * * *`, cb)
 }
 
 const getConfig = () => {

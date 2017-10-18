@@ -24,7 +24,7 @@
             position="is-top">
           <em class='data-hover'>
             {{row.sessions.length}} {{row.sessions.length === 1 ? 'time' : 'times'}}
-          </em class='data-hover'>
+          </em>
         </b-tooltip>
           and were first seen on <em> {{row.created | moment("MMM Do YYYY") }}
           </em> and you have <em> {{row.mutualFriends}} mutual friends </em>.

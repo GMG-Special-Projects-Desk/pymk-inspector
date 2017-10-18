@@ -60,7 +60,7 @@ ipcMain.on('export-data', (event, arg) => {
 })
 
 function createMenuBar () {
-  let mb = menubar({icon: require('path').join(__static, 'facebook-inspector-dashboard.png'),
+  let mb = menubar({icon: require('path').join(__static, 'inspector-dashboard.png'),
     index: winURL,
     width: 400,
     height: 500,

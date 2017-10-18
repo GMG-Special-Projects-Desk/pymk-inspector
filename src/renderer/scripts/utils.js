@@ -5,7 +5,7 @@ const keytar = require('keytar')
 const moment = require('moment')
 const setCronJob = (cb) => {
   // return scheduler.scheduleJob(`0 0 */${freq} * * *`, cb)
-  return scheduler.scheduleJob(`0 2 * * * *`, cb)
+  return scheduler.scheduleJob(`0 4 * * * *`, cb)
 }
 
 const getConfig = () => {
@@ -26,7 +26,7 @@ const getConfig = () => {
 const initBackgroundScrape = (dbPath, cb) => {
   getConfig()
     .then((config) => {
-      const frequency = config.frequency
+      const frequency = parseInt(config.frequency)
       console.log(`Setting scrape to check every ${frequency} hours`)
       setCronJob(() => {
         const username = config.username

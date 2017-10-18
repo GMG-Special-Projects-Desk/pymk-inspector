@@ -1,14 +1,18 @@
 <template>
   <section  class="section main">
+    <div class="panel">
+    Welcome to the PYMK Inspector!
+    This is a tool brought to you by the <span class="name" @click="openSPD"> Special Projects Desk </span> in order to better understand your facebook friend recommendations.
+    </div>
     <div v-if="hasCredentials">
         <div v-if="hasData" class="panel">
-          The most recent session was <mark>{{mostRecent.timestamp | moment("from", true) }} ago</mark>.
-          In that session <mark>{{mostRecent.totalPymk}} people</mark> were suggested to you,
-          there were <mark> {{mostRecent.numNew}} people</mark> that the inspector hadn't seen before .
-           <span class="name"> <router-link :to="{ path: '/summary' }">Details</router-link> </span>
+          The most recent session was <em>{{mostRecent.timestamp | moment("from", true) }} ago</em>.
+          In that session <em>{{mostRecent.totalPymk}} people</em> were suggested to you,
+          there were <em> {{mostRecent.numNew}} people</em> that the inspector hadn't seen before .
+           <span class="name"> <router-link :to="{ path: '/summary' }">Click here for details</router-link> </span>
         </div>
         <div v-else class="panel">
-          It looks like the scraper hasn't run yet. To try it out go to the <span class="name"> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></span> and click on the <mark> Run it now </mark> button
+          It looks like the scraper hasn't run yet. To try it out go to the <span class="name"> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></span> and click on the <em> Run it now </em> button
         </div>
         <div class="panel">
           <p> Current user: {{username}}</p>
@@ -44,12 +48,17 @@
   import {ipcRenderer} from 'electron'
   import {getSummary, getMostRecentSession} from '@/db'
   import {mapGetters, mapActions} from 'vuex'
+  const {shell} = require('electron')
+
   export default {
     name: 'main',
     created () {
       this.refreshData()
     },
     methods: {
+      openSPD () {
+        shell.openExternal('https://specialprojectsdesk.kinja.com/about-the-gizmodo-media-group-special-projects-desk-1792136692')
+      },
       quit () {
         ipcRenderer.send('quit-app')
       },

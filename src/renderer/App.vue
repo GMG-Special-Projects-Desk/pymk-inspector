@@ -192,13 +192,49 @@ $light-green: #BCE784;
 $light-green-invert: findColorInvert($light-green);
 $yellow: #FFE066;
 
+$grey-blue: #8DA7BE;
+$grey-blue-invert: findColorInvert($grey-blue);
+$sea-green-blue: #BBE5ED;
+$sea-green-blue-invert: findColorInvert($sea-green-blue);
+$light-blue: #5F82CA;
+$light-blue-invert: findColorInvert($light-blue);
+$dark-blue: #405D9E;
+$dark-blue-invert: findColorInvert($light-blue);
+$pink: #FF006E;
+$pink-invert: findColorInvert($pink);
+
+
+
+$info: $light-blue;
+$info-invert: $light-blue-invert;
+
 $primary: #FFA630;
 $primary-invert: findColorInvert($primary);
-$twitter: #4099FF;
-$twitter-invert: findColorInvert($twitter);
-$info: $light-green;
-$info-invert: $light-green-invert;
+$mark-color: $cyan;
+$link: $red;
+$link-invert: $red-invert;
+$link-focus-border: $red;
+$background: $white-ter;
+$footer-color: $yellow;
+$panel-background: $white;
+$hover-background: $red;
+$media-background: $white;
+$notification-background: $light-green;
+$notification-color: $light-green-invert;
 
+$primary: $dark-blue; //#FFA630;
+$primary-invert: findColorInvert($primary);
+$mark-color: $cyan;
+$link: $pink;
+$link-invert: $pink-invert;
+$link-focus-border: $red;
+$background: $sea-green-blue;
+$footer-color: $grey-blue;
+$panel-background: $white;
+$hover-background: $pink;
+$media-background: $white;
+$notification-background: $light-blue;
+$notification-color: $light-blue-invert;
 // // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: (
     "white": ($white, $black),
@@ -210,17 +246,18 @@ $colors: (
     "success": ($success, $success-invert),
     "warning": ($warning, $warning-invert),
     "danger": ($danger, $danger-invert),
-    "twitter": ($twitter, $twitter-invert)
 );
 
 // Links
-$link: $red;
-$link-invert: $red-invert;
-$link-focus-border: $red;
-$background: $white-ter;
+
+
+
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
+mark {
+  background-color: $mark-color;
+}
 
 body {
   height: 480px;
@@ -229,47 +266,19 @@ body {
 em {
   font-weight: 600;
 }
+.name:hover {
+  background-color: $hover-background;
+  cursor: pointer;
+}
+
 .data-hover {
   border-bottom-style: dashed;
   border-bottom-width: 1px;
-  border-bottom-color: $red;
+  border-bottom-color: $link;
   // text-decoration-style: dashed;
 }
 .data-hover:hover {
-  background-color: $red;
-}
-.panel-top {
-  background-color: $white;
-  border-width: thin;
-  border-style: dashed;
-  border-top-width: 0;
-  position: fixed;
-  z-index: 999;
-  width: 100%;
-  top: 59px;
-  left: 0px;
-}
-
-.section.summary {
-  background-color: $background;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 400px;
-  padding-top:100px;
-}
-.section.settings {
-  background-color: $background;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 400px;
-  padding-top:100px;
-}
-.section.main {
-  padding-top:80px;
+  background-color: $hover-background;
 }
 
 .section {
@@ -281,14 +290,34 @@ em {
   min-height: 400px;
   padding-top: 140px;
 }
-
+.section.summary {
+  padding-top:100px;
+}
+.section.settings {
+  padding-top:100px;
+}
+.section.main {
+  padding-top:80px;
+}
+//by panel i really mean container
 .panel {
-  background-color: $white;
+  background-color: $panel-background;
   padding: 0.5rem 0.5rem;
   border: solid;
   border-width: 1px;
   border-radius: 10px;
+}
 
+.panel-top {
+  background-color: $panel-background;
+  border-width: thin;
+  border-style: dashed;
+  border-top-width: 0;
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  top: 59px;
+  left: 0px;
 }
 .media + .media {
 
@@ -297,7 +326,7 @@ em {
   border-radius: 10px;
 }
 .media {
-  background-color: $white;
+  background-color: $media-background;
   padding: 0.5rem 0.5rem;
   border: solid;
   border-width: 1px;
@@ -324,7 +353,7 @@ input {
   bottom: 0px;
   left: 0px;
   position: fixed;
-  background-color: $yellow;
+  background-color: $footer-color;
 }
 
 .footer-text {
@@ -334,14 +363,7 @@ input {
 .notification {
   padding: 0.25rem 0.5rem 0.25rem 0.5rem;
   font-size: 0.8em;
-  background-color : $light-green;
-  color: $light-green-invert;
-}
-.name:hover {
-  background-color: $red;
-  cursor: pointer;
-}
-mark {
-  background-color: $cyan;
+  background-color : $notification-background;
+  color: $notification-color;
 }
 </style>

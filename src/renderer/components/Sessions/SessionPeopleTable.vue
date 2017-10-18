@@ -19,9 +19,20 @@
           <small v-if="row.job">{{row.job}} </small>
           <br>
           <span class="details">
-          They have been suggested to you <mark> {{row.sessions.length}} {{row.sessions.length === 1 ? 'time' : 'times'}}
-          </mark> and were first seen on <mark> {{row.created | moment("MMM Do YYYY") }}
-          </mark> and you have <mark> {{row.mutualFriends}} mutual friends </mark>.
+          They have been suggested to you
+          <b-tooltip
+              multilined="true"
+              :label="`${row.sessions.map((t) => {
+                  return new Date(t).toLocaleDateString()
+                })}`"
+            type="is-dark"
+            position="is-top">
+          <em class="data-hover">
+            {{row.sessions.length}} {{row.sessions.length === 1 ? 'time' : 'times'}}
+          </em>
+          </b-tooltip>
+          and were first seen on <em> {{row.created | moment("MMM Do YYYY") }}
+          </em> and you have <em> {{row.mutualFriends}} mutual friends </em>.
         </span>
         </p>
       </div>

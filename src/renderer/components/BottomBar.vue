@@ -4,7 +4,7 @@
     <div class="content">
       <p class="footer-text has-text-centered">
           Did you find somone noteworthy? <br>
-          Share your story with  the <span @click="sendTip()" class="name"> Special Projects Desk </span>
+          Share your story with  the <span @click="sendTip()" class="name"> <a> Special Projects Desk </a> </span>
       </p>
     </div>
   </div>
@@ -26,8 +26,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .name {
-  color: #247BA0;
   cursor: pointer;
+  border-bottom-color: white;
 }
 </style>

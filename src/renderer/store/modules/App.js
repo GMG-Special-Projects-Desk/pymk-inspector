@@ -76,7 +76,7 @@ const mutations = {
   DELETE_CREDENTIALS (state) {
     state.username = ''
     state.hasCredentials = false
-    state.scrapeFrequency = 2
+    state.scrapeFrequency = 6
   },
   SET_SUMMARY (state, summary) {
     state.summary = summary

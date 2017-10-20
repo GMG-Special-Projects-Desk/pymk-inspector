@@ -2,27 +2,21 @@
   <section  class="section main">
     <div class="panel">
     Welcome to the PYMK Inspector!
-    This is a tool brought to you by the <span class="name" @click="openSPD"> Special Projects Desk </span> in order to better understand your facebook friend recommendations.
+    This is a tool brought to you by the <span class="name"> <a @click="openSPD"> Special Projects Desk </a> </span> in order to better understand your facebook friend recommendations.
     </div>
     <div v-if="hasCredentials">
         <div v-if="hasData" class="panel">
-          The most recent session was <em>{{mostRecent.timestamp | moment("from", true) }} ago</em>.
-          In that session <em>{{mostRecent.totalPymk}} people</em> were suggested to you,
-          there were <em> {{mostRecent.numNew}} people</em> that the inspector hadn't seen before .
+          The current user is <em>{{username}}</em> and the most recent session was <em>{{mostRecent.timestamp | moment("from", true) }} ago</em>.
            <span class="name"> <router-link :to="{ path: '/summary' }">Click here for details</router-link> </span>
         </div>
         <div v-else class="panel">
           It looks like the scraper hasn't run yet. To try it out go to the <span class="name"> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></span> and click on the <em> Run it now </em> button
         </div>
         <div class="panel">
-          <p> Current user: {{username}}</p>
-          <p> Total sessions : {{summary.sessionCount}}</p>
-        </div>
-        <div class="panel">
           <span class="name"> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></span>
         </div>
         <div @click="quit()" class="panel">
-          <span class="name"> Quit Inspector</span>
+          <span class="name"> <a> Quit Inspector </a> </span>
         </div>
     </div>
     <div v-else>

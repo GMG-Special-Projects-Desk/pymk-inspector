@@ -8,8 +8,16 @@
         <b-field label="Username">
           <b-input v-model="userNameModel" placeholder="Your Facebook Username"></b-input>
         </b-field>
-        <b-field :label=" hasCredentials ? 'Password (stored in keychain)' : 'Password'">
-          <b-input v-model="passwordModel" placeholder="Your Facebook Password"></b-input>
+        <b-field label='Password'>
+          <b-input 
+            v-if="!hasCredentials" 
+            v-model="passwordModel"
+            type="password" 
+            :password-reveal="true"
+            placeholder="Your Facebook Password"
+            >  
+            </b-input>
+          <span v-else> Password stored in keychain</span>
         </b-field>
         <b-field label="Frequency">
             <b-select  v-model="frequencyModel" placeholder="How often do you want to run the insepctor?">

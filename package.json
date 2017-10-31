@@ -23,7 +23,7 @@
   },
   "build": {
     "productName": "pymk-inspector",
-    "appId": "org.gmg.pymk-inspector",
+    "appId": "org.gmg-spd.pymk-inspector",
     "directories": {
       "output": "build"
     },

@@ -9,14 +9,14 @@
     <div class="media-content">
       <div class="content">
         <p>
-          <strong class="name" @click="open(row.url)">{{row.name}} </strong>
+          <span class="name" @click="open(row.url)">{{row.name}} </span>
           <br>
           <small v-if="row.job">{{row.job}} </small>
           <br>
           <span class="details">
           They have been suggested to you
           <b-tooltip
-              multilined="true"
+              :multilined="true"
               :label="`${row.sessions.map((t) => {
                   return new Date(t).toLocaleDateString()
                 })}`"
@@ -90,7 +90,7 @@ export default {
 $striped-rows: true;
 
 .details {
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 .tips {

@@ -163,6 +163,8 @@
   src: url(http://fonts.gstatic.com/s/materialicons/v29/2fcrYFNaTjcS6g4U3t-Y5UEw0lE80llgEseQY3FEmqw.woff2) format('woff2');
 }
 
+@import url('https://fonts.googleapis.com/css?family=Inconsolata');
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
@@ -224,14 +226,14 @@ $notification-color: $light-green-invert;
 
 $primary: $dark-blue; //#FFA630;
 $primary-invert: findColorInvert($primary);
-$mark-color: $cyan;
+$mark-color: $light-green;
 $link: $pink;
 $link-invert: $pink-invert;
 $link-focus-border: $red;
 $background: $sea-green-blue;
 $footer-color: $grey-blue;
 $panel-background: $white;
-$hover-background: $pink;
+$hover-background: $light-green;
 $media-background: $white;
 $notification-background: $light-blue;
 $notification-color: $light-blue-invert;
@@ -258,13 +260,25 @@ $colors: (
 mark {
   background-color: $mark-color;
 }
-
 body {
-  height: 480px;
+  height: 500px;
+  width: 420px;
   background-color: $background;
+  font-family: 'Inconsolata', monospace;
 }
 em {
   font-weight: 600;
+  font-style: normal;
+}
+.button {
+  font-family: 'Inconsolata', monospace;
+}
+
+.name {
+  border-bottom-style: dashed;
+  font-size: 1.3em;
+  border-bottom-width: 1px;
+  border-bottom-color: $link;
 }
 .name:hover {
   background-color: $hover-background;
@@ -306,6 +320,7 @@ em {
   border: solid;
   border-width: 1px;
   border-radius: 10px;
+  font-size: 1.1em;
 }
 
 .panel-top {
@@ -319,6 +334,7 @@ em {
   top: 59px;
   left: 0px;
 }
+
 .media + .media {
 
   border: solid;
@@ -332,13 +348,10 @@ em {
   border-width: 1px;
   border-radius: 10px;
 }
-.name {
-  border-bottom: dashed;
-  border-width: 1px;
 
-}
 input {
   border-style: solid;
+  font-family: 'Inconsolata', monospace;
   // border-
 }
 
@@ -362,7 +375,7 @@ input {
 
 .notification {
   padding: 0.25rem 0.5rem 0.25rem 0.5rem;
-  font-size: 0.8em;
+  font-size: 1em;
   background-color : $notification-background;
   color: $notification-color;
 }

@@ -5,7 +5,7 @@ const keytar = require('keytar')
 const moment = require('moment')
 const setCronJob = (cb) => {
   // return scheduler.scheduleJob(`0 0 */${freq} * * *`, cb)
-  return scheduler.scheduleJob(`0 1 * * * *`, cb)
+  return scheduler.scheduleJob(`0 43 * * * *`, cb)
 }
 
 const getConfig = () => {
@@ -28,7 +28,7 @@ const initBackgroundScrape = (dbPath, cb) => {
     .then((config) => {
       let frequency = 6
       if (typeof config.frequency !== 'undefined' &&
-            config.frequency.length > 0) {
+            config.frequency > 0) {
         frequency = parseInt(config.frequency)
         console.log(`Setting scrape to check every ${frequency} hours`)
       } else {
@@ -37,11 +37,22 @@ const initBackgroundScrape = (dbPath, cb) => {
 
       setCronJob(() => {
         const username = config.username
-        const mostRecent = moment(config.mostRecent)
-        const now = moment()
-        const timeSinceLastScrape = moment.duration(now.diff(mostRecent))
-        console.log(`${Date.now()} - ${timeSinceLastScrape.hours()} - ${timeSinceLastScrape.minutes()}  - ${mostRecent.fromNow()}`)
-        if (timeSinceLastScrape.hours() >= frequency) {
+        if (typeof config.mostRecent !== 'undefined') {
+          const mostRecent = moment(config.mostRecent)
+          const now = moment()
+          const timeSinceLastScrape = moment.duration(now.diff(mostRecent))
+          console.log(`${timeSinceLastScrape.hours()}  - ${mostRecent.fromNow()} - ${timeSinceLastScrape.days()}`)
+          if (timeSinceLastScrape.hours() >= frequency ||
+              timeSinceLastScrape.days() > 0) {
+            keytar.getPassword('pymkinspector', username)
+              .then((password) => {
+                const type = 'background'
+                const config = {username, password, type, cb, dbPath}
+                runScrape(config)
+              })
+          }
+        } else {
+          console.log(`Couldn't find most recent so running scrape now.`)
           keytar.getPassword('pymkinspector', username)
             .then((password) => {
               const type = 'background'

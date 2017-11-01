@@ -5,7 +5,15 @@ const keytar = require('keytar')
 const moment = require('moment')
 const setCronJob = (cb) => {
   // return scheduler.scheduleJob(`0 0 */${freq} * * *`, cb)
-  return scheduler.scheduleJob(`0 43 * * * *`, cb)
+  return scheduler.scheduleJob(`0 0 * * * *`, cb)
+}
+
+const clearCronJob = (cronJob) => {
+  if (cronJob.cancel()) {
+    console.log(`cancelled cronjob ${cronJob.name}`)
+  } else {
+    console.log(`error cancelling cronjob ${cronJob.name}`)
+  }
 }
 
 const getConfig = () => {
@@ -24,7 +32,7 @@ const getConfig = () => {
 }
 
 const initBackgroundScrape = (dbPath, cb) => {
-  getConfig()
+  return getConfig()
     .then((config) => {
       let frequency = 6
       if (typeof config.frequency !== 'undefined' &&
@@ -35,7 +43,7 @@ const initBackgroundScrape = (dbPath, cb) => {
         console.log(`Didn't find freq config, setting to default: ${frequency} hours`)
       }
 
-      setCronJob(() => {
+      return setCronJob(() => {
         const username = config.username
         if (typeof config.mostRecent !== 'undefined') {
           const mostRecent = moment(config.mostRecent)
@@ -65,5 +73,6 @@ const initBackgroundScrape = (dbPath, cb) => {
 }
 
 module.exports = {
-  initBackgroundScrape
+  initBackgroundScrape,
+  clearCronJob
 }

@@ -1,11 +1,12 @@
 'use strict'
 
 import { runScrape } from '../renderer/scripts/scrape'
-import { initBackgroundScrape } from '../renderer/scripts/utils'
+import { initBackgroundScrape, clearCronJob } from '../renderer/scripts/utils'
 import menubar from 'menubar'
 import {app, ipcMain, dialog} from 'electron'
 const fs = require('fs')
 const path = require('path')
+let cronJob = null
 
 // var app = require('electron')
 /**
@@ -20,6 +21,19 @@ let mb
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
+
+ipcMain.on('settings-updated', (event, arg) => {
+  console.log('settings updated!')
+  clearCronJob(cronJob)
+  initBackgroundScrape(app.getPath('userData'),
+    (results) => {
+      mb.window.webContents.send('bg-scrape', results)
+    })
+    .then((cron) => {
+      cronJob = cron
+      console.log(`app is ready and cronJob is set ${cronJob.name}`)
+    })
+})
 
 ipcMain.on('fg-scrape', (event, arg) => {
   let config = {
@@ -40,8 +54,7 @@ ipcMain.on('quit-app', (event, arg) => {
 })
 
 ipcMain.on('export-data', (event, arg) => {
-  // FIXME:Choosing dir instead of files from electron thing.
-  dialog.showSaveDialog({title: 'Chose a folder to save the data to'}, (filepath) => {
+  dialog.showSaveDialog({title: 'Chose a folder to save the data to', defaultPath: 'pymk-inspector-people.csv'}, (filepath) => {
     try {
       console.log(`Exporting data to ${filepath}`)
       const dirname = path.dirname(filepath)
@@ -69,10 +82,13 @@ function createMenuBar () {
   })
 
   mb.on('ready', function () {
-    console.log('app is ready')
     initBackgroundScrape(app.getPath('userData'),
       (results) => {
         mb.window.webContents.send('bg-scrape', results)
+      })
+      .then((cron) => {
+        cronJob = cron
+        console.log(`app is ready and cronJob is set ${cronJob.name}`)
       })
   })
 }

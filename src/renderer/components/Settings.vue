@@ -72,6 +72,7 @@
       ...mapGetters([
         'username',
         'serviceName',
+        'mostRecent',
         'hasData',
         'dbPath',
         'hasCredentials',
@@ -87,10 +88,11 @@
         if (this.userNameModel.length > 0) {
           this.err = false
           this.$storage
-            .set(`${this.serviceName}.json`, {username: this.userNameModel, frequency: this.frequencyModel})
+            .set(`${this.serviceName}.json`, {username: this.userNameModel, frequency: this.frequencyModel, mostRecent: this.mostRecent.timestamp})
             .then((d) => {
               this.setCredentials(this.userNameModel)
               this.info(`Saved details for ${this.userNameModel}`)
+              ipcRenderer.send('settings-updated', {})
             })
             .catch((err) => {
               this.warning(`Err: username not stored ${err}`)

@@ -3,22 +3,21 @@
     <div class="panel-top">
       <a> <router-link :to="{ path: '/' }">Go Back</router-link></a>
     </div>
-    <b-field grouped>
+    <!-- <b-field grouped> -->
       <p class="control">
         <b-field label="Username">
           <b-input v-model="userNameModel" placeholder="Your Facebook Username"></b-input>
         </b-field>
-        <b-field label='Password'>
+        <b-field v-if="!hasCredentials"  label='Password'>
           <b-input 
-            v-if="!hasCredentials" 
             v-model="passwordModel"
             type="password" 
             :password-reveal="true"
             placeholder="Your Facebook Password"
             >  
             </b-input>
-          <span v-else> Password stored in keychain</span>
         </b-field>
+        <b-field label="Password stored in Keychain" v-else> </b-field>
         <b-field label="Frequency">
             <b-select  v-model="frequencyModel" placeholder="How often do you want to run the insepctor?">
                 <option value="1"> Every 1 hours </option>
@@ -29,19 +28,19 @@
         </b-field>
       </p>
     </b-field>
-    <b-field grouped>
+    <b-field class="button-group" grouped>
       <p class="control">
             <button @click="save()" class="panel"> <span class="name"> <a> Save Settings </a></span></button>
             <button @click="del()" class="panel"> <span class="name"> <a> Delete Settings </a></span></button>
-            <button @click="scrape()" class="panel"> <span class="name"> <a> Run it now </a> </span></button>
       </p>
     </b-field>
-      <b-field grouped>
-          <p v-if="hasData" class="control">
-            <button @click="exportData()" class="panel"> <span class="name"> <a> Export Data </a> </span></button>
-            <button @click="delData()" class="panel"> <span class="name"> <a> Delete Data </a> </span></button>
-          </p>
-      </b-field>
+    <b-field grouped>
+        <p class="control">
+          <button @click="scrape()" class="panel"> <span class="name"> <a> Run it now </a> </span></button>
+          <button v-if="hasData"  @click="exportData()" class="panel"> <span class="name"> <a> Export Data </a> </span></button>
+          <button v-if="hasData"  @click="delData()" class="panel"> <span class="name"> <a> Delete Data </a> </span></button>
+        </p>
+    </b-field>
   </section>
 </template>
 
@@ -180,7 +179,7 @@
 </script>
 
 <style lang="scss" scoped>
-button:hover {
-  background-color: #F25F5C;
+.button-group {
+  margin-top: 20px;
 }
 </style>

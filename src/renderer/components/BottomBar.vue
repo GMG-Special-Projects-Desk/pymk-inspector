@@ -26,9 +26,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.footer-text {
+  font-size: 0.9em;
+}
 .name {
   cursor: pointer;
-  border-bottom-color: white;
+  a {
+    color: white
+  }
 }
 </style>

@@ -28,6 +28,7 @@
             , <em class="data-hover"> {{pymk.name}} </em>
           </b-tooltip>
         </span>
+        <br>
         <span class="name"> <router-link :to="{ path: '/people' }">Click  here for more details</router-link> </span>
       </div>
       <div class="panel" v-if="summary.commonWork">

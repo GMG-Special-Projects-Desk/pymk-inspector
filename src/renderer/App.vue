@@ -1,4 +1,4 @@
-    <template>
+<template>
   <div id="app">
     <top-bar></top-bar>
     <router-view></router-view>
@@ -252,8 +252,6 @@ $colors: (
 
 // Links
 
-
-
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
@@ -273,16 +271,22 @@ em {
 .button {
   font-family: 'Inconsolata', monospace;
 }
-
+.person {
+  font-size: 1.3em;
+}
 .name {
   border-bottom-style: dashed;
-  font-size: 1.3em;
   border-bottom-width: 1px;
   border-bottom-color: $link;
 }
 .name:hover {
   background-color: $hover-background;
   cursor: pointer;
+}
+span.name {
+  a{
+    color: black;
+  }
 }
 
 .data-hover {

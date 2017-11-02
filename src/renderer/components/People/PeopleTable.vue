@@ -9,7 +9,7 @@
     <div class="media-content">
       <div class="content">
         <p>
-          <span class="name" @click="open(row.url)">{{row.name}} </span>
+          <span class="name person" @click="open(row.url)">{{row.name}} </span>
           <br>
           <small v-if="row.job">{{row.job}} </small>
           <br>

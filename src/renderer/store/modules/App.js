@@ -12,7 +12,7 @@ const state = {
   serviceName: 'pymkinspector',
   summary: {},
   scrapeFrequency: 6,
-  mostRecent: {}
+  mostRecent: null
 }
 
 const getters = {
@@ -83,7 +83,9 @@ const mutations = {
     state.hasData = summary.sessionCount
   },
   SET_MOST_RECENT (state, mostRecent) {
-    state.mostRecent = mostRecent
+    if (mostRecent && mostRecent !== 'undefined') {
+      state.mostRecent = mostRecent
+    }
   },
   SET_FREQUENCY (state, freq) {
     state.scrapeFrequency = freq

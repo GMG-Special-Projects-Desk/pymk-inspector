@@ -114,7 +114,6 @@ export default {
       const sortKey = sk
       const order = this.sortOrder ? 1 : -1
       if (sortKey) {
-        console.log(sortKey, data)
         data = data.slice().sort(function (a, b) {
           a = sortKey.value === 'sessions' ? a[sortKey.value].length : a[sortKey.value]
           b = sortKey.value === 'sessions' ? b[sortKey.value].length : b[sortKey.value]

@@ -29,7 +29,11 @@
         These are stored in your computer's keychain and never recorded or directly read by this app.
       </div>
       <div class="panel">
-        <span class="name"> <router-link :to="{ path: '/settings' }">Inspector settings</router-link></span>
+        <span class="name">
+          <router-link :to="{ path: '/settings' }">
+            Inspector settings
+          </router-link>
+        </span>
       </div>
       <div @click="quit()" class="panel">
         <span class="name"> Quit Inspector</span>
@@ -42,7 +46,8 @@
   import {ipcRenderer} from 'electron'
   import {getSummary, getMostRecentSession} from '@/db'
   import {mapGetters, mapActions} from 'vuex'
-  const {shell} = require('electron')
+  const {shell, remote} = require('electron')
+  const app = remote.app
 
   export default {
     name: 'main',
@@ -67,19 +72,20 @@
             return this.$storage
               .get(`${this.serviceName}.json`)
               .then((config) => {
-                console.log(config)
+                if (!d[0]) {
+                  return config
+                }
                 return {...config, ...{mostRecent: d[0].timestamp}}
               })
           })
           .then((updatedConfig) => {
-            console.log(updatedConfig)
             return this.$storage.set(`${this.serviceName}.json`, updatedConfig)
           })
           .then((d) => {
-            console.log(d)
+            app.log.info(`[Main][refreshData] config updated`)
           })
           .catch((err) => {
-            console.log(`err: ${err}`)
+            app.log.error(`[Main][refreshData]: ${err}`)
           })
       },
       ...mapActions([

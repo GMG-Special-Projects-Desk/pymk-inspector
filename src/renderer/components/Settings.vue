@@ -49,7 +49,8 @@
   import keytar from 'keytar'
   import {getCsvData, deleteAllData} from '@/db'
   import { mapGetters, mapActions } from 'vuex'
-  var {ipcRenderer} = require('electron')
+  var {ipcRenderer, remote} = require('electron')
+  const app = remote.app
 
   export default {
     name: 'Settings',
@@ -81,21 +82,30 @@
     methods: {
       save () {
         if (this.passwordModel.length > 0) {
-          this.keytar.setPassword(this.serviceName, this.userNameModel, this.passwordModel)
-          this.passwordModel = ''
+          try {
+            this.keytar.setPassword(this.serviceName, this.userNameModel, this.passwordModel)
+            this.passwordModel = ''
+          } catch (err) {
+            app.log.error(`Error trying to save to keychain:${err}`)
+          }
         }
         if (this.userNameModel.length > 0) {
-          this.err = false
-          this.$storage
-            .set(`${this.serviceName}.json`, {username: this.userNameModel, frequency: this.frequencyModel, mostRecent: this.mostRecent.timestamp})
-            .then((d) => {
-              this.setCredentials(this.userNameModel)
-              this.info(`Saved details for ${this.userNameModel}`)
-              ipcRenderer.send('settings-updated', {})
-            })
-            .catch((err) => {
-              this.warning(`Err: username not stored ${err}`)
-            })
+          try {
+            this.$storage
+              .set(`${this.serviceName}.json`, {username: this.userNameModel, frequency: this.frequencyModel, mostRecent: this.mostRecent ? this.mostRecent.timestamp : ''})
+              .then((d) => {
+                this.setCredentials(this.userNameModel)
+                app.log.error(`Saved details for ${this.userNameModel}`)
+                this.info(`Saved details for ${this.userNameModel}`)
+                ipcRenderer.send('settings-updated', {})
+              })
+              .catch((err) => {
+                app.log.error(err)
+                this.warning(`Err: username not stored ${err}`)
+              })
+          } catch (err) {
+            app.log.error(`[Settings][Save]: ${err}`)
+          }
         } else {
           this.warning('Please set a username and password before you save')
         }
@@ -109,6 +119,7 @@
         deleteAllData(this.dbPath)
           .then((results) => {
             this.info(`Deleted all ${results.session} sessions and ${results.pymk} people from the app.`)
+            app.log.warn(`Deleted all ${results.session} sessions and ${results.pymk} people from the app.`)
           })
           .catch((err) => {
             this.warning(`Err: database not deleted ${err}`)
@@ -140,11 +151,11 @@
         if (this.hasCredentials) {
           keytar.getPassword(this.serviceName, this.username)
             .then((t) => {
-              this.info('Running scrapper. You should see a browser pop up')
+              this.info('Logging in to Facebook... You should see a browser pop up')
               ipcRenderer.send('fg-scrape', {username: this.username, password: t})
             })
             .catch((err) => {
-              console.log('err')
+              app.log.warn(`Error retrieving credentials: ${err}`)
               this.warning(`Error retrieving credentials: ${err}`)
             })
         } else {

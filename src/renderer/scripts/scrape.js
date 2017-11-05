@@ -73,5 +73,6 @@ export const runScrape = (config) => {
     I.close()
   }).then(null, err => {
     console.error('OH NOES!', err)
+    I.close()
   })
 }

@@ -1,5 +1,5 @@
 import {test} from '@/db'
-import {data} from '../../../test-db.js'
+// import {data} from '../../../test-db.js'
 
 describe('db', () => {
   it('should load data', () => {

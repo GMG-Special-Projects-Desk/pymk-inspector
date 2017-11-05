@@ -7,11 +7,12 @@
 </template>
 
 <script>
-  import {ipcRenderer} from 'electron'
   import { mapActions } from 'vuex'
   import {getSummary, getMostRecentSession, updateDB} from '@/db'
   import TopBar from './components/TopBar'
   import BottomBar from './components/BottomBar'
+  var {ipcRenderer, remote} = require('electron')
+  const app = remote.app
 
   export default {
     name: 'pymk-inspector',
@@ -48,12 +49,11 @@
       initUpdateListeners (channel) {
         ipcRenderer.on(channel, (event, arg) => {
           if (arg.error) {
-            console.log(`There was an error in the scrape! ${arg.error}`)
+            app.log.error(`[App][${channel}]: There was an error in the scrape! ${arg.error}`)
             return
           }
-          console.log(event, arg)
           this.setDbPath(arg.dbPath)
-          console.log('Scrape Complete!')
+          app.log.info(`[App][${channel}]: Scrape Complete!`)
           updateDB({dbPath: arg.dbPath, data: arg.data})
             .then((d) => { console.log('done') })
             .catch(err => { console.log(err) })
@@ -71,26 +71,24 @@
               return this.$storage
                 .get(`${this.serviceName}.json`)
                 .then((config) => {
-                  console.log(config)
+                  app.log.info(`[App][initConfig]: Current Config ${config}`)
                   return {...config, ...{mostRecent: d[0].timestamp}}
                 })
             })
             .then((updatedConfig) => {
-              console.log(updatedConfig)
               return this.$storage.set(`${this.serviceName}.json`, updatedConfig)
             })
             .then((d) => {
-              console.log(`completed: ${d}`)
+              app.log.info(`[App][${channel}]: ${d}`)
             })
             .catch((err) => {
-              console.log(`err: ${err}`)
+              app.log.error(`[App][${channel}]: ${err}`)
             })
         })
       },
       initDbStuff () {
         const dbPath = ipcRenderer.sendSync('get-db-path')
         this.setDbPath(dbPath)
-
         getSummary(dbPath)
           .then((data) => {
             this.setSummary(data.current)
@@ -101,7 +99,7 @@
             this.setMostRecent(d[0])
           })
           .catch((err) => {
-            console.log(`err: ${err}`)
+            app.log.error(`[App][initDbStuff] ${err}`)
           })
       },
       initConfig () {
@@ -114,28 +112,16 @@
                   if (d.username) {
                     this.setCredentials(d.username)
                   } else {
-                    console.log('Coundnt find username')
+                    app.log.error('[App][initConfig] Coundnt find username')
                   }
                   if (d.frequency) {
                     this.setFrequency(d.frequency)
-                    console.log(`Setting frequency to ${d.frequency}`)
+                    app.log.info(`[App][initConfig] Setting frequency to ${d.frequency}`)
                   } else {
-                    console.log('Didnt find frequency settings. Setting default')
+                    app.log.warn('[App][initConfig] Didnt find frequency settings. Setting default')
                   }
                   return d
                 })
-            // .then((d) => {
-            //   return this.$storage
-            //     .get(`${this.serviceName}.json`)
-            //     .then((config) => {
-            //       console.log(config)
-            //       return {...config, ...{mostRecent: d[0].timestamp}}
-            //     })
-            // })
-            // .then((updatedConfig) => {
-            //   console.log(updatedConfig)
-            //   return this.$storage.set(`${this.serviceName}.json`, updatedConfig)
-            // })
             }
           })
       },

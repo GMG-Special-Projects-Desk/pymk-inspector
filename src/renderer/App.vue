@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
   import {getSummary, getMostRecentSession, updateDB} from '@/db'
   import TopBar from './components/TopBar'
   import BottomBar from './components/BottomBar'
@@ -33,7 +33,19 @@
         if (to.name === 'sessions' && from.name === 'sessions people') {
           this.clearSessionFbids()
         }
+      },
+      shouldRefresh (value) {
+        console.log(`shouldRefresh ${value}`)
+        if (value) {
+          this.refreshData()
+        }
+        // this.setShouldRefresh(false)
       }
+    },
+    computed: {
+      ...mapGetters([
+        'shouldRefresh'
+      ])
     },
     components: {
       TopBar,
@@ -102,6 +114,40 @@
             app.log.error(`[App][initDbStuff] ${err}`)
           })
       },
+      refreshData () {
+        const dbPath = ipcRenderer.sendSync('get-db-path')
+        this.setDbPath(dbPath)
+        getSummary(dbPath)
+          .then((data) => {
+            console.log(data)
+            this.setSummary(data.current)
+            return data.dbPath
+          })
+          .then(getMostRecentSession)
+          .then((d) => {
+            return this.$storage
+              .get(`${this.serviceName}.json`)
+              .then((config) => {
+                if (!d[0]) {
+                  return config
+                }
+                return {...config, ...{mostRecent: d[0].timestamp}}
+              })
+          })
+          .then((updatedConfig) => {
+            return this.$storage.set(`${this.serviceName}.json`, updatedConfig)
+          })
+          .then((d) => {
+            app.log.info(`[App][refreshData] config updated`)
+            this.info('Data refreshed')
+            this.setShouldRefresh(false)
+          })
+          .catch((err) => {
+            app.log.error(`[App][refreshData]: ${err}`)
+            this.warning(`Data not refreshed ${err}`)
+            this.setShouldRefresh(false)
+          })
+      },
       initConfig () {
         this.$storage.isPathExists(`${this.serviceName}.json`)
           .then(itDoes => {
@@ -125,12 +171,29 @@
             }
           })
       },
+      info (msg) {
+        this.$snackbar.open({
+          duration: 2000,
+          message: msg,
+          type: 'is-info',
+          position: 'is-top'
+        })
+      },
+      warning (msg) {
+        this.$snackbar.open({
+          duration: 2000,
+          message: msg,
+          type: 'is-danger',
+          position: 'is-top'
+        })
+      },
       ...mapActions([
         'setDbPath',
         'setCredentials',
         'setAllPeople',
         'setFrequency',
         'setAllSessions',
+        'setShouldRefresh',
         'setMostRecent',
         'setSummary',
         'clearSessions',
@@ -301,7 +364,7 @@ span.name {
   padding-top:100px;
 }
 .section.main {
-  padding-top:80px;
+  padding-top:105px;
 }
 //by panel i really mean container
 .panel {

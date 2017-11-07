@@ -2,6 +2,9 @@
     <div class="panel-top">
       <b-field class="filterbar" expanded group-multiline>
               <p class="control">
+                <a @click="setShouldRefresh(true)"><b-icon icon="refresh"> </b-icon> </a>
+              </p>
+              <p class="control">
               <b-tooltip label="Select sort key"
                   type=""
                   size="is-danger"
@@ -139,7 +142,8 @@ export default {
     },
     ...mapActions([
       'setFilteredPeople',
-      'setFilteredSessions'
+      'setFilteredSessions',
+      'setShouldRefresh'
     ])
   },
   computed: {

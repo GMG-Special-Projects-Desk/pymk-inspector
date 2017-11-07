@@ -1,6 +1,7 @@
 const state = {
   dbPath: '',
   hasCredentials: false,
+  shouldRefresh: false,
   username: '',
   allPeople: [],
   allSessions: [],
@@ -18,6 +19,7 @@ const state = {
 const getters = {
   dbPath: state => state.dbPath,
   allPeople: state => state.allPeople,
+  shouldRefresh: state => state.shouldRefresh,
   allSessions: state => state.allSessions,
   currentSession: state => state.currentSession,
   filteredPeople: state => state.filteredPeople,
@@ -89,6 +91,9 @@ const mutations = {
   },
   SET_FREQUENCY (state, freq) {
     state.scrapeFrequency = freq
+  },
+  SET_SHOULD_REFRESH (state, should) {
+    state.shouldRefresh = should
   }
 }
 
@@ -137,6 +142,9 @@ const actions = {
   },
   clearSessionFbids ({ commit }) {
     commit('CLEAR_SESSION_FBIDS')
+  },
+  setShouldRefresh ({ commit }, should) {
+    commit('SET_SHOULD_REFRESH', should)
   }
 }
 

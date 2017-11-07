@@ -74,10 +74,10 @@ ipcMain.on('export-data', (event, arg) => {
 })
 
 function createMenuBar () {
-  let mb = menubar({icon: require('path').join(__static, 'inspector-dashboard.png'),
+  let mb = menubar({icon: require('path').join(__static, 'inspector-dashboard-transparent.png'),
     index: winURL,
     width: 420,
-    height: 540,
+    height: 560,
     preloadWindow: true,
     alwaysOnTop: true
   })

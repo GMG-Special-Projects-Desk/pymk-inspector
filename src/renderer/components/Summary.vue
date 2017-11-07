@@ -1,8 +1,12 @@
 <template>
  <section v-if="summary" class="section summary">
+    
     <div class="panel-top">
+      <a @click="setShouldRefresh(true)"><b-icon icon="refresh"> </b-icon> </a>
+      
       <a> <router-link :to="{ path: '/' }">Go Back</router-link></a>
     </div>
+
     <div >
       <div class="panel">
         The inspector has run <em>{{summary.sessionCount}} times</em> since
@@ -51,14 +55,20 @@
 </template>
 <script>
 
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 export default {
 
   name: 'Summary',
   computed: {
     ...mapGetters([
       'dbPath',
-      'summary'
+      'summary',
+      'shouldRefresh'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'setShouldRefresh'
     ])
   }
 }

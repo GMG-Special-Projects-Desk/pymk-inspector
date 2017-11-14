@@ -23,11 +23,6 @@ export const runScrape = (config) => {
         var count = 0
         var id = setInterval(() => {
           try {
-            // TODO: Remove after debugging
-            // if (count > 2) {
-            //   resolve('resolved!')
-            // }
-
             if (!((window.scrollY + window.innerHeight) + 200 > document.body.clientHeight)) {
               window.scrollBy(0, 500)
               count += 1

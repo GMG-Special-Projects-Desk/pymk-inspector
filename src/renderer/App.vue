@@ -65,7 +65,7 @@
             return
           }
           this.setDbPath(arg.dbPath)
-          app.log.info(`[App][${channel}]: Scrape Complete!`)
+          app.log.warn(`[App][${channel}]: Scrape Complete!`)
           updateDB({dbPath: arg.dbPath, data: arg.data})
             .then((d) => { console.log('done') })
             .catch(err => { console.log(err) })
@@ -119,7 +119,6 @@
         this.setDbPath(dbPath)
         getSummary(dbPath)
           .then((data) => {
-            console.log(data)
             this.setSummary(data.current)
             return data.dbPath
           })

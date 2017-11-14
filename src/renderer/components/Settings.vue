@@ -124,6 +124,15 @@
           .catch((err) => {
             this.warning(`Err: database not deleted ${err}`)
           })
+        this.$storage
+          .set(`${this.serviceName}.json`, {username: this.userNameModel, frequency: this.frequencyModel})
+          .then((d) => {
+            ipcRenderer.send('settings-updated', {})
+          })
+          .catch((err) => {
+            app.log.error(`Deleted mostRecent from config`)
+            this.warning(`Couldnt del mostRecent scrape ${err}`)
+          })
       },
       del () {
         if (this.userNameModel.length > 0) {

@@ -3,6 +3,7 @@ const scheduler = require('node-schedule')
 const storage = require('electron-storage')
 const keytar = require('keytar')
 const moment = require('moment')
+let isScrapeRunning = false
 const setCronJob = (cb) => {
   // return scheduler.scheduleJob(`0 0 */${freq} * * *`, cb)
   return scheduler.scheduleJob(`0 0 * * * *`, cb)
@@ -35,7 +36,7 @@ const initBackgroundScrape = (dbPath, cb) => {
   return getConfig()
     .then((config) => {
       let frequency = 6
-      if (typeof config.frequency !== 'undefined' &&
+      if (config.hasOwnProperty('frequency') &&
             config.frequency > 0) {
         frequency = parseInt(config.frequency)
         console.log(`Setting scrape to check every ${frequency} hours`)
@@ -44,8 +45,12 @@ const initBackgroundScrape = (dbPath, cb) => {
       }
 
       return setCronJob(() => {
+        if (isScrapeRunning) {
+          console.log('Scraper is already running.')
+          return
+        }
         const username = config.username
-        if (typeof config.mostRecent !== 'undefined') {
+        if (config.hasOwnProperty('mostRecent') && config.mostRecent.length > 0) {
           const mostRecent = moment(config.mostRecent)
           const now = moment()
           const timeSinceLastScrape = moment.duration(now.diff(mostRecent))
@@ -56,7 +61,9 @@ const initBackgroundScrape = (dbPath, cb) => {
               .then((password) => {
                 const type = 'background'
                 const config = {username, password, type, cb, dbPath}
+                isScrapeRunning = true
                 runScrape(config)
+                isScrapeRunning = false
               })
           }
         } else {
@@ -65,7 +72,9 @@ const initBackgroundScrape = (dbPath, cb) => {
             .then((password) => {
               const type = 'background'
               const config = {username, password, type, cb, dbPath}
+              isScrapeRunning = true
               runScrape(config)
+              isScrapeRunning = false
             })
         }
       })

@@ -3,7 +3,6 @@
     
     <div class="panel-top">
       <a @click="setShouldRefresh(true)"><b-icon icon="refresh"> </b-icon> </a>
-      
       <a> <router-link :to="{ path: '/' }">Go Back</router-link></a>
     </div>
 

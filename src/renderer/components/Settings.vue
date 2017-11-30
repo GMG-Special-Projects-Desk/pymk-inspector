@@ -137,7 +137,6 @@
       del () {
         if (this.userNameModel.length > 0) {
           this.keytar.deletePassword(this.serviceName, this.username).then((x) => {
-            console.log(this.serviceName, this.username)
             this.deleteCredentials()
             this.$storage
               .set(`${this.serviceName}.json`, {username: '', frequency: ''})

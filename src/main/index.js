@@ -3,7 +3,7 @@
 import { runScrape } from '../renderer/scripts/scrape'
 import { initBackgroundScrape, clearCronJob } from '../renderer/scripts/utils'
 import menubar from 'menubar'
-import {app, ipcMain, dialog} from 'electron'
+import {app, ipcMain, dialog, Menu} from 'electron'
 import log from 'electron-log'
 const fs = require('fs')
 const path = require('path')
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 let mb
-app.log.transports.file.level = process.env.NODE_ENV === 'development' ? 'info' : 'warn'
+app.log.transports.file.level = 'info' // process.env.NODE_ENV === 'development' ? 'info' : 'warn'
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
@@ -90,7 +90,29 @@ function createMenuBar () {
       .then((cron) => {
         cronJob = cron
         app.log.info(`[main][ready] app is ready and cronJob is set ${cronJob.name}`)
+        mb.showWindow()
       })
+  })
+
+  mb.on('after-create-window', function () {
+    const contextMenu = Menu.buildFromTemplate([
+      {label: 'Restart', click: () => { mb.app.quit(); mb.app.relaunch() }},
+      {type: 'separator'},
+      {label: 'Quit', click: () => { mb.app.quit() }}
+    ])
+    mb.tray.on('right-click', () => {
+      mb.tray.popUpContextMenu(contextMenu)
+    })
+  })
+
+  const shouldQuit = app.makeSingleInstance(function (commandLine, workingDirectory) {
+    if (mb) {
+      mb.showWindow()
+    }
+    if (shouldQuit) {
+      app.quit()
+      // return
+    }
   })
 }
 

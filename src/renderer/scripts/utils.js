@@ -60,7 +60,8 @@ const initBackgroundScrape = (dbPath, cb) => {
             keytar.getPassword('pymkinspector', username)
               .then((password) => {
                 const type = 'background'
-                const config = {username, password, type, cb, dbPath}
+                const creds = {username, password}
+                const config = {creds, type, cb, dbPath}
                 isScrapeRunning = true
                 runScrape(config)
                 isScrapeRunning = false
@@ -71,7 +72,8 @@ const initBackgroundScrape = (dbPath, cb) => {
           keytar.getPassword('pymkinspector', username)
             .then((password) => {
               const type = 'background'
-              const config = {username, password, type, cb, dbPath}
+              const creds = {username, password}
+              const config = {creds, type, cb, dbPath}
               isScrapeRunning = true
               runScrape(config)
               isScrapeRunning = false

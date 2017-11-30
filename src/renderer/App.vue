@@ -83,7 +83,7 @@
               return this.$storage
                 .get(`${this.serviceName}.json`)
                 .then((config) => {
-                  app.log.info(`[App][initConfig]: Current Config ${config}`)
+                  app.log.info(`[App][initConfig]: Mody recent at ${d[0].timestamp}`)
                   return {...config, ...{mostRecent: d[0].timestamp}}
                 })
             })

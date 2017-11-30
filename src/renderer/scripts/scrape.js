@@ -3,9 +3,9 @@ const { Browser, run, sleep } = require('automatonic')
 
 // added to .babelignore because babels transformation fuck up the execute function for browser rendering
 export const runScrape = (config) => {
-  const I = new Browser({typingInterval: 200, width: 200, height: 200, x: 10, y: 10})
+  const I = new Browser({typingInterval: 200, width: 200, height: 200, x: 10, y: 10, sandbox: true})
   run(function*() {
-    I.goto('https://www.facebook.com/friends/requests/?fcref=jwl')
+    I.goto('https://www.facebook.com/friends/requests/')
     yield I.waitFor(1000)
     var isLoginPage = yield I.checkFor('#email')
 

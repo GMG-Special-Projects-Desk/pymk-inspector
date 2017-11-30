@@ -3,8 +3,8 @@
   <div class="container">
     <div class="content">
       <p class="footer-text has-text-centered">
-          Did you find somone noteworthy? <br>
-          Share your story with  the <span @click="sendTip()" class="name"> <a> Special Projects Desk </a> </span>
+          Did you find someone noteworthy? <br>
+          Share your story with  the <span @click="sendTip()" class="name"> <a> tips@gizmodomedia.com </a> </span>
       </p>
     </div>
   </div>
@@ -19,7 +19,7 @@ export default {
   name: 'BottomBar',
   methods: {
     sendTip () {
-      shell.openExternal('https://specialprojectsdesk.kinja.com/about-the-gizmodo-media-group-special-projects-desk-1792136692')
+      shell.openExternal('mailto:tips@gizmodomedia.com')
     }
   }
 }

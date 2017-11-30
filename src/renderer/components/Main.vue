@@ -5,7 +5,7 @@
     </div>
     <div class="panel">
     Welcome to the PYMK Inspector!
-    This is a tool brought to you by the <span class="name"> <a @click="openSPD"> Special Projects Desk </a> </span> in order to better understand your facebook friend recommendations.
+    This tools is a part of an <span class="name"> <a @click="openSPD">investigation </a> </span> by Gizmodo's Special Projects Desk. It will help you better understand your Facebook friend recommendations. 
     </div>
     <div v-if="hasCredentials">
         <div v-if="hasData" class="panel">
@@ -24,17 +24,14 @@
     </div>
     <div v-else>
       <div class="panel">
-        Welcome to the People You May Know Inspector!
-      </div>
-      <div class="panel">
         It looks like this is either your first time or you don't have your credentials stored.
-        Please go to settings to add your Facebook credentials.
-        These are stored in your computer's keychain and never recorded or directly read by this app.
+        Scroll down to settings to add your Facebook credentials.
+        These will be stored on your computer and not sent to us.
       </div>
       <div class="panel">
         <span class="name">
           <router-link :to="{ path: '/settings' }">
-            Inspector settings
+            Inspector Login and Settings
           </router-link>
         </span>
       </div>
@@ -60,39 +57,10 @@
     },
     methods: {
       openSPD () {
-        shell.openExternal('https://specialprojectsdesk.kinja.com/about-the-gizmodo-media-group-special-projects-desk-1792136692')
+        shell.openExternal('https://gizmodo.com/tag/people-you-may-know')
       },
       quit () {
         ipcRenderer.send('quit-app')
-      },
-      refreshData () {
-        // getSummary(this.dbPath)
-        //   .then((data) => {
-        //     this.setSummary(data.current)
-        //     return data.dbPath
-        //   })
-        //   .then(getMostRecentSession)
-        //   .then((d) => {
-        //     return this.$storage
-        //       .get(`${this.serviceName}.json`)
-        //       .then((config) => {
-        //         if (!d[0]) {
-        //           return config
-        //         }
-        //         return {...config, ...{mostRecent: d[0].timestamp}}
-        //       })
-        //   })
-        //   .then((updatedConfig) => {
-        //     return this.$storage.set(`${this.serviceName}.json`, updatedConfig)
-        //   })
-        //   .then((d) => {
-        //     this.setShouldRefresh(false)
-        //     app.log.info(`[Main][refreshData] config updated`)
-        //   })
-        //   .catch((err) => {
-        //     this.setShouldRefresh(false)
-        //     app.log.error(`[Main][refreshData]: ${err}`)
-        //   })
       },
       ...mapActions([
         'setSummary',

@@ -399,6 +399,30 @@ export const getCommonPymk = ({dbPath, current}) => {
   })
 }
 
+export const getCommonNoMutualPymk = ({dbPath, current}) => {
+  const task = initDB('pymk', dbPath, {})
+  return new Promise((resolve, reject) => {
+    task.db.find({}, (err, res) => {
+      const commonNoMutual = res.filter((d) => {
+        return d.mutualFriends < 1
+      })
+      const common = sortBy([function (o) { return Array.isArray(o.sessions) ? o.sessions.length : 0 }], commonNoMutual)
+      if (err) { reject(err) }
+      const commonSorted = reverse(common).map((d) => {
+        return d
+      })
+      if (commonSorted.length > 0) {
+        const numToSlice = commonSorted.length > 4 ? 4 : commonSorted.length
+        const updatedOutput = {...current, ...{commonPymkNoMutual: commonSorted.slice(0, numToSlice)}}
+        resolve({dbPath: dbPath, current: updatedOutput})
+      } else {
+        const updatedOutput = {...current, ...{commonPymkNoMutual: []}}
+        resolve({dbPath: dbPath, current: updatedOutput})
+      }
+    })
+  })
+}
+
 export const getAveragePymk = ({dbPath, current}) => {
   const task = initDB('session', dbPath, {})
   return new Promise((resolve, reject) => {
@@ -470,6 +494,7 @@ export const getSummary = (dbPath) => {
   return SessionsCount({dbPath, current: {}})
     .then(PymkCount)
     .then(getCommonPymk)
+    .then(getCommonNoMutualPymk)
     .then(getPopularWork)
     .then(getStartDate)
     .then(getAveragePymk)

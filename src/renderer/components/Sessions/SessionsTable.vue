@@ -4,9 +4,9 @@
       <div class="media-content">
         <div class="content">
             <h5> {{row.timestamp | moment("MMM Do YYYY, h:mmA") }} </h5>
-             <mark @click="seePeopleFromSession(row)"> {{row.totalPymk}} {{row.totalPymk === 1 ? 'person' : 'people'}}</mark> were suggested,
-             <mark @click="newFromSession(row)"> {{row.numNew}} new</mark> and
-             <mark @click="noMutualFromSession(row)"> {{row.numNoMutual}} {{row.numNoMutual === 1 ? 'person' : 'people'}} with no mutual friends</mark>.
+             <span class="name" @click="seePeopleFromSession(row)"> {{row.totalPymk}} {{row.totalPymk === 1 ? 'person' : 'people'}}</span> were suggested,
+             <span class="name" @click="newFromSession(row)"> {{row.numNew}} new</span> and
+             <span class="name" @click="noMutualFromSession(row)"> {{row.numNoMutual}} {{row.numNoMutual === 1 ? 'person' : 'people'}} with no mutual friends</span>.
         </div>
       </div>
     </article>

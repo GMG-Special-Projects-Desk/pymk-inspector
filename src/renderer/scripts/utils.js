@@ -49,6 +49,7 @@ const initBackgroundScrape = (dbPath, cb) => {
           console.log('Scraper is already running.')
           return
         }
+
         const username = config.username
         if (config.hasOwnProperty('mostRecent') && config.mostRecent.length > 0) {
           const mostRecent = moment(config.mostRecent)

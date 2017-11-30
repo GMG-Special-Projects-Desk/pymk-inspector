@@ -338,14 +338,17 @@ span.name {
 }
 
 .data-hover {
-  border-bottom-style: dashed;
-  border-bottom-width: 1px;
-  border-bottom-color: $link;
+  background-color: $hover-background;
+  margin: 2px 1px;
+  padding: 1px;
+  // border-bottom-style: dashed;
+  // border-bottom-width: 1px;
+  // border-bottom-color: $link;
   // text-decoration-style: dashed;
 }
-.data-hover:hover {
-  background-color: $hover-background;
-}
+// .data-hover:hover {
+//   background-color: $hover-background;
+// }
 
 .section {
   background-color: $background;

@@ -1,6 +1,7 @@
 const { parsePymk } = require('./parse')
 const { Browser, run, sleep } = require('automatonic')
-
+const log = require('electron-log')
+log.transports.file.level = 'info'
 // added to .babelignore because babels transformation fuck up the execute function for browser rendering
 export const runScrape = (config) => {
   const I = new Browser({typingInterval: 200, width: 200, height: 200, x: 10, y: 10, sandbox: true})
@@ -48,8 +49,10 @@ export const runScrape = (config) => {
         data: parsePymk(data)
       }
       if (config.type === 'background') {
+        log.info('[scrape] bg-scrape complete')
         config.cb(result)
       } else {
+        log.info('[scrape] fg-scrape complete')
         config.event.sender.send('fg-scrape', result)
       }
     } catch (e) {
@@ -58,8 +61,10 @@ export const runScrape = (config) => {
         error: e
       }
       if (config.type === 'background') {
+        log.error(`[scrape] bg scrape ${err}`)
         config.cb(err)
       } else {
+        log.error(`[scrape] fg scrape ${err}`)
         config.event.sender.send('fg-scrape', err)
       }
     }
@@ -67,9 +72,8 @@ export const runScrape = (config) => {
     I.close()
   }).then(null, err => {
     if (err) {
-      console.error('OH NOES!', err)
+      log.error(`[scrape] ${err}`)
       I.close()
     }
-
   })
 }

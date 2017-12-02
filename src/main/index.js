@@ -58,13 +58,14 @@ ipcMain.on('export-data', (event, arg) => {
   dialog.showSaveDialog({title: 'Chose a folder to save the data to', defaultPath: 'pymk-inspector-people.csv'}, (filepath) => {
     try {
       const dirname = path.dirname(filepath)
-      app.log.info(`[export-data] ${path.join(dirname, 'pymk-inspector')}`)
-      fs.writeFile(path.join(dirname, 'pymk-inspector-people.csv'), arg.exportData.pymk, (err) => {
+      const filename = path.basename(filepath, path.extname(filepath))
+      app.log.info(`[export-data] ${path.join(dirname, `${filename}-people.csv`)}`)
+      fs.writeFile(path.join(dirname, `${filename}-people.csv`), arg.exportData.pymk, (err) => {
         if (err) throw err
-        app.log.info(`[export-data] ${path.join(dirname, 'pymk-inspector')}`)
-        fs.writeFile(path.join(dirname, 'pymk-inspector-sessions.csv'), arg.exportData.session, (err) => {
+        app.log.info(`[export-data] ${path.join(dirname, `${filename}-people.csv`)}`)
+        fs.writeFile(path.join(dirname, `${filename}-sessions.csv`), arg.exportData.session, (err) => {
           if (err) throw err
-          app.log.info(`[export-data] ${path.join(dirname, 'pymk-inspector')}`)
+          app.log.info(`[export-data] ${path.join(dirname, `${filename}-people.csv`)}`)
         })
       })
     } catch (err) {

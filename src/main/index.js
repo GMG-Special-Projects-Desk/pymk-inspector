@@ -32,7 +32,10 @@ ipcMain.on('settings-updated', (event, arg) => {
     })
     .then((cron) => {
       cronJob = cron
-      app.log.info(`[main][settings-updated] app is ready and cronJob is set ${cronJob.name}`)
+      app.log.info(`[main][settings-updated] app is ready`)
+    })
+    .catch((err) => {
+      app.log.error(`[index] [settings-updated] ${err}`)
     })
 })
 
@@ -90,8 +93,11 @@ function createMenuBar () {
       })
       .then((cron) => {
         cronJob = cron
-        app.log.info(`[main][ready] app is ready and cronJob is set ${cronJob.name}`)
+        app.log.info(`[main][ready] app is ready`)
         mb.showWindow()
+      })
+      .catch((err) => {
+        app.log.error(`[index] [settings-updated] ${err}`)
       })
   })
 

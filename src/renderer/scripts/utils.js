@@ -13,12 +13,12 @@ const setCronJob = (cb) => {
   log.info(`[utils] Starting timer at  ${moment().format('YYYY-MM-DD H:m:s')}`)
 }
 
-const clearCronJob = (cronJob) => {
+const clearCronJob = () => {
   if (intervalId) {
     log.info(`[utils] clearing timer`)
     clearInterval(intervalId)
   } else {
-    log.info(`[utils] error cancelling cronjob ${cronJob.name}`)
+    log.error(`[utils] error clearing timer`)
   }
 }
 
@@ -34,6 +34,9 @@ const getConfig = () => {
       } else {
         return {'username': ''}
       }
+    })
+    .catch((err) => {
+      log.error(`[utils] [getConfig] ${err}`)
     })
 }
 
@@ -73,6 +76,9 @@ const initBackgroundScrape = (dbPath, cb) => {
                 runScrape(config)
                 isScrapeRunning = false
               })
+              .catch((err) => {
+                log.error(`[utils] [setCronJob] ${err}`)
+              })
           }
         } else {
           log.info(`[utils] Couldn't find most recent so running scrape now.`)
@@ -85,8 +91,14 @@ const initBackgroundScrape = (dbPath, cb) => {
               runScrape(config)
               isScrapeRunning = false
             })
+            .catch((err) => {
+              log.error(`[utils] [setCronJob] ${err}`)
+            })
         }
       })
+    })
+    .catch((err) => {
+      log.error(`[utils] [setCronJob] ${err}`)
     })
 }
 

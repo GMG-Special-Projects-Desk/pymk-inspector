@@ -10,7 +10,7 @@ log.transports.file.level = 'info'
 var intervalId = null
 const setCronJob = (cb) => {
   intervalId = setInterval(cb, 1000 * 60 * 60)
-  log.info(`[utils] Starting timer at  ${moment().format('YYYY-MM-DD H:m:s')}`)
+  log.info(`[utils] Starting timer at  ${moment().format('YYYY-MM-DD H:mm:ss')}`)
 }
 
 const clearCronJob = () => {

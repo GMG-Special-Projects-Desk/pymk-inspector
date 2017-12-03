@@ -9,7 +9,7 @@ const fs = require('fs')
 const path = require('path')
 let cronJob = null
 app.log = log
-// var app = require('electron')
+
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -28,6 +28,7 @@ ipcMain.on('settings-updated', (event, arg) => {
   clearCronJob(cronJob)
   initBackgroundScrape(app.getPath('userData'),
     (results) => {
+      mb.showWindow()
       mb.window.webContents.send('bg-scrape', results)
     })
     .then((cron) => {
@@ -99,6 +100,11 @@ function createMenuBar () {
       .catch((err) => {
         app.log.error(`[index] [settings-updated] ${err}`)
       })
+  })
+
+  mb.on('after-show', function () {
+    app.log.info('open was called')
+    mb.window.webContents.send('refresh-data')
   })
 
   mb.on('after-create-window', function () {

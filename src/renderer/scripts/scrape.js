@@ -21,12 +21,11 @@ export const runScrape = (config) => {
     yield sleep(1000)
     yield I.execute(function () {
       return new Promise((resolve, reject) => {
-        var count = 0
+
         var id = setInterval(() => {
           try {
             if (!((window.scrollY + window.innerHeight) + 200 > document.body.clientHeight)) {
               window.scrollBy(0, 500)
-              count += 1
             } else {
               clearInterval(id)
               resolve('resolved!')
@@ -48,6 +47,7 @@ export const runScrape = (config) => {
         dbPath: config.dbPath,
         data: parsePymk(data)
       }
+
       if (config.type === 'background') {
         log.info('[scrape] bg-scrape complete')
         config.cb(result)

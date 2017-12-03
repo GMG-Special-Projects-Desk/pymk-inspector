@@ -35,7 +35,6 @@
         }
       },
       shouldRefresh (value) {
-        console.log(`shouldRefresh ${value}`)
         if (value) {
           this.refreshData()
         }
@@ -54,6 +53,9 @@
     created () {
       this.initConfig()
       this.initDbStuff()
+      ipcRenderer.on('refresh-data', (event, arg) => {
+        this.refreshData()
+      })
       this.initUpdateListeners('fg-scrape')
       this.initUpdateListeners('bg-scrape')
     },
@@ -66,9 +68,11 @@
           }
           this.setDbPath(arg.dbPath)
           app.log.warn(`[App][${channel}]: Scrape Complete!`)
+
           updateDB({dbPath: arg.dbPath, data: arg.data})
-            .then((d) => { console.log('done') })
-            .catch(err => { console.log(err) })
+            .then((d) => { app.log.warn(`[App][${channel}]: Db updated`) })
+            .catch(err => { app.log.error(`[App][${channel}]: ${err}`) })
+
           getSummary(arg.dbPath)
             .then((data) => {
               this.setSummary(data.current)
@@ -308,7 +312,7 @@ mark {
 }
 body {
   height: 500px;
-  width: 420px;
+  width: 440px;
   background-color: $background;
   font-family: 'Inconsolata', monospace;
 }

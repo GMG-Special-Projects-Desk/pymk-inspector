@@ -3,7 +3,6 @@
     <div class="panel-top">
       <a> <router-link :to="{ path: '/' }">Go Back</router-link></a>
     </div>
-    <!-- <b-field grouped> -->
       <p class="control">
         <b-field label="Username">
           <b-input v-model="userNameModel" placeholder="Your Facebook Username"></b-input>
@@ -45,7 +44,6 @@
 </template>
 
 <script>
-  import SystemInformation from './LandingPage/SystemInformation'
   import keytar from 'keytar'
   import {getCsvData, deleteAllData} from '@/db'
   import { mapGetters, mapActions } from 'vuex'
@@ -54,7 +52,6 @@
 
   export default {
     name: 'Settings',
-    components: { SystemInformation },
     created () {
       this.userNameModel = this.username
       this.frequencyModel = this.scrapeFrequency
@@ -95,7 +92,7 @@
               .set(`${this.serviceName}.json`, {username: this.userNameModel, frequency: this.frequencyModel, mostRecent: this.mostRecent ? this.mostRecent.timestamp : ''})
               .then((d) => {
                 this.setCredentials(this.userNameModel)
-                app.log.error(`Saved details for ${this.userNameModel}`)
+                app.log.warn(`Saved details for ${this.userNameModel}`)
                 this.info(`Saved details for ${this.userNameModel}`)
                 ipcRenderer.send('settings-updated', {})
               })
@@ -130,7 +127,7 @@
             ipcRenderer.send('settings-updated', {})
           })
           .catch((err) => {
-            app.log.error(`Deleted mostRecent from config`)
+            app.log.warn(`Deleted mostRecent from config`)
             this.warning(`Couldnt del mostRecent scrape ${err}`)
           })
       },
@@ -163,7 +160,7 @@
               ipcRenderer.send('fg-scrape', {username: this.username, password: t})
             })
             .catch((err) => {
-              app.log.warn(`Error retrieving credentials: ${err}`)
+              app.log.error(`Error retrieving credentials: ${err}`)
               this.warning(`Error retrieving credentials: ${err}`)
             })
         } else {

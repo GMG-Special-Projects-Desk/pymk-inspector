@@ -60,9 +60,6 @@ export default {
     open (url) {
       shell.openExternal(url)
     },
-    sendTip () {
-      shell.openExternal('https://specialprojectsdesk.kinja.com/about-the-gizmodo-media-group-special-projects-desk-1792136692')
-    },
     filterByIds (current) {
       return this.allPeople.filter((p) => {
         return current.indexOf(p.fbid) > -1

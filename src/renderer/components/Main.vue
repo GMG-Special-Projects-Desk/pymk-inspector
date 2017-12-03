@@ -44,11 +44,8 @@
 
 <script>
   import {ipcRenderer} from 'electron'
-  // import {getSummary, getMostRecentSession} from '@/db'
   import {mapGetters, mapActions} from 'vuex'
   const {shell} = require('electron')
-  // const {shell, remote} = require('electron')
-  // const app = remote.app
 
   export default {
     name: 'main',

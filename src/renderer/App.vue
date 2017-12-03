@@ -38,7 +38,6 @@
         if (value) {
           this.refreshData()
         }
-        // this.setShouldRefresh(false)
       }
     },
     computed: {
@@ -87,7 +86,7 @@
               return this.$storage
                 .get(`${this.serviceName}.json`)
                 .then((config) => {
-                  app.log.info(`[App][initConfig]: Mody recent at ${d[0].timestamp}`)
+                  app.log.warn(`[App][initConfig]: Most recent at ${d[0].timestamp}`)
                   return {...config, ...{mostRecent: d[0].timestamp}}
                 })
             })
@@ -95,7 +94,9 @@
               return this.$storage.set(`${this.serviceName}.json`, updatedConfig)
             })
             .then((d) => {
-              app.log.info(`[App][${channel}]: ${d}`)
+              if (d) {
+                app.log.info(`[App][${channel}]: ${d}`)
+              }
             })
             .catch((err) => {
               app.log.error(`[App][${channel}]: ${err}`)
@@ -232,7 +233,7 @@
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
-// Import Bulma's core
+
 @import "~bulma/sass/utilities/_all";
 
 
@@ -289,7 +290,7 @@ $hover-background: $light-green;
 $media-background: $white;
 $notification-background: $light-blue;
 $notification-color: $light-blue-invert;
-// // Setup $colors to use as bulma classes (e.g. 'is-twitter')
+
 $colors: (
     "white": ($white, $black),
     "black": ($black, $white),

@@ -2,7 +2,7 @@ const { parsePymk } = require('./parse')
 const { Browser, run, sleep } = require('automatonic')
 const log = require('electron-log')
 log.transports.file.level = 'info'
-// added to .babelignore because babels transformation fuck up the execute function for browser rendering
+// added to .babelignore because transformation messes up the execute function for browser rendering
 export const runScrape = (config) => {
   const I = new Browser({typingInterval: 200, width: 200, height: 200, x: 10, y: 10, sandbox: true})
   run(function*() {
@@ -21,7 +21,6 @@ export const runScrape = (config) => {
     yield sleep(1000)
     yield I.execute(function () {
       return new Promise((resolve, reject) => {
-
         var id = setInterval(() => {
           try {
             if (!((window.scrollY + window.innerHeight) + 200 > document.body.clientHeight)) {

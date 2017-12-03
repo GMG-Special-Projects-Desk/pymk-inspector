@@ -44,7 +44,6 @@
 </template>
 
 <script>
-  import SystemInformation from './LandingPage/SystemInformation'
   import keytar from 'keytar'
   import { mapGetters } from 'vuex'
   var {remote} = require('electron')
@@ -52,7 +51,6 @@
 
   export default {
     name: 'landing-page',
-    components: { SystemInformation },
     created () {
       this.userNameModel = this.username()
     },

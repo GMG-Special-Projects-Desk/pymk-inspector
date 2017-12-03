@@ -24,7 +24,7 @@ const winURL = process.env.NODE_ENV === 'development'
   : `file://${__dirname}/index.html`
 
 ipcMain.on('settings-updated', (event, arg) => {
-  app.log.info(`[main][settings-updated] Re-initializng bg scrape with settings from ${app.getPath('userData')}`)
+  app.log.warn(`[main][settings-updated] Re-initializng bg scrape with settings from ${app.getPath('userData')}`)
   clearCronJob(cronJob)
   initBackgroundScrape(app.getPath('userData'),
     (results) => {
@@ -103,7 +103,6 @@ function createMenuBar () {
   })
 
   mb.on('after-show', function () {
-    app.log.info('open was called')
     mb.window.webContents.send('refresh-data')
   })
 
@@ -124,7 +123,6 @@ function createMenuBar () {
     }
     if (shouldQuit) {
       app.quit()
-      // return
     }
   })
 }

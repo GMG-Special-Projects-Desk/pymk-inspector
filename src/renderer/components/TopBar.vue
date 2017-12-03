@@ -32,11 +32,6 @@ export default {
     background-color: #FF006E;
   }
 }
-
-// .title::before{
-//   content:url('../assets/64.png');
-//   max-width: 200px;
-// }
 .hero {
   position: fixed;
   z-index: 999;

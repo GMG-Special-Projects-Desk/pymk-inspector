@@ -1,5 +1,4 @@
 const { runScrape } = require('./scrape')
-// const scheduler = require('node-schedule')
 const storage = require('electron-storage')
 const keytar = require('keytar')
 const moment = require('moment')
@@ -64,7 +63,7 @@ const initBackgroundScrape = (dbPath, cb) => {
           const mostRecent = moment(config.mostRecent)
           const now = moment()
           const timeSinceLastScrape = moment.duration(now.diff(mostRecent))
-          log.info(`[utils] isScrapeRunning: ${isScrapeRunning} frequency: ${frequency} timeSinceLastScrape.hours: ${timeSinceLastScrape.hours()}  - mostRecent.fromNow ${mostRecent.fromNow()} - timeSinceLastScrape.days ${timeSinceLastScrape.days()}`)
+          log.info(`[utils] frequency: ${frequency} timeSinceLastScrape.hours: ${timeSinceLastScrape.hours()}  - mostRecent.fromNow ${mostRecent.fromNow()} - timeSinceLastScrape.days ${timeSinceLastScrape.days()}`)
           if (timeSinceLastScrape.hours() >= frequency ||
               timeSinceLastScrape.days() > 0) {
             keytar.getPassword('pymkinspector', username)

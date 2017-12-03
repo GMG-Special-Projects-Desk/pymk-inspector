@@ -16,6 +16,9 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'
 import {getPymkById, getSessionNoMutual, getSessionNew} from '@/db'
+var {remote} = require('electron')
+const app = remote.app
+
 export default {
   name: 'SessionsTable',
   computed: {
@@ -42,7 +45,7 @@ export default {
           this.$router.push({name: 'sessions-people'})
         })
         .catch((err) => {
-          console.log(`error seePeopleFromSession: ${err}`)
+          app.log.error(`error seePeopleFromSession: ${err}`)
         })
     },
     noMutualFromSession (row) {
@@ -55,7 +58,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(`error: noMutualFromSession: ${err}`)
+          app.log.error(`[sessions-table] noMutualFromSession: ${err}`)
         })
     },
     newFromSession (row) {
@@ -68,7 +71,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(`error newFromSession: ${err}`)
+          app.log.error(`[sessions-table] newFromSession: ${err}`)
         })
     },
     ...mapActions([

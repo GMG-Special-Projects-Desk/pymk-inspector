@@ -23,7 +23,6 @@ export default {
   created () {
     getAll('session', this.dbPath)
       .then((d) => {
-        // this._.sortBy(d, [function (o) { return o.timestamp.getTime() }])
         this.setAllSessions(d)
       })
   },

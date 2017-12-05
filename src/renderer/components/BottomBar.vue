@@ -4,7 +4,7 @@
     <div class="content">
       <p class="footer-text has-text-centered">
           Did you find someone noteworthy? <br>
-          Share your story with  the <span @click="sendTip()" class="name"> <a> tips@gizmodomedia.com </a> </span>
+          Share your story with <span @click="sendTip()" class="name"> <a> tips@gizmodomedia.com </a> </span>
       </p>
     </div>
   </div>

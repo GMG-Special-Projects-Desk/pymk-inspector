@@ -86,17 +86,19 @@
               return this.$storage
                 .get(`${this.serviceName}.json`)
                 .then((config) => {
-                  app.log.warn(`[App][initConfig]: Most recent at ${d[0].timestamp}`)
+                  app.log.warn(`[App][${channel}]: Most recent at ${d[0].timestamp}`)
                   return {...config, ...{mostRecent: d[0].timestamp}}
                 })
             })
             .then((updatedConfig) => {
-              return this.$storage.set(`${this.serviceName}.json`, updatedConfig)
-            })
-            .then((d) => {
-              if (d) {
-                app.log.info(`[App][${channel}]: ${d}`)
-              }
+              this.$storage
+                .set(`${this.serviceName}.json`, updatedConfig)
+                .then(() => {
+                  app.log.info(`[App][${channel}]: Config file updated`)
+                })
+                .catch(err => {
+                  app.log.error(`[App][${channel}]: ${err}`)
+                })
             })
             .catch((err) => {
               app.log.error(`[App][${channel}]: ${err}`)
@@ -362,13 +364,14 @@ span.name {
   flex-direction: column;
   justify-content: space-between;
   min-height: 400px;
-  padding-top: 140px;
+  padding-top: 160px;
 }
 .section.summary {
   padding-top:100px;
 }
 .section.settings {
   padding-top:100px;
+  padding-bottom:80px;
 }
 .section.main {
   padding-top:105px;

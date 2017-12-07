@@ -2,13 +2,13 @@ const { runScrape } = require('./scrape')
 const storage = require('electron-storage')
 const keytar = require('keytar')
 const moment = require('moment')
-
 const log = require('electron-log')
-var isScrapeRunning = false
+
 log.transports.file.level = 'info'
 var intervalId = null
 const setCronJob = (cb) => {
   intervalId = setInterval(cb, 1000 * 60 * 60)
+  // intervalId = setInterval(cb, 1000 * 60 * 3)
   log.info(`[utils] Starting timer at  ${moment().format('YYYY-MM-DD H:mm:ss')}`)
 }
 
@@ -40,21 +40,16 @@ const getConfig = () => {
 }
 
 const initBackgroundScrape = (dbPath, cb) => {
-  return getConfig()
-    .then((config) => {
-      let frequency = 6
-      if (config.hasOwnProperty('frequency') &&
-            config.frequency > 0) {
-        frequency = parseInt(config.frequency)
-        log.info(`[utils] Setting scrape to check every ${frequency} hours`)
-      } else {
-        log.info(`[utils] Didn't find freq config, setting to default: ${frequency} hours`)
-      }
-
-      return setCronJob(() => {
-        if (isScrapeRunning) {
-          log.info('[utils] Scraper is already running.')
-          return
+  return setCronJob(() => {
+    getConfig()
+      .then((config) => {
+        let frequency = 6
+        if (config.hasOwnProperty('frequency') &&
+              config.frequency > 0) {
+          frequency = parseInt(config.frequency)
+          log.info(`[utils] Setting scrape to check every ${frequency} hours`)
+        } else {
+          log.info(`[utils] Didn't find freq config, setting to default: ${frequency} hours`)
         }
 
         const username = config.username
@@ -66,14 +61,13 @@ const initBackgroundScrape = (dbPath, cb) => {
           log.info(`[utils] frequency: ${frequency} timeSinceLastScrape.hours: ${timeSinceLastScrape.hours()}  - mostRecent.fromNow ${mostRecent.fromNow()} - timeSinceLastScrape.days ${timeSinceLastScrape.days()}`)
           if (timeSinceLastScrape.hours() >= frequency ||
               timeSinceLastScrape.days() > 0) {
+            log.info('here')
             keytar.getPassword('pymkinspector', username)
               .then((password) => {
                 const type = 'background'
                 const creds = {username, password}
                 const config = {creds, type, cb, dbPath}
-                isScrapeRunning = true
                 runScrape(config)
-                isScrapeRunning = false
               })
               .catch((err) => {
                 log.error(`[utils] [setCronJob] ${err}`)
@@ -86,19 +80,17 @@ const initBackgroundScrape = (dbPath, cb) => {
               const type = 'background'
               const creds = {username, password}
               const config = {creds, type, cb, dbPath}
-              isScrapeRunning = true
               runScrape(config)
-              isScrapeRunning = false
             })
             .catch((err) => {
               log.error(`[utils] [setCronJob] ${err}`)
             })
         }
       })
-    })
-    .catch((err) => {
-      log.error(`[utils] [setCronJob] ${err}`)
-    })
+      .catch((err) => {
+        log.error(`[utils] [setCronJob] ${err}`)
+      })
+  })
 }
 
 module.exports = {

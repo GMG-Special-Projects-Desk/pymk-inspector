@@ -15,7 +15,6 @@
                           <b-icon icon="arrow_drop_down"></b-icon>
                       </button>
                     <b-dropdown-item
-                      @click="sortButton()"
                       v-for="f in filter"
                       :key="f.value"
                       :value="f">
@@ -25,15 +24,22 @@
                </b-tooltip>
             </p>
             <p class="control">
-                <b-tooltip :label="sortOrder ? 'Display data in ascending order' :'Display data in descending order'"
+                <b-tooltip :label="sortOrder ? 'Click go to sort. Displaying in ascending order' :'Click go to sort. Displaying in descending order'"
                     type=""
                     size="is-danger"
                     position="is-right">
-                <button @click="sortButton()" class="button">
+                <button @click="setSortOrder()" class="button">
                   <b-icon size="is-medium" :icon="sortOrder  ? 'arrow_upward' : 'arrow_downward' "> </b-icon>
+                </button>
+                <button @click="sortButton()" class="button">
+                  Go
                 </button>
               </b-tooltip>
             </p>
+            <b-tooltip :label="'Filter results'"
+                type=""
+                size="is-danger"
+                position="is-left">
             <b-input
               v-model="filterKey"
               v-if="$route.name === 'people'"
@@ -47,6 +53,7 @@
               label=""
               style="width:100%; text-align: center;">
             </b-field>
+          </b-tooltip>
             <p class="control">
               <span class="button">
                 <router-link :to="{ path: '/summary' }"> Go Back</router-link>
@@ -55,11 +62,13 @@
         </b-field>
         <b-collapse :open.sync="isOpen">
             <div class="notification">
-                <div class="content">
+                <div v-if="sortKey" class="content">
                   <span v-if="this.$route.name !== 'sessions-people'"> Sorting by {{this.sortText}}.</span>
                   <span v-if="this.$route.name === 'people'">Displaying {{filteredTotal}} of {{allTotal}} </span>
                   <span v-if="this.$route.name === 'sessions-people'"> Displaying {{sessionFbids.length}} of {{currentSession.totalPymk}}</span>
-
+                </div>
+                <div v-else class="content">
+                  No sort selected
                 </div>
             </div>
         </b-collapse>
@@ -72,7 +81,7 @@ export default {
   name: 'FilterBar',
   data () {
     return {
-      sortKey: '',
+      sortKey: null,
       sortText: '',
       isOpen: true,
       sortOrder: true,
@@ -80,17 +89,9 @@ export default {
     }
   },
   created () {
-    this.sortKey = this.filter[0]
-    const data = this.getCurrentData()
-    const sortedData = this.sortData(data, this.sortKey)
-    this.setData(sortedData)
-    this.sortText = 'Name'
   },
   watch: {
     sortKey (value) {
-      const data = this.getCurrentData()
-      const sortedData = this.sortData(data, value.value)
-      this.setData(sortedData)
       this.sortText = value.text
     },
     filterKey (value) {
@@ -100,8 +101,10 @@ export default {
     }
   },
   methods: {
-    sortButton () {
+    setSortOrder () {
       this.sortOrder = !this.sortOrder
+    },
+    sortButton () {
       const data = this.getCurrentData()
       const sortedData = this.sortData(data, this.sortKey)
       this.setData(sortedData)

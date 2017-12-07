@@ -40,6 +40,7 @@ function createMenuBar () {
         app.log.info(`[main][ready] app is ready`)
         mb.showWindow()
       })
+    mb.showWindow()
   })
 
   mb.on('after-show', function () {

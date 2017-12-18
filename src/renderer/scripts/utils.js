@@ -44,13 +44,14 @@ const initBackgroundScrape = (dbPath, cb) => {
     getConfig()
       .then((config) => {
         let frequency = 6
-        if (config.hasOwnProperty('frequency') &&
-              config.frequency > 0) {
-          frequency = parseInt(config.frequency)
-          log.info(`[utils] Setting scrape to check every ${frequency} hours`)
-        } else {
-          log.info(`[utils] Didn't find freq config, setting to default: ${frequency} hours`)
-        }
+        log.info(`[utils] Didn't find freq config, setting to default: ${frequency} hours`)
+        // if (config.hasOwnProperty('frequency') &&
+        //       config.frequency > 0) {
+        //   frequency = parseInt(config.frequency)
+        //   log.info(`[utils] Setting scrape to check every ${frequency} hours`)
+        // } else {
+        //   log.info(`[utils] Didn't find freq config, setting to default: ${frequency} hours`)
+        // }
 
         const username = config.username
         if (config.hasOwnProperty('mostRecent') && config.mostRecent.length > 0) {

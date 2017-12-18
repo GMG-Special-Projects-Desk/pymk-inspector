@@ -363,18 +363,21 @@ span.name {
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 400px;
+  min-height: 440px;
   padding-top: 160px;
 }
 .section.summary {
   padding-top:100px;
 }
 .section.settings {
-  padding-top:100px;
+  padding-top:160px;
   padding-bottom:80px;
 }
 .section.main {
   padding-top:105px;
+}
+.section.privacy {
+  padding-top:120px;
 }
 //by panel i really mean container
 .panel {

@@ -41,6 +41,11 @@ export default new Router({
       component: require('@/components/Settings')
     },
     {
+      path: '/privacy',
+      name: 'privacy',
+      component: require('@/components/PrivacyPolicy')
+    },
+    {
       path: '*',
       redirect: '/'
     }

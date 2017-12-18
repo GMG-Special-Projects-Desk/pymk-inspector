@@ -3,8 +3,8 @@
   <div class="container">
     <div class="content">
       <p class="footer-text has-text-centered">
-          Did you find someone noteworthy? <br>
-          Share your story with <span @click="sendTip()" class="name"> <a> tips@gizmodomedia.com </a> </span>
+        Did you find someone noteworthy? Or do you want to be part of an experiment run by Gizmodo?
+        Contact us<span @click="sendTip()" class="name"> <a> tips@gizmodomedia.com </a> </span>
       </p>
     </div>
   </div>
@@ -27,7 +27,7 @@ export default {
 
 <style lang="scss" scoped>
 .footer-text {
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 .name {
   cursor: pointer;

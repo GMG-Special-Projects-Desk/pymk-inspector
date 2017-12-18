@@ -5,7 +5,7 @@
     </div>
     <div class="panel">
     Welcome to the PYMK Inspector!
-    This tool is a part of an <span class="name"> <a @click="openSPD">investigation </a> </span> by Gizmodo's Special Projects Desk. It will help you better understand your Facebook friend recommendations. 
+    This tool is a part of an <span class="name"> <a @click="openSPD">investigation </a> </span> by Gizmodo's Special Projects Desk. It will help you better understand your Facebook friend recommendations. <span class="name"> <router-link :to="{ path: '/privacy' }">Privacy policy</router-link></span>
     </div>
     <div v-if="hasCredentials">
         <div v-if="hasData" class="panel">

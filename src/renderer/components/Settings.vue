@@ -17,14 +17,15 @@
             </b-input>
         </b-field>
         <b-field label="Password stored in Keychain" v-else> </b-field>
-        <b-field label="Frequency">
+        <b-field label="The inspector tries to run every 6 hours" > </b-field>
+<!--         <b-field label="Frequency">
             <b-select  v-model="frequencyModel" placeholder="How often do you want to run the insepctor?">
                 <option value="1"> Every 1 hours </option>
                 <option value="3"> Every 3 hours </option>
                 <option value="6"> Every 6 hours (default) </option>
                 <option value="12"> Every 12 hours </option>
             </b-select>
-        </b-field>
+        </b-field> -->
       </p>
     </b-field>
     <b-field class="button-group" grouped>

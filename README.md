@@ -10,7 +10,7 @@
 
 The pymk-inspector is a tool built by Gizmodo's Special Projects Desk that we used for our [investigation](https://gizmodo.com/tag/people-you-may-know) into Facebook's people you may know (pymk) algorithm. We have used a version of this tool internally for a while to better understand how Facebook suggests friends to us. For more information you can read [this post]()
 
-
+![Permissions](./static/app_screenshot.png)
 
 ## Are you collecting any data from this?
 

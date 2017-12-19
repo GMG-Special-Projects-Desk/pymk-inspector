@@ -10,8 +10,12 @@
   information collected is stored locally on a device designated by the
   user. If you have questions about this, please contact us at
   tips@gizmodomedia.com. 
-
-  The Inspector is downloaded from <a @click="openAws()"> AWS</a>; its privacy policy can be found here. The Inspector is offered by the Gizmodo Media Group; its <a @click="openGizmodo()"> privacy policy</a> can be found here.
+  </div>
+  <div class="panel">
+  The Inspector is downloaded from AWS where me monitor anonymous download data using their server logs. Here is its <a @click="openAws()">privacy policy</a>. The Inspector is offered by the Gizmodo Media Group; here is its <a @click="openGizmodo()"> privacy policy</a>
+  </div>
+  <div class="panel">
+  For the latest information please go to the <a @click="openGithub()">Github page</a> for this project.
   </div>
  </section>
 </template>
@@ -27,6 +31,9 @@ export default {
     },
     openGizmodo () {
       shell.openExternal('http://legal.kinja.com/privacy-policy-1793094625')
+    },
+    openGithub () {
+      shell.openExternal('https://github.com/GMG-Special-Projects-Desk/pymk-inspector')
     }
   }
 }

@@ -370,14 +370,14 @@ span.name {
   padding-top:100px;
 }
 .section.settings {
-  padding-top:160px;
+  padding-top:120px;
   padding-bottom:80px;
 }
 .section.main {
   padding-top:105px;
 }
 .section.privacy {
-  padding-top:120px;
+  padding-top:100px;
 }
 //by panel i really mean container
 .panel {

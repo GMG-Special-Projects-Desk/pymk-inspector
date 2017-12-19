@@ -41,6 +41,7 @@
           <button v-if="hasData"  @click="delData()" class="panel"> <span class="name"> <a> Delete Data </a> </span></button>
         </p>
     </b-field>
+    <b-field label="To uninstall this app please first DELETE THE DATA using the button above and then move to your Trash folder." > </b-field>
   </section>
 </template>
 

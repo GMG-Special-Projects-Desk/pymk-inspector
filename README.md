@@ -1,4 +1,4 @@
-#![Permissions](./static/128.png)  
+![Permissions](./static/128.png)  
 
 > See the people Facebook thinks you know
 

@@ -8,7 +8,7 @@
 
 ## What is the pymk-inspector?
 
-The pymk-inspector is a tool built by Gizmodo's Special Projects Desk that we used for our [investigation](https://gizmodo.com/tag/people-you-may-know) into Facebook's people you may know (pymk) algorithm. We have used a version of this tool internally for a while to better understand how Facebook suggests friends to us. For more information you can read [this post]()
+The pymk-inspector is a tool built by Gizmodo's Special Projects Desk that we used for our [investigation](https://gizmodo.com/tag/people-you-may-know) into Facebook's people you may know (pymk) algorithm. We have used a version of this tool internally for a while to better understand how Facebook suggests friends to us. For more information you can read [this post]().
 
 ![Screenshot](./static/app_screenshot.png)
 
@@ -20,7 +20,7 @@ No, all the data is stored locally and the app itself never reads any user crede
 
 ## What Operating Systems does this run on? 
 
-Currently it only runs on OSX. In theory it should work on Windows and Linux but we have not had the time to test it on those platforms so we are only releasing OS X build. If you want to try to use it on other platforms you should be able to clone this repository and do so!
+Currently it only runs on OSX. In theory it should work on Windows and Linux but we have not had the time to test it on those platforms so we are only releasing an OS X build. If you want to try to use it on other platforms you should be able to clone this repository and do so!
 
 
 

@@ -1,23 +1,40 @@
 const { parsePymk } = require('./parse')
+const notifier = require('node-notifier')
+const path = require('path')
 const { Browser, run, sleep } = require('automatonic')
+
 const log = require('electron-log')
 log.transports.file.level = 'info'
 // added to .babelignore because transformation messes up the execute function for browser rendering
 export const runScrape = (config) => {
-  const I = new Browser({typingInterval: 200, width: 200, height: 200, x: 10, y: 10, sandbox: true})
+  const I = new Browser({typingInterval: 200, width: 400, height: 400, x: 10, y: 10, sandbox: true})
   run(function*() {
     I.goto('https://www.facebook.com/friends/requests/')
     yield I.waitFor(1000)
     var isLoginPage = yield I.checkFor('#email')
 
     if (isLoginPage) {
-      I.type('#pass', config.creds.password)
+      notifier.notify({
+        title: 'PYMK-Inspector',
+        icon: void 0,
+        contentImage: path.join(__static, '128.png'),
+        message: 'You need to log in to Facebook in the browser window to your left.',
+        sound: true, // Only Notification Center or Windows Toasters
+        wait: false // Wait with callback, until user action is taken against notification
+      })
+      yield I.waitFor('div#fbSearchResultsBox', 120000)
       yield I.waitFor(1000)
-      I.type('#email', config.creds.username)
-      yield I.waitFor(1000)
-      I.click('#loginbutton')
-    }
+    } else {
 
+    }
+    notifier.notify({
+      title: 'PYMK-Inspector',
+      icon: void 0,
+      contentImage: path.join(__static, '128.png'),
+      message: 'The app is now running close the browser to cancel this session',
+      sound: true, // Only Notification Center or Windows Toasters
+      wait: false // Wait with callback, until user action is taken against notification
+    })
     yield sleep(1000)
     yield I.execute(function () {
       return new Promise((resolve, reject) => {

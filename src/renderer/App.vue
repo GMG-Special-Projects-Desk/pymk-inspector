@@ -42,7 +42,8 @@
     },
     computed: {
       ...mapGetters([
-        'shouldRefresh'
+        'shouldRefresh',
+        'scrapeFrequency'
       ])
     },
     components: {
@@ -161,11 +162,6 @@
               this.$storage
                 .get(`${this.serviceName}.json`)
                 .then((d) => {
-                  if (d.username) {
-                    this.setCredentials(d.username)
-                  } else {
-                    app.log.error('[App][initConfig] Coundnt find username')
-                  }
                   if (d.frequency) {
                     this.setFrequency(d.frequency)
                     app.log.info(`[App][initConfig] Setting frequency to ${d.frequency}`)
@@ -173,6 +169,15 @@
                     app.log.warn('[App][initConfig] Didnt find frequency settings. Setting default')
                   }
                   return d
+                })
+            } else {
+              this.$storage
+                .set(`${this.serviceName}.json`, {frequency: this.scrapeFrequency})
+                .then((d) => {
+                  this.warning(`First time settings configure`)
+                })
+                .catch((err) => {
+                  this.warning(`Couldnt configure settings ${err}`)
                 })
             }
           })

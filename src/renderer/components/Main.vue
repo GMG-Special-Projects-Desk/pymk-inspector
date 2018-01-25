@@ -7,9 +7,9 @@
     Welcome to the PYMK Inspector!
     This tool is a part of an <span class="name"> <a @click="openSPD">investigation </a> </span> by Gizmodo's Special Projects Desk. It will help you better understand your Facebook friend recommendations. <span class="name"> <router-link :to="{ path: '/privacy' }">Privacy policy</router-link></span>
     </div>
-    <div v-if="hasCredentials">
+    <div v-if="hasData">
         <div v-if="hasData" class="panel">
-          The current user is <em>{{username}}</em> and the most recent session was <em>{{mostRecent.timestamp | moment("from", true) }} ago</em>.
+          The most recent session was <em>{{mostRecent.timestamp | moment("from", true) }} ago</em>.
            <span class="name"> <router-link :to="{ path: '/summary' }">Click here for details</router-link> </span>
         </div>
         <div v-else class="panel">
@@ -24,14 +24,13 @@
     </div>
     <div v-else>
       <div class="panel">
-        It looks like this is either your first time or you don't have your credentials stored.
-        Scroll down to settings to add your Facebook credentials.
-        These will be stored on your computer and not sent to us.
+        It looks like this is either your first time or you don't have any data stored.
+        Click on inspector settings to run this app.
       </div>
       <div class="panel">
         <span class="name">
           <router-link :to="{ path: '/settings' }">
-            Inspector Login and Settings
+            Inspector Settings
           </router-link>
         </span>
       </div>
@@ -68,10 +67,10 @@
     computed: {
       ...mapGetters([
         'hasCredentials',
+        'hasData',
         'shouldRefresh',
         'hasData',
         'dbPath',
-        'username',
         'serviceName',
         'summary',
         'mostRecent',

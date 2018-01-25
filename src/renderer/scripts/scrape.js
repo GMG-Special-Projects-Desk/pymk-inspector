@@ -22,7 +22,7 @@ export const runScrape = (config) => {
         sound: true, // Only Notification Center or Windows Toasters
         wait: false // Wait with callback, until user action is taken against notification
       })
-      yield I.waitFor('div#fbSearchResultsBox', 120000)
+      yield I.waitFor('div#fbSearchResultsBox', 600000)
       yield I.waitFor(1000)
     } else {
 

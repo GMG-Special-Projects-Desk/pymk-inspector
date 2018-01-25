@@ -4,10 +4,9 @@
       <a> <router-link :to="{ path: '/' }">Go Back</router-link></a>
     </div>
       <p class="control">
-        <b-field label="If this is your first time click 'Run it now'run this app. A browser window will appear that will allow you to log in to Facebook. If you log out you will have to sign in again the next time you run the app." > </b-field>
-        <b-field label="The inspector tries to run every 6 hours" > </b-field>
+        <b-field label="If this is your first time click 'Run it now' to run this app. A browser window will appear that will allow you to log into Facebook. If you log out, you will have to sign in again the next time you run the app." > </b-field>
+        <b-field label="The inspector tries to run every 6 hours. If you do not want it to run simply close the browser window." > </b-field>
       </p>
-    </b-field>
     <b-field grouped>
         <p class="control">
           <button @click="scrape()" class="panel"> <span class="name"> <a> Run it now </a> </span></button>
@@ -15,7 +14,10 @@
           <button v-if="hasData"  @click="delData()" class="panel"> <span class="name"> <a> Delete Data </a> </span></button>
         </p>
     </b-field>
-    <b-field label="To uninstall this app please first DELETE THE DATA using the button above and then move to your Trash folder." > </b-field>
+    <p class="control">
+      <b-field label="To uninstall this app please first DELETE THE DATA using the button above and then move to your Trash folder." > </b-field>
+      <b-field label="If you use a password manager and want to paste your password in please right click on the password field to do so." > </b-field>
+    </p>
   </section>
 </template>
 

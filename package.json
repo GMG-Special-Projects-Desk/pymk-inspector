@@ -61,6 +61,7 @@
     "bluebird": "^3.5.0",
     "buefy": "^0.5.3",
     "cheerio": "^1.0.0-rc.2",
+    "electron-context-menu": "^0.9.1",
     "electron-log": "^2.2.11",
     "electron-storage": "^1.0.7",
     "font-awesome": "^4.7.0",

@@ -25,7 +25,7 @@
     <div v-else>
       <div class="panel">
         It looks like this is either your first time or you don't have any data stored.
-        Scroll down to settings to run this app.
+        Click on inspector settings to run this app.
       </div>
       <div class="panel">
         <span class="name">

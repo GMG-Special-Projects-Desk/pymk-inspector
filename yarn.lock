@@ -2675,6 +2675,13 @@ electron-chromedriver@~1.7.1:
     electron-download "^4.1.0"
     extract-zip "^1.6.5"
 
+electron-context-menu@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/electron-context-menu/-/electron-context-menu-0.9.1.tgz#ed4df20c080491c3c996abfcb363159946a38058"
+  dependencies:
+    electron-dl "^1.2.0"
+    electron-is-dev "^0.1.1"
+
 electron-debug@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/electron-debug/-/electron-debug-1.4.0.tgz#bec7005522220a9d0622153352e1bbff0f37af2e"
@@ -2690,6 +2697,14 @@ electron-devtools-installer@^2.2.0:
     cross-unzip "0.0.2"
     rimraf "^2.5.2"
     semver "^5.3.0"
+
+electron-dl@^1.2.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/electron-dl/-/electron-dl-1.10.0.tgz#f94416064056fc6f2a86ae498614c93526890af9"
+  dependencies:
+    ext-name "^5.0.0"
+    pupa "^1.0.0"
+    unused-filename "^1.0.0"
 
 electron-download-tf@4.3.4:
   version "4.3.4"
@@ -2736,6 +2751,10 @@ electron-download@^4.1.0:
 electron-is-accelerator@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/electron-is-accelerator/-/electron-is-accelerator-0.1.2.tgz#509e510c26a56b55e17f863a4b04e111846ab27b"
+
+electron-is-dev@^0.1.1:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-0.1.2.tgz#8a1043e32b3a1da1c3f553dce28ce764246167e3"
 
 electron-is-dev@^0.3.0:
   version "0.3.0"
@@ -3287,6 +3306,19 @@ express@^4.13.3:
     type-is "~1.6.15"
     utils-merge "1.0.0"
     vary "~1.1.1"
+
+ext-list@^2.0.0:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/ext-list/-/ext-list-2.2.2.tgz#0b98e64ed82f5acf0f2931babf69212ef52ddd37"
+  dependencies:
+    mime-db "^1.28.0"
+
+ext-name@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/ext-name/-/ext-name-5.0.0.tgz#70781981d183ee15d13993c8822045c506c8f0a6"
+  dependencies:
+    ext-list "^2.0.0"
+    sort-keys-length "^1.0.0"
 
 extend@^2.0.0:
   version "2.0.1"
@@ -5255,6 +5287,10 @@ miller-rabin@^4.0.0:
   version "1.30.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.30.0.tgz#74c643da2dd9d6a45399963465b26d5ca7d71f01"
 
+mime-db@^1.28.0:
+  version "1.32.0"
+  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.32.0.tgz#485b3848b01a3cda5f968b4882c0771e58e09414"
+
 mime-types@^2.1.12, mime-types@~2.1.11, mime-types@~2.1.15, mime-types@~2.1.16, mime-types@~2.1.7:
   version "2.1.17"
   resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.17.tgz#09d7a393f03e995a79f8af857b70a9e0ab16557a"
@@ -5343,6 +5379,10 @@ mocha@^3.0.2:
     lodash.create "3.1.1"
     mkdirp "0.5.1"
     supports-color "3.1.2"
+
+modify-filename@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/modify-filename/-/modify-filename-1.1.0.tgz#9a2dec83806fbb2d975f22beec859ca26b393aa1"
 
 moment@^2.11.1:
   version "2.18.1"
@@ -6418,6 +6458,10 @@ punycode@^1.2.4, punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
+pupa@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/pupa/-/pupa-1.0.0.tgz#9a9568a5af7e657b8462a6e9d5328743560ceff6"
+
 q@^1.1.2, q@~1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.0.tgz#dd01bac9d06d30e6f219aecb8253ee9ebdc308f1"
@@ -7117,6 +7161,12 @@ sockjs@0.3.18:
     faye-websocket "^0.10.0"
     uuid "^2.0.2"
 
+sort-keys-length@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/sort-keys-length/-/sort-keys-length-1.0.1.tgz#9cb6f4f4e9e48155a6aa0671edd336ff1479a188"
+  dependencies:
+    sort-keys "^1.0.0"
+
 sort-keys@^1.0.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/sort-keys/-/sort-keys-1.1.2.tgz#441b6d4d346798f1b4e49e8920adfba0e543f9ad"
@@ -7728,6 +7778,13 @@ universalify@^0.1.0:
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/unpipe/-/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"
+
+unused-filename@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/unused-filename/-/unused-filename-1.0.0.tgz#d340880f71ae2115ebaa1325bef05cc6684469c6"
+  dependencies:
+    modify-filename "^1.1.0"
+    path-exists "^3.0.0"
 
 unzip-response@^1.0.0:
   version "1.0.2"

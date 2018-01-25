@@ -7,6 +7,7 @@ import {app, ipcMain, dialog, Menu} from 'electron'
 import log from 'electron-log'
 const fs = require('fs')
 const path = require('path')
+
 let cronJob = null
 let mb = null
 app.log = log
@@ -24,6 +25,24 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
+const contextMenu = Menu.buildFromTemplate([
+  {label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:'},
+  {label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:'},
+  {label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:'},
+  {label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:'},
+  {label: 'Restart', click: () => { mb.app.quit(); mb.app.relaunch() }},
+  {type: 'separator'},
+  {label: 'Quit', click: () => { mb.app.quit() }}
+])
+
+require('electron-context-menu')({
+  prepend: (params, browserWindow) => [[
+    {label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:'},
+    {label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:'},
+    {label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:'}
+  ]]
+})
+// Menu.setApplicationMenu(contextMenu)
 function createMenuBar () {
   mb = menubar({icon: require('path').join(__static, 'inspector-dashboard-transparent.png'),
     index: winURL,
@@ -48,11 +67,6 @@ function createMenuBar () {
   })
 
   mb.on('after-create-window', function () {
-    const contextMenu = Menu.buildFromTemplate([
-      {label: 'Restart', click: () => { mb.app.quit(); mb.app.relaunch() }},
-      {type: 'separator'},
-      {label: 'Quit', click: () => { mb.app.quit() }}
-    ])
     mb.tray.on('right-click', () => {
       mb.tray.popUpContextMenu(contextMenu)
     })

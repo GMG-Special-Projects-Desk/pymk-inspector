@@ -82,7 +82,7 @@ function createMenuBar () {
   })
 
   ipcMain.on('settings-updated', (event, arg) => {
-    app.log.warn(`[main][settings-updated] Re-initializng bg scrape with settings from ${app.getPath('userData')}`)
+    app.log.warn(`[main][settings-updated] Re-initializing bg scrape with settings from ${app.getPath('userData')}`)
     clearCronJob(cronJob)
     initBackgroundScrape(app.getPath('userData'),
       (results) => {
@@ -111,7 +111,7 @@ function createMenuBar () {
   })
 
   ipcMain.on('export-data', (event, arg) => {
-    dialog.showSaveDialog({title: 'Chose a folder to save the data to', defaultPath: 'pymk-inspector.csv'}, (filepath) => {
+    dialog.showSaveDialog({title: 'Choose a folder to save the data to.', defaultPath: 'pymk-inspector.csv'}, (filepath) => {
       try {
         const dirname = path.dirname(filepath)
         const filename = path.basename(filepath, path.extname(filepath))

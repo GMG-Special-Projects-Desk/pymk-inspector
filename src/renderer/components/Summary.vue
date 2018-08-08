@@ -31,10 +31,10 @@
           </b-tooltip>
         </span>
         <br>
-        <span class="name"> <router-link :to="{ path: '/people' }">Click  here to see everyone you've been recommended</router-link> </span>
+        <span class="name"> <router-link :to="{ path: '/people' }">Click here to see everyone you've been recommended</router-link> </span>
       </div>
       <div class="panel" v-if="summary.hasOwnProperty('commonPymkNoMutual') && summary.commonPymkNoMutual.length > 0">
-        The most common people with no mutual friends that you were suggested include
+        The most common people with no mutual friends that you were suggested include:
         <b-tooltip 
           :label="`${summary.commonPymkNoMutual[0].sessions.length} sessions`"
           type="is-dark"

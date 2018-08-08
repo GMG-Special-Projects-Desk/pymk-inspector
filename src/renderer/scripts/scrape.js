@@ -18,7 +18,7 @@ export const runScrape = (config) => {
         title: 'PYMK-Inspector',
         icon: void 0,
         contentImage: path.join(__static, '128.png'),
-        message: 'You need to log in to Facebook in the browser window to your left.',
+        message: 'You need to log into Facebook in the browser window to your left.',
         sound: true, // Only Notification Center or Windows Toasters
         wait: false // Wait with callback, until user action is taken against notification
       })
@@ -31,7 +31,7 @@ export const runScrape = (config) => {
       title: 'PYMK-Inspector',
       icon: void 0,
       contentImage: path.join(__static, '128.png'),
-      message: 'The app is now running close the browser to cancel this session',
+      message: 'The app is now running - close the browser to cancel this session.',
       sound: true, // Only Notification Center or Windows Toasters
       wait: false // Wait with callback, until user action is taken against notification
     })

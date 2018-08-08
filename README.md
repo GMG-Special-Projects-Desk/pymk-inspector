@@ -26,6 +26,9 @@ Currently it only runs on OSX. In theory it should work on Windows and Linux but
 
 ## Want to build it from source?
 This app was built using [electron](https://electronjs.org/) and [electron-vue](https://github.com/SimulatedGREG/electron-vue)
+
+Be sure you have Python 2.7.x installed and executable under the alias `python`.
+
 ``` bash
 # install dependencies
 npm install

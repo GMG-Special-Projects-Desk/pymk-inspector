@@ -70,7 +70,7 @@
     "level-js": "^2.2.4",
     "leveldown": "^1.7.2",
     "linvodb3": "^3.25.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.19",
     "menubar": "^5.2.3",
     "node-notifier": "^5.2.1",
     "postcss-svgo": "^2.1.6",

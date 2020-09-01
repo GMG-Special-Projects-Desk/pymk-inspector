@@ -59,7 +59,7 @@
     "automatonic": "^0.1.1",
     "axios": "^0.16.1",
     "bluebird": "^3.5.0",
-    "buefy": "^0.5.3",
+    "buefy": "^0.7.2",
     "cheerio": "^1.0.0-rc.2",
     "electron-context-menu": "^0.9.1",
     "electron-log": "^2.2.11",

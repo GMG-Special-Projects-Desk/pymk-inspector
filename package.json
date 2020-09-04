@@ -77,7 +77,7 @@
     "vue-electron": "^1.0.6",
     "vue-electron-storage": "^1.0.1",
     "vue-lodash": "^1.0.4",
-    "vue-moment": "^2.0.2",
+    "vue-moment": "^4.1.0",
     "vue-router": "^2.5.3",
     "vuex": "^2.3.1",
     "wysiwyg.css": "^0.0.2"

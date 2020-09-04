@@ -5384,9 +5384,9 @@ modify-filename@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/modify-filename/-/modify-filename-1.1.0.tgz#9a2dec83806fbb2d975f22beec859ca26b393aa1"
 
-moment@^2.11.1:
-  version "2.18.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
+moment@^2.19.2:
+  version "2.27.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.27.0.tgz#8bff4e3e26a236220dfe3e36de756b6ebaa0105d"
 
 ms@0.7.1:
   version "0.7.1"
@@ -7977,11 +7977,11 @@ vue-lodash@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/vue-lodash/-/vue-lodash-1.0.4.tgz#99f4f2f5832ce0168c4d45618789288a638562cd"
 
-vue-moment@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/vue-moment/-/vue-moment-2.0.2.tgz#c480341f281d8edc08126ffea5c45ce92e6c584b"
+vue-moment@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/vue-moment/-/vue-moment-4.1.0.tgz#092a8ff723a96c6f85a0a8e23ad30f0bf320f3b0"
   dependencies:
-    moment "^2.11.1"
+    moment "^2.19.2"
 
 vue-router@^2.5.3:
   version "2.7.0"
